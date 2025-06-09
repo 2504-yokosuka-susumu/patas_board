@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class UserForm {
 
-    private Integer id;
+    private int id;
 
     private String account;
 
@@ -15,11 +15,11 @@ public class UserForm {
 
     private String name;
 
-    private Integer branchId;
+    private int branchId;
 
-    private Integer departmentId;
+    private int departmentId;
 
-    private Integer isStopped;
+    private int isStopped;
 
     private Date createdDate;
 
