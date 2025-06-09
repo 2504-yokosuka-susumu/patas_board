@@ -1,13 +1,81 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>TOP</title>
 </head>
 <body>
-    <div class="header-contents">
-        <h1>匿名掲示板</h1>
+<div class="header-contents">
+    <h1>匿名掲示板</h1>
+</div>
+<div>
+    <form action="/" method="get">
+        日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}"><input type="submit" value="絞り込み">
+    </form>
+</div>
+<div class="main-contents">
+    <a href="/new">
+        <button class="new-button" type="button">新規投稿</button>
+    </a>
+    <div class="message-icon" th:each="report : ${reports}">
+        <div>
+            ID : <span th:text="${report.id}"/>
+        </div>
+        <div class="text">
+            投稿 : <span th:text="${report.content}"/>
+        </div>
+        <div class="date">
+            <fmt:formatDate value="${report.createdDate}"
+                            pattern="yyyy/MM/dd HH:mm:ss" />
+        </div>
+        <div class="delete-button">
+            <form th:action="@{/delete/{id}(id=${report.id})}" th:method="delete">
+                <input type="submit" value="削除">
+            </form>
+        </div>
+        <div class="edit-button">
+            <a th:href="@{/edit/{id}(id=${report.id})}">
+                <input type="button" value="編集">
+            </a>
+        </div>
+        <div class="comment-icon" th:each="comment : ${comments}">
+            <th:block th:if="${report.id} == ${comment.report_id}">
+                <div>
+                    ID : <span th:text="${comment.id}"/>
+                </div>
+                <div class="text">
+                    投稿 : <span th:text="${comment.content}"/>
+                </div>
+                <div class="delete-button">
+                    <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
+                        <input type="submit" value="削除">
+                    </form>
+                    <div class="edit-button">
+                        <a th:href="@{/comment/edit/{id}/{reportId}(id=${comment.id},reportId=${comment.report_id})}">
+                            <input type="button" value="編集">
+                        </a>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+        <div class="comment-area">
+            <form method="post" th:action="@{/comment/{reportId}(reportId=${report.id})}" th:object="${formModel}">
+                <div class="form-area">
+                    <label>返信</label>
+                    <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
+                    <div th:if="${mavErrorMessages != null} and ${reportId} == ${report.id}">
+                        <div th:each="message : ${mavErrorMessages}">
+                            <span th:text="${message}" class="errorMessages"/>
+                        </div>
+                    </div>
+                    <input type="submit" value="返信" />
+                </div>
+            </form>
+        </div>
+
+
     </div>
+</div>
 </body>
 </html>

@@ -7,13 +7,13 @@ import java.util.Date;
 @Data
 public class CommentForm {
 
-    private Integer id;
+    private int id;
 
     private String text;
 
-    private Integer userId;
+    private int userId;
 
-    private Integer messageId;
+    private int messageId;
 
     private Date createdDate;
 
