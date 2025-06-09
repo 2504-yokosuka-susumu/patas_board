@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class MessageForm {
 
-    private Integer id;
+    private int id;
 
     private String title;
 
@@ -15,7 +15,7 @@ public class MessageForm {
 
     private String category;
 
-    private Integer userId;
+    private int userId;
 
     private Date createdDate;
 
