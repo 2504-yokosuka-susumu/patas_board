@@ -6,59 +6,8 @@
     <title>TOP画面</title>
 </head>
 <body>
-    <h1>ToDo</h1>
-    <th:block th:if="${errorMessage != null && !errorMessage.isEmpty()}">
-        <span th:text="${errorMessage}" style="color:red"></span>
-    </th:block>
     <div>
-        本日の日付<p th:text="${today}"></p>
-    </div>
-    <form action="/new" method="get">
-        <input type="submit" value="新規タスク">
-    </form>
-    <form action="/" method="get" th:object="${formTask}">
-        <div class="form-area">
-            期限<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
-            ステータス<div>
-            <select name="status" th:field="*{status}">
-                <option th:each="choice : ${choices}" th:value="${choice.key}"
-                        th:text="${choice.value}" ></option>
-            </select>
-            </div>
-            <div>
-                タスク内容<textarea class="search-text" size="10" th:field="*{content}"></textarea>
-            </div>
-            <input type="submit" value="絞込">
-        </div>
-    </form>
-    <div class="task-area" th:each="task : ${tasks}">
-        <p th:text="${task.content}"></p>
-        <form action="/change" method="post">
-            <div class="change-form">
-                <select name="status">
-                    <option th:each="choice : ${statusChoices}" th:value="${choice.key}"
-                            th:text="${choice.value}" th:selected="${choice.key == task.status}"></option>
-                </select>
-                <input type="hidden" th:value="${task.id}" name="id">
-                <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
-            </div>
-        </form>
-        <div class="limit-before" th:if="${today ge #dates.format(task.limitDate, 'yyyy-MM-dd')}">
-            <p th:text="${#strings.substring(task.limitDate, 0, 11)}"></p>
-        </div>
-        <div class="limit-after" th:if="${today lt #dates.format(task.limitDate, 'yyyy-MM-dd')}">
-            <p th:text="${#strings.substring(task.limitDate, 0, 11)}"></p>
-        </div>
-        <div class="edit-button">
-            <a th:href="@{/edit/{id}(id=${task.id})}">
-                <input type="button" value="編集">
-            </a>
-        </div>
-        <div class="delete-button">
-            <form th:action="@{/delete/{id}(id=${task.id})}" th:method="delete">
-                <button type="submit" onclick="return confirm('削除しますか？');">削除</button>
-            </form>
-        </div>
+        タスク内容<textarea size="10"></textarea>
     </div>
 </body>
 </html>
