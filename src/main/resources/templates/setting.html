@@ -13,28 +13,25 @@
     <form th:action="@{/setting}" method="post" th:object="${formModel}">
 
         <label th:for="id">ID</label>
-        <input name="id" value="${user.id}" id="id"/><br />
+        <input th:value="${users.id}" id="id"/><br />
 
         <label th:for="account">アカウント名</label>
-        <input name="account" th:value="${user.account}" /><br />
+        <input th:value="${users.account}" /><br />
 
         <label th:for="password">パスワード</label>
-        <input name="password" type="password" id="password"/> <br />
+        <input th:type="password" id="password"/> <br />
 
         <label th:for="confirmPassword">パスワード確認</label>
-        <input name="confirmPassword" type="password" id="confirmPassword"/> <br />
-
-        <label th:for="email">メールアドレス</label>
-        <input name="email" value="${user.email}" id="email"/> <br />
+        <input th:type="password" id="confirmPassword"/> <br />
 
         <label th:for="name">名前</label>
-        <input name="name" value="${user.name}" id="userName"/><br />
+        <input name="name" th:value="${users.name}" id="userName"/><br />
 
-        <label th:for="branchName">支社</label>
-        <input name="branchName" value="${branch.name}" id="branchName"/><br />
+<!--        <label th:for="branchName">支社</label>-->
+<!--        <input th:value="${branch.name}" id="branchName"/><br />-->
 
-        <label th:for="departmentName">部署</label>
-        <input name="departmentName" value="${department.name}" id="departmentName"/><br />
+<!--        <label th:for="departmentName">部署</label>-->
+<!--        <input th:value="${department.name}" id="departmentName"/><br />-->
 
         <input type="submit" value="登録">
     </form>
