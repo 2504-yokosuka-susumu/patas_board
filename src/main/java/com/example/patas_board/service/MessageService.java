@@ -90,4 +90,8 @@ public class MessageService {
         }
         return messages;
     }
+
+    public void delete(Integer id) {
+        messageRepository.deleteById(id);
+    }
 }
