@@ -21,6 +21,10 @@ public class UserForm {
 
     private int isStopped;
 
+    public enum Status {
+        復活, 停止
+    }
+
     private Date createdDate;
 
     private Date updatedDate;
