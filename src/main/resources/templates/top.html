@@ -58,6 +58,14 @@
         <div class="text">
             本文 : <span th:text="${message.text}"/>
         </div>
+        <div th:if="${session.loginUser != null}">
+            <div class="delete-button">
+                <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
+                    <input type="hidden" name="userId" th:value="${message.userId}">
+                    <input type="submit" value="削除">
+                </form>
+            </div>
+        </div>
         <div class="date">
             <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
