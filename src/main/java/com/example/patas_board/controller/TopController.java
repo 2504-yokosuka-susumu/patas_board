@@ -39,13 +39,13 @@ public class TopController {
         // 投稿を全件取得 日付検索に変えた
         List<MessageForm> messageData = messageService.findAllMessage();
         // 返信を全件取得
-//        List<CommentForm> commentData = commentService.findAllComment();
+        List<CommentForm> commentData = commentService.findAllComment();
         // 画面遷移先を指定
         mav.setViewName("/top");
 
         mav.addObject("formModel", commentsForm);
         mav.addObject("messages", messageData);
-//        mav.addObject("comments", commentData);
+        mav.addObject("comments", commentData);
         return mav;
     }
     /*
