@@ -1,17 +1,17 @@
 package com.example.patas_board.controller;
 
+import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.MessageService;
 import com.example.patas_board.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class UserMessageController {
@@ -28,10 +28,13 @@ public class UserMessageController {
     public ModelAndView view() {
         // 管理者権限フィルター
 
-        // session情報取得
-        session = (HttpSession) session.getAttribute("loginUser");
+        // ユーザ情報取得
+        List<UserForm> userData = userService.findAllUser();
 
+        // "users"オブジェクト "statuses"オブジェクト　格納
         ModelAndView mav = new ModelAndView();
+        mav.addObject("users",userData);
+        mav.addObject("statuses", UserForm.Status.values());
         mav.setViewName("/manager");
         return mav;
     }
@@ -40,9 +43,18 @@ public class UserMessageController {
      * アカウント復活/停止切り替え
      */
     @PostMapping("/manager")
-    public ModelAndView changeStatus(){
-        ModelAndView mav = new ModelAndView();
+    public ModelAndView changeStatus(@RequestParam(name = "id", required = false) int id,
+                                     @RequestParam(name = "status", required = false) int status) {
 
-        return mav;
+        // userのidとstatusセット
+        UserForm userForm = new UserForm();
+        userForm.setId(id);
+        userForm.setIsStopped(status);
+
+        // ステータス更新処理
+        userService.save(userForm);
+
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/");
     }
 }
