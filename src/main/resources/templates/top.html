@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
@@ -9,15 +9,29 @@
 <div class="header-contents">
     <h1>匿名掲示板</h1>
 </div>
-<div class="user-maanage-button">
-    <a href="/manager/form">
-        <button class="manage-button" type="button">ユーザー管理</button>
-    </a>
+<div th:if="${session.loginUser != null}">
+    <div class="profile">
+        <div class="name">
+            <h2>
+                <span th:text="${session.loginUser.name}" />
+            </h2>
+        </div>
+        <div class="account">
+            @<span th:text="${session.loginUser.account}" />
+        </div>
+    </div>
+    <div class="user-maanage-button">
+        <a href="/manager/form">
+            <button class="manage-button" type="button">ユーザー管理</button>
+        </a>
+    </div>
 </div>
-<div class="login-button">
-    <a href="/login/form">
-        <button class="login-button" type="button">ログイン</button>
-    </a>
+<div th:if="${session.loginUser == null}">
+    <div class="login-button">
+        <a href="/login/form">
+            <button class="login-button" type="button">ログイン</button>
+        </a>
+    </div>
 </div>
 <div>
     <form action="/" method="get">
@@ -49,27 +63,12 @@
                             pattern="yyyy/MM/dd HH:mm:ss" />
         </div>
         <div class="comment-icon" th:each="comment : ${comments}">
-            <div th:if="${content.id} == ${comment.reportId}">
-                <div class="text">
-                    コメント : <span th:text="${comment.content}"/>
-                </div>
-        <div class="delete-button">
-            <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
-                <input type="submit" value="削除">
-            </form>
-        </div>
-        <div class="edit-button">
-            <a th:href="@{/edit/{id}(id=${message.id})}">
-                <input type="button" value="編集">
-            </a>
-        </div>
-        <div class="comment-icon" th:each="comment : ${comments}">
             <th:block th:if="${message.id} == ${comment.messageId}">
                 <div>
                     ID : <span th:text="${comment.id}"/>
                 </div>
                 <div class="text">
-                    投稿 : <span th:text="${comment.text}"/>
+                    コメント : <span th:text="${comment.text}"/>
                 </div>
                 <div class="delete-button">
                     <form th:action="@{/comment/delete/{id}(id=${commentId})}" th:method="delete">
