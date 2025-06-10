@@ -78,4 +78,18 @@ public class TopController {
         return mav;
     }
 
+    /*
+     * ログアウト処理
+     */
+    @GetMapping("/logout")
+    public ModelAndView logOut() {
+        // session情報取得
+        session = (HttpSession) session.getAttribute("loginUser");
+
+        // セッションの無効化
+        session.invalidate();
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/");
+    }
+
 }
