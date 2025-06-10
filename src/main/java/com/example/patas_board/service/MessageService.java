@@ -10,12 +10,33 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class MessageService {
     @Autowired
     MessageRepository messageRepository;
+
+    /*
+     *投稿の登録
+     */
+    public void addMessage(MessageForm reqMessage){
+        Message message = setMessageEntity(reqMessage);
+        messageRepository.save(message);
+    }
+
+    private Message setMessageEntity(MessageForm reqMessage){
+        Message message = new Message();
+        message.setId(reqMessage.getId());
+        message.setTitle(reqMessage.getTitle());
+        message.setText(reqMessage.getText());
+        message.setCategory(reqMessage.getCategory());
+        message.setUserId(reqMessage.getUserId());
+        message.setUpdatedDate(new Date());
+        return message;
+    }
+
 
     /*
      * レコード全件取得処理
