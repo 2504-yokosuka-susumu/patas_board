@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class CommentController {
      * 返信投稿処理
      */
     @PostMapping("/comment/{messageId}")
-    public String addComment(@Validated @ModelAttribute("formModel") CommentForm commentForm,
+    public ModelAndView addComment(@Validated @ModelAttribute("formModel") CommentForm commentForm,
                              BindingResult result,
                              @PathVariable Integer messageId){
         if(result.hasErrors()) {
@@ -38,7 +40,7 @@ public class CommentController {
             }
             session.setAttribute("errorMessages", errorMessages);
             session.setAttribute("messageId", messageId);
-            return "redirect:/";
+            return new ModelAndView("redirect:/");
         }
         // 投稿をテーブルに格納
         commentForm.setMessageId(messageId);
@@ -48,7 +50,18 @@ public class CommentController {
 //        // 投稿のupdated_dateを更新
 //        messageService.saveMessage(messageForm);
         // rootへリダイレクト
-        return "redirect:/";
+        return new ModelAndView("redirect:/");
+    }
+
+    /*
+     * 返信削除処理
+     */
+    @DeleteMapping("/comment/delete/{id}")
+    public ModelAndView deleteComment(@PathVariable Integer id) {
+        // 投稿をテーブルに格納
+        commentService.deleteComment(id);
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/");
     }
 
 }

@@ -31,4 +31,11 @@ public class CommentService {
         comment.setMessageId(reqComment.getMessageId());
         return comment;
     }
+
+    /*
+     * 投稿削除
+     */
+    public void deleteComment(int id) {
+        commentRepository.deleteById(id);
+    }
 }
