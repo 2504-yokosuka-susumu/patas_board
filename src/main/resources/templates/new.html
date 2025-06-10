@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:color="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
+  <title>新規投稿画面</title>
+</head>
+<body>
+<div class="header-contents">
+  <h2>投稿追加</h2>
+</div>
+<div class="main-contents">
+  <form method="post" action="/add" th:object="${formModel}">
+    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red">Content Error</div>
+    <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color: red">Content Error</div>
+    <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" style="color: red">Content Error</div>
+    <div class="form-area">
+      <label>件名</label>
+      <textarea class="tweet-box" th:field="*{title}" size="20" maxlength="200" /></textarea><br/>
+      <label>本文</label>
+      <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
+      <label>カテゴリ</label>
+      <textarea class="tweet-box" th:field="*{category}" size="20" maxlength="200" /></textarea><br/>
+      <input type="submit" value="投稿" />
+    </div>
+  </form>
+</div>
+<div class="footer-contents">
+  <a href="/">戻る</a>
+</div>
+</body>
+</html>
