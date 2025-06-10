@@ -64,17 +64,17 @@
                     ID : <span th:text="${comment.id}"/>
                 </div>
                 <div class="text">
-                    投稿 : <span th:text="${comment.content}"/>
+                    投稿 : <span th:text="${comment.text}"/>
                 </div>
                 <div class="delete-button">
                     <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
                         <input type="submit" value="削除">
                     </form>
-                    <div class="edit-button">
-                        <a th:href="@{/comment/edit/{id}/{messageId}(id=${comment.id},messageId=${comment.message_id})}">
-                            <input type="button" value="編集">
-                        </a>
-                    </div>
+                </div>
+                <div class="edit-button">
+                    <a th:href="@{/comment/edit/{id}/{messageId}(id=${comment.id},messageId=${comment.message_id})}">
+                        <input type="button" value="編集">
+                    </a>
                 </div>
             </th:block>
         </div>
