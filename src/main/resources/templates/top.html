@@ -64,7 +64,7 @@
             </a>
         </div>
         <div class="comment-icon" th:each="comment : ${comments}">
-            <th:block th:if="${message.id} == ${comment.message_id}">
+            <th:block th:if="${message.id} == ${comment.messageId}">
                 <div>
                     ID : <span th:text="${comment.id}"/>
                 </div>
@@ -72,12 +72,12 @@
                     投稿 : <span th:text="${comment.text}"/>
                 </div>
                 <div class="delete-button">
-                    <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
+                    <form th:action="@{/comment/delete/{id}(id=${commentId})}" th:method="delete">
                         <input type="submit" value="削除">
                     </form>
                 </div>
                 <div class="edit-button">
-                    <a th:href="@{/comment/edit/{id}/{messageId}(id=${comment.id},messageId=${comment.message_id})}">
+                    <a th:href="@{/comment/edit/{id}/{messageId}(id=${comment.id},messageId=${comment.messageId})}">
                         <input type="button" value="編集">
                     </a>
                 </div>
