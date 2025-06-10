@@ -49,7 +49,7 @@ public class LoginController {
             for(ObjectError error:result.getAllErrors()){
                 errorMessages.add(error.getDefaultMessage());
             }
-            mav.setViewName("/login/form");
+            mav.setViewName("/login");
             return mav;
         }else{
             ModelAndView mav = new ModelAndView();
@@ -59,7 +59,7 @@ public class LoginController {
             if(user == null || user.getIsStopped() == 1){
                 String error = "ログインに失敗しました";
                 mav.addObject("error", error);
-                mav.setViewName("/login/form");
+                mav.setViewName("/login");
                 return mav;
             }
             session.setAttribute("loginUser", user);

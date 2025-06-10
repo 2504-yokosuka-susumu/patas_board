@@ -8,6 +8,9 @@
 <body>
 <div class="main-contents">
   <form th:method="post" th:action="@{/login}" th:object="${userForm}">
+    <th:block th:if="${error != null && !error.isEmpty()}">
+      <span th:text="${error}" style="color:red"></span>
+    </th:block>
     <div th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color: red"></div>
     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red"></div>
     <div class="form-area">
