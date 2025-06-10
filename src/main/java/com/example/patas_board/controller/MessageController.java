@@ -35,7 +35,9 @@ public class MessageController {
 
     @PostMapping("/add")
     public ModelAndView addMessage(@ModelAttribute("formModel") @Validated MessageForm messageForm,
-                                   BindingResult result) {
+                                   BindingResult result, @ModelAttribute("userId") String userId) {
+
+        messageForm.setUserId(Integer.parseInt(userId));
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView();
             List<String> errorMessages = new ArrayList<String>();
@@ -51,9 +53,9 @@ public class MessageController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") Integer id){
+    public ModelAndView delete(@PathVariable("id") Integer id, @ModelAttribute("userId") String userId){
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
-        if(loginUser.getId() != id){
+        if(loginUser.getId() != Integer.parseInt(userId)){
             return new ModelAndView("redirect:/");
         }
         messageService.delete(id);
