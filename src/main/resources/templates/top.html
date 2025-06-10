@@ -10,8 +10,13 @@
     <h1>匿名掲示板</h1>
 </div>
 <div class="user-maanage-button">
-    <a href="/manager/home">
+    <a href="/manager/form">
         <button class="manage-button" type="button">ユーザー管理</button>
+    </a>
+</div>
+<div class="login-button">
+    <a href="/login/form">
+        <button class="login-button" type="button">ログイン</button>
     </a>
 </div>
 <div>
@@ -27,8 +32,17 @@
         <div>
             ID : <span th:text="${message.id}"/>
         </div>
+        <div>
+            投稿者 : <span th:text="${message.userId}"/>
+        </div>
+        <div>
+            カテゴリー : <span th:text="${message.category}"/>
+        </div>
+        <div class="title">
+            件名 : <span th:text="${message.title}"/>
+        </div>
         <div class="text">
-            投稿 : <span th:text="${message.text}"/>
+            本文 : <span th:text="${message.text}"/>
         </div>
         <div class="date">
             <fmt:formatDate value="${message.createdDate}"
@@ -68,7 +82,7 @@
             <form method="post" th:action="@{/comment/{messageId}(messageId=${message.id})}" th:object="${formModel}">
                 <div class="form-area">
                     <label>返信</label>
-                    <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
+                    <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
                     <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
                         <div th:each="message : ${mavErrorMessages}">
                             <span th:text="${message}" class="errorMessages"/>
