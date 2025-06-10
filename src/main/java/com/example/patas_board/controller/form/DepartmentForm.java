@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class DepartmentForm {
 
-    private Integer id;
+    private int id;
 
     private String name;
 

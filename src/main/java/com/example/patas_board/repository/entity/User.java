@@ -12,7 +12,7 @@ public class User {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column
     private String account;
@@ -24,13 +24,13 @@ public class User {
     private String name;
 
     @Column(name = "branch_id")
-    private Integer branchId;
+    private int branchId;
 
     @Column(name = "department_id")
-    private Integer departmentId;
+    private int departmentId;
 
     @Column(name = "is_stopped")
-    private Integer isStopped;
+    private int isStopped;
 
     @Column(insertable = false, updatable = false, name="created_date")
     private Date createdDate;
