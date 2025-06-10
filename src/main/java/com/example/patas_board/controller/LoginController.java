@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.crypto.Cipher;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +27,6 @@ public class LoginController {
 
     @Autowired
     private HttpSession session;
-
-    @Autowired
-    private Cipher encrypter;
 
     @GetMapping("/login/form")
     public ModelAndView view(){
@@ -45,7 +41,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(@ModelAttribute("userForm") @Validated UserForm userForm, BindingResult result, HttpRequest request){
+    public ModelAndView login(@ModelAttribute("userForm") @Validated UserForm userForm, BindingResult result){
 
         if(result.hasErrors()){
             ModelAndView mav = new ModelAndView();
@@ -59,8 +55,7 @@ public class LoginController {
             ModelAndView mav = new ModelAndView();
             String account = userForm.getAccount();
             String password = userForm.getPassword();
-            String encPassword = CipherUtil.encrypt(password);
-            UserForm user = userService.login(account, encPassword);
+            UserForm user = userService.login(account, password);
             if(user == null || user.getIsStopped() == 1){
                 String error = "ログインに失敗しました";
                 mav.addObject("error", error);
@@ -68,8 +63,7 @@ public class LoginController {
                 return mav;
             }
             session.setAttribute("loginUser", user);
-            mav.setViewName("redirect:/");
-            return mav;
+            return new ModelAndView("redirect:/");
         }
     }
 }

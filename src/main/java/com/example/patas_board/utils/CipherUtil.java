@@ -4,10 +4,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.stereotype.Controller;
 
 /**
  * 暗号化ユーティリティー
  */
+@Controller
 public class CipherUtil {
 
     /**

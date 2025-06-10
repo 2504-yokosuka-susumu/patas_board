@@ -48,6 +48,11 @@
             <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
         </div>
+        <div class="comment-icon" th:each="comment : ${comments}">
+            <div th:if="${content.id} == ${comment.reportId}">
+                <div class="text">
+                    コメント : <span th:text="${comment.content}"/>
+                </div>
         <div class="delete-button">
             <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                 <input type="submit" value="削除">

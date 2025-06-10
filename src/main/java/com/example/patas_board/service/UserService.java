@@ -3,6 +3,7 @@ package com.example.patas_board.service;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.repository.UserRepository;
 import com.example.patas_board.repository.entity.User;
+import com.example.patas_board.utils.CipherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,15 @@ public class UserService {
     UserRepository userRepository;
 
     public UserForm login(String account, String password){
-        List<User> results = new ArrayList<>();
-        results.add((User)userRepository.findByAccountAndPassword(account, password));
+        //String encPassword = CipherUtil.encrypt(password);
+
+        List<User> results = userRepository.findByAccountAndPassword(account, password);
 
         if(results.contains(null)) {
             return null;
         }else{
-            List<UserForm> tasks = setUserForm(results);
-            return tasks.get(0);
+            List<UserForm> users = setUserForm(results);
+            return users.get(0);
         }
     }
 
