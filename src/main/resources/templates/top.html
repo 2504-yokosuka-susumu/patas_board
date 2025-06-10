@@ -9,6 +9,16 @@
 <div class="header-contents">
     <h1>匿名掲示板</h1>
 </div>
+<div class="user-maanage-button">
+    <a href="/manager/form">
+        <button class="manage-button" type="button">ユーザー管理</button>
+    </a>
+</div>
+<div class="login-button">
+    <a href="/login/form">
+        <button class="login-button" type="button">ログイン</button>
+    </a>
+</div>
 <div>
     <form action="/" method="get">
         日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}"><input type="submit" value="絞り込み">
@@ -18,53 +28,62 @@
     <a href="/new">
         <button class="new-button" type="button">新規投稿</button>
     </a>
-    <div class="message-icon" th:each="report : ${reports}">
+    <div class="message-icon" th:each="message : ${messages}">
         <div>
-            ID : <span th:text="${report.id}"/>
+            ID : <span th:text="${message.id}"/>
+        </div>
+        <div>
+            投稿者 : <span th:text="${message.userId}"/>
+        </div>
+        <div>
+            カテゴリー : <span th:text="${message.category}"/>
+        </div>
+        <div class="title">
+            件名 : <span th:text="${message.title}"/>
         </div>
         <div class="text">
-            投稿 : <span th:text="${report.content}"/>
+            本文 : <span th:text="${message.text}"/>
         </div>
         <div class="date">
-            <fmt:formatDate value="${report.createdDate}"
+            <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
         </div>
         <div class="delete-button">
-            <form th:action="@{/delete/{id}(id=${report.id})}" th:method="delete">
+            <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                 <input type="submit" value="削除">
             </form>
         </div>
         <div class="edit-button">
-            <a th:href="@{/edit/{id}(id=${report.id})}">
+            <a th:href="@{/edit/{id}(id=${message.id})}">
                 <input type="button" value="編集">
             </a>
         </div>
         <div class="comment-icon" th:each="comment : ${comments}">
-            <th:block th:if="${report.id} == ${comment.report_id}">
+            <th:block th:if="${message.id} == ${comment.message_id}">
                 <div>
                     ID : <span th:text="${comment.id}"/>
                 </div>
                 <div class="text">
-                    投稿 : <span th:text="${comment.content}"/>
+                    投稿 : <span th:text="${comment.text}"/>
                 </div>
                 <div class="delete-button">
                     <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
                         <input type="submit" value="削除">
                     </form>
-                    <div class="edit-button">
-                        <a th:href="@{/comment/edit/{id}/{reportId}(id=${comment.id},reportId=${comment.report_id})}">
-                            <input type="button" value="編集">
-                        </a>
-                    </div>
+                </div>
+                <div class="edit-button">
+                    <a th:href="@{/comment/edit/{id}/{messageId}(id=${comment.id},messageId=${comment.message_id})}">
+                        <input type="button" value="編集">
+                    </a>
                 </div>
             </th:block>
         </div>
         <div class="comment-area">
-            <form method="post" th:action="@{/comment/{reportId}(reportId=${report.id})}" th:object="${formModel}">
+            <form method="post" th:action="@{/comment/{messageId}(messageId=${message.id})}" th:object="${formModel}">
                 <div class="form-area">
                     <label>返信</label>
-                    <textarea class="tweet-box" th:field="*{content}" size="20" maxlength="200" /></textarea><br/>
-                    <div th:if="${mavErrorMessages != null} and ${reportId} == ${report.id}">
+                    <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
+                    <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
                         <div th:each="message : ${mavErrorMessages}">
                             <span th:text="${message}" class="errorMessages"/>
                         </div>
