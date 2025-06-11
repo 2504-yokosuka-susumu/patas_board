@@ -29,10 +29,10 @@ public class CommentController {
     /*
      * 返信投稿処理
      */
-    @PostMapping("/comment/{messageId}")
+    @PostMapping("/comment/{messageId}/{userId}")
     public ModelAndView addComment(@Validated @ModelAttribute("formModel") CommentForm commentForm,
                              BindingResult result,
-                             @PathVariable Integer messageId){
+                             @PathVariable Integer messageId,@PathVariable Integer userId){
         if(result.hasErrors()) {
             List<String> errorMessages = new ArrayList<String>();
             for (FieldError error : result.getFieldErrors()) {
@@ -44,6 +44,7 @@ public class CommentController {
         }
         // 投稿をテーブルに格納
         commentForm.setMessageId(messageId);
+        commentForm.setUserId(userId);
         commentService.saveComment(commentForm);
 //        // idをもとにDBから投稿を入手する
 //        MessageForm messageForm = messageService.editMessage(messageId);

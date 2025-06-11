@@ -46,13 +46,18 @@
 
 <div>
     <form action="/filter" method="get">
-        日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}"><input type="submit" value="絞り込み">
+        日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
+        カテゴリー<input type="text" name="categoryText" th:object="${categoryText}">
+        <input type="submit" value="絞り込み">
+
     </form>
 </div>
 <div class="main-contents">
-    <a href="/new">
-        <button class="new-button" type="button">新規投稿</button>
-    </a>
+    <div th:if="${session.loginUser != null}">
+        <a href="/new">
+            <button class="new-button" type="button">新規投稿</button>
+        </a>
+    </div>
     <div class="message-icon" th:each="message : ${messages}">
         <div>
             ID : <span th:text="${message.id}"/>
@@ -82,38 +87,40 @@
                             pattern="yyyy/MM/dd HH:mm:ss" />
         </div>
         <div class="comment-icon" th:each="comment : ${comments}">
-            <th:block th:if="${message.id} == ${comment.messageId}">
+            <div th:if="${message.id == comment.messageId}">
                 <div>
-                    ID : <span th:text="${comment.id}"/>
+                    コメントID: <span th:text="${comment.id}"/>
+                </div>
+                <div>
+                    コメント投稿者 : <span th:text="${comment.name}"/>
                 </div>
                 <div class="text">
                     コメント : <span th:text="${comment.text}"/>
                 </div>
-                <div class="delete-button">
-                    <form th:action="@{/comment/delete/{id}(id=${commentId})}" th:method="delete">
-                        <input type="submit" value="削除">
-                    </form>
-                </div>
-                <div class="edit-button">
-                    <a th:href="@{/comment/edit/{id}/{messageId}(id=${comment.id},messageId=${comment.messageId})}">
-                        <input type="button" value="編集">
-                    </a>
-                </div>
-            </th:block>
-        </div>
-        <div class="comment-area">
-            <form method="post" th:action="@{/comment/{messageId}(messageId=${message.id})}" th:object="${formModel}">
-                <div class="form-area">
-                    <label>返信</label>
-                    <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
-                    <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
-                        <div th:each="message : ${mavErrorMessages}">
-                            <span th:text="${message}" class="errorMessages"/>
-                        </div>
+<!--                <div th:if="${session.loginUser.id == comment.userId}">-->
+                    <div class="delete-button">
+                        <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
+                            <input type="submit" value="削除">
+                        </form>
                     </div>
-                    <input type="submit" value="返信" />
-                </div>
-            </form>
+<!--                </div>-->
+            </div>
+        </div>
+        <div th:if="${session.loginUser != null}">
+            <div class="comment-area">
+                <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
+                    <div class="form-area">
+                        <label>返信</label>
+                        <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
+                        <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
+                            <div th:each="message : ${mavErrorMessages}">
+                                <span th:text="${message}" class="errorMessages"/>
+                            </div>
+                        </div>
+                        <input type="submit" value="返信" />
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

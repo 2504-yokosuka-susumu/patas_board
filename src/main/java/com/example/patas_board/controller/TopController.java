@@ -2,6 +2,7 @@ package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.CommentForm;
 import com.example.patas_board.controller.form.MessageForm;
+import com.example.patas_board.controller.form.UserCommentForm;
 import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.service.CommentService;
 import com.example.patas_board.service.MessageService;
@@ -33,15 +34,17 @@ public class TopController {
     public ModelAndView view() {
         ModelAndView mav = new ModelAndView();
 
+        String categoryText = new String();
         // 返信form用の空のentityを準備
         CommentForm commentsForm = new CommentForm();
         // 投稿を全件取得
         List<UserMessageForm> messageData = messageService.findAllMessage();
         // 返信を全件取得
-        List<CommentForm> commentData = commentService.findAllComment();
+        List<UserCommentForm> commentData = commentService.findAllComment();
         // 画面遷移先を指定
         mav.setViewName("/top");
 
+        mav.addObject("categoryText", categoryText);
         mav.addObject("formModel", commentsForm);
         mav.addObject("messages", messageData);
         mav.addObject("comments", commentData);
@@ -52,15 +55,16 @@ public class TopController {
      */
     @GetMapping("/filter")
     public ModelAndView categorize(@RequestParam(value="start", required = false)String start,
-                            @RequestParam(value = "end", required = false)String end,
-                            HttpServletRequest request) throws ParseException {
+                                    @RequestParam(value = "end", required = false)String end,
+                                   @RequestParam(value="categoryText", required = false)String categoryText,
+                                    HttpServletRequest request) throws ParseException {
         ModelAndView mav = new ModelAndView();
         // 返信form用の空のentityを準備
         CommentForm commentsForm = new CommentForm();
         // 投稿を全件取得 日付検索に変えた
-        List<MessageForm> messageData = messageService.findByCreated_dateMessage(start, end);
+        List<UserMessageForm> messageData = messageService.findByCreatedDateMessage(start, end, categoryText);
         // 返信を全件取得
-        List<CommentForm> commentData = commentService.findAllComment();
+        List<UserCommentForm> commentData = commentService.findAllComment();
         //エラーメッセージを取得
         mav.addObject("mavErrorMessages", session.getAttribute("errorMessages"));
         mav.addObject("messageId", session.getAttribute("messageId"));

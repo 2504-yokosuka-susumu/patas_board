@@ -1,8 +1,11 @@
 package com.example.patas_board.service;
 
 import com.example.patas_board.controller.form.CommentForm;
+import com.example.patas_board.controller.form.UserCommentForm;
+import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.CommentRepository;
 import com.example.patas_board.repository.entity.Comment;
+import com.example.patas_board.repository.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +19,9 @@ public class CommentService {
     /*
      * レコード全件取得処理
      */
-    public List<CommentForm> findAllComment() {
-        List<Comment> results = commentRepository.findAllByOrderByCreatedDateDesc();
-        List<CommentForm> comments = setCommentForm(results);
+    public List<UserCommentForm> findAllComment() {
+        List<Comment> results = commentRepository.findAll();
+        List<UserCommentForm> comments = setUserCommentForm(results);
         return comments;
     }
 
@@ -37,6 +40,28 @@ public class CommentService {
             comment.setMessageId(result.getMessageId());
             comment.setCreatedDate(result.getCreatedDate());
             comment.setUpdatedDate(result.getUpdatedDate());
+            comments.add(comment);
+        }
+        return comments;
+    }
+
+    private List<UserCommentForm> setUserCommentForm(List<Comment> results) {
+        List<UserCommentForm> comments = new ArrayList<>();
+
+        for (int i = 0; i < results.size(); i++) {
+            UserCommentForm comment = new UserCommentForm();
+            Comment result = results.get(i);
+            if (result.getUser() == null) {
+                continue;
+            }
+            comment.setId(result.getId());
+            comment.setText(result.getText());
+            comment.setUserId(result.getUserId());
+            comment.setMessageId(result.getMessageId());
+            comment.setName(result.getUser().getName());
+            comment.setAccount(result.getUser().getAccount());
+            comment.setCreatedDate(result.getCreatedDate());
+
             comments.add(comment);
         }
         return comments;
