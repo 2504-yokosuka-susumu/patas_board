@@ -6,20 +6,26 @@
   <title>ログイン画面</title>
 </head>
 <body>
+<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+  <div th:each="errorMessages:${errorMessages}">
+    <span th:text="${errorMessages}" style="color:red"></span>
+  </div>
+</th:block>
 <div class="main-contents">
-  <form th:method="post" th:action="@{/login}" th:object="${userForm}">
+  <form th:method="post" th:action="@{/login}">
     <th:block th:if="${error != null && !error.isEmpty()}">
       <span th:text="${error}" style="color:red"></span>
     </th:block>
-    <div th:if="${#fields.hasErrors('account')}" th:errors="*{account}" style="color: red"></div>
-    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red"></div>
     <div class="form-area">
-      <label>アカウント名</label>
-      <textarea class="text-box" th:field="*{account}" size="20" maxlength="200" /></textarea><br/>
-      <label>パスワード</label>
-      <textarea class="text-box" th:field="*{password}" size="20" maxlength="200" /></textarea><br/>
-      <input type="submit" value="ログイン" />
+      <label>アカウント</label>
+      <input type="text" name="account">
     </div>
+
+    <div class="form-area">
+      <label>パスワード</label>
+      <input type="password" name="password">
+    </div>
+    <input type="submit" value="ログイン" />
   </form>
 </div>
 <div class="footer-contents">

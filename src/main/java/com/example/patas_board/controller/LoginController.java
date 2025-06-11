@@ -1,5 +1,6 @@
 package com.example.patas_board.controller;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.repository.entity.User;
 import com.example.patas_board.service.UserService;
@@ -41,29 +42,31 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(@ModelAttribute("userForm") @Validated UserForm userForm, BindingResult result){
-
-        if(result.hasErrors()){
-            ModelAndView mav = new ModelAndView();
-            List<String> errorMessages = new ArrayList<String>();
-            for(ObjectError error:result.getAllErrors()){
-                errorMessages.add(error.getDefaultMessage());
-            }
+    public ModelAndView login(@ModelAttribute("password") String password, @ModelAttribute("account") String account){
+        ModelAndView mav = new ModelAndView();
+        List<String> errorMessages = new ArrayList<String>();
+        if(password.isBlank()) {
+            errorMessages.add("パスワードを入力してください");
             mav.setViewName("/login");
-            return mav;
+        }
+        if(account.isBlank()) {
+            errorMessages.add("アカウントを入力してください");
+            mav.setViewName("/login");
+        }else if(!account.matches("^[a-zA-Z0-9]{6,20}+$")) {
+            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
+            mav.setViewName("/login");
         }else{
-            ModelAndView mav = new ModelAndView();
-            String account = userForm.getAccount();
-            String password = userForm.getPassword();
             UserForm user = userService.login(account, password);
             if(user == null || user.getIsStopped() == 1){
-                String error = "ログインに失敗しました";
-                mav.addObject("error", error);
+                errorMessages.add("ログインに失敗しました");
+                mav.addObject("errorMessages", errorMessages);
                 mav.setViewName("/login");
                 return mav;
             }
             session.setAttribute("loginUser", user);
-            return new ModelAndView("redirect:/");
+            mav.setViewName("redirect:/");
         }
+        mav.addObject("errorMessages", errorMessages);
+        return mav;
     }
 }

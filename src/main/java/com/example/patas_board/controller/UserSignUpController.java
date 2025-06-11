@@ -3,6 +3,7 @@ package com.example.patas_board.controller;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Controller
 public class UserSignUpController {
 
     @Autowired
@@ -30,40 +32,41 @@ public class UserSignUpController {
         return mav;
     }
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ModelAndView createUser(@ModelAttribute("formModel") @Validated UserForm userForm, BindingResult result,
                                    @ModelAttribute("checkedPassword") String checkedPassword) {
+        ModelAndView mav = new ModelAndView();
+        List<String> errorMessages = new ArrayList<String>();
 
         if (result.hasErrors()) {
-            ModelAndView mav = new ModelAndView();
-            List<String> errorMessages = new ArrayList<String>();
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
             mav.setViewName("/signup");
-            return mav;
         }
-
         if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
-            ModelAndView mav = new ModelAndView();
-            List<String> errorMessages = new ArrayList<String>();
             errorMessages.add("パスワードと確認用パスワードが一致しません");
             mav.setViewName("/signup");
-            return mav;
         }
-        String account = userForm.getAccount();
-        UserForm existAccount = userService.checkedAccount(account);
+        if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
+            errorMessages.add("支社と部署の組み合わせが不正です");
+        } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && userForm.getDepartmentId() == 1) {
+            errorMessages.add("支社と部署の組み合わせが不正です");
+        } else {
 
-        if(existAccount != null){
-            ModelAndView mav = new ModelAndView();
-            List<String> errorMessages = new ArrayList<String>();
-            errorMessages.add("アカウントが重複しています");
-            mav.setViewName("/signup");
-            return mav;
+            String account = userForm.getAccount();
+            UserForm existAccount = userService.checkedAccount(account);
+
+            if (existAccount != null) {
+                errorMessages.add("アカウントが重複しています");
+                mav.setViewName("/signup");
+                mav.addObject("errorMessages", errorMessages);
+                return mav;
+            }
+            userService.createUser(userForm);
+            mav.setViewName("redirect:/manager/form");
         }
-        ModelAndView mav = new ModelAndView();
-        userService.createUser(userForm);
-        mav.setViewName("redirect:/manager");
+        mav.addObject("errorMessages", errorMessages);
         return mav;
     }
 }
