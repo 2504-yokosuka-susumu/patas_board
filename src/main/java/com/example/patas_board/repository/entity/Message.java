@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -31,4 +32,9 @@ public class Message {
 
     @Column(insertable = false, updatable = false, name="updated_date")
     private Date updatedDate;
-}
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable=false, updatable=false)
+    private User user;
+
+    }

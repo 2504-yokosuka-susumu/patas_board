@@ -1,7 +1,9 @@
 package com.example.patas_board.service;
 
 import com.example.patas_board.controller.form.MessageForm;
+import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.MessageRepository;
+import com.example.patas_board.repository.UserMessageRepository;
 import com.example.patas_board.repository.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import java.util.List;
 public class MessageService {
     @Autowired
     MessageRepository messageRepository;
+    @Autowired
+    UserMessageRepository userMessageRepository;
 
     /*
      *投稿の登録
@@ -41,9 +45,9 @@ public class MessageService {
     /*
      * レコード全件取得処理
      */
-    public List<MessageForm> findAllMessage() {
-        List<Message> results = messageRepository.findAllByOrderByUpdatedDateDesc();
-        List<MessageForm> messages = setMessageForm(results);
+    public List<UserMessageForm> findAllMessage() {
+        List<Message> results = userMessageRepository.findAll();
+        List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
 
@@ -53,7 +57,7 @@ public class MessageService {
     public List<MessageForm> findByCreated_dateMessage(String start, String end) throws ParseException {
 
         if (start == null || start.isEmpty()) {
-            start = "2020-01-01 00:00:00";
+            start = "2022-01-01 00:00:00";
         } else {
             start += " 00:00:00";
         }
@@ -90,6 +94,28 @@ public class MessageService {
         }
         return messages;
     }
+
+    private List<UserMessageForm> setUserMessageForm(List<Message> results) {
+        List<UserMessageForm> messages = new ArrayList<>();
+
+        for (int i = 0; i < results.size(); i++) {
+            UserMessageForm message = new UserMessageForm();
+            Message result = results.get(i);
+            if(result.getUser() == null){
+                continue;
+            }
+            message.setId(result.getId());
+            message.setTitle(result.getTitle());
+            message.setText(result.getText());
+            message.setUserId(result.getUserId());
+            message.setCategory(result.getCategory());
+            message.setName(result.getUser().getName());
+            message.setAccount(result.getUser().getAccount());
+            message.setCreatedDate(result.getCreatedDate());
+
+            messages.add(message);
+        }
+        return messages;
 
     public void delete(Integer id) {
         messageRepository.deleteById(id);

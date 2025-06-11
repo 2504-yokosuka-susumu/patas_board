@@ -28,4 +28,8 @@ public class Comment {
 
     @Column(insertable = false, updatable = false, name="updated_date")
     private Date updatedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable=false, updatable=false)
+    private User user;
 }
