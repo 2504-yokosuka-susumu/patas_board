@@ -1,14 +1,11 @@
 package com.example.patas_board.controller;
 
-import com.example.patas_board.controller.form.BranchForm;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 public class UserEditController {
@@ -31,17 +28,14 @@ public class UserEditController {
     }
 
     /*
-     * ユーザ編集更新処理
+     * アカウント復活/停止切り替え
      */
     @PostMapping("/setting")
-    public ModelAndView updateUser(@ModelAttribute("formModel") UserForm userForm) {
-
-        // User情報をFormに格納
+    public ModelAndView updateUser(@ModelAttribute("formModel") UserForm userForm,
+                                   @RequestParam(name = "confirmPassword", required = false) String confirmPassword) {
 
         // ステータス更新処理
         userService.updateUser(userForm);
-
-        // rootへリダイレクト
         return new ModelAndView("redirect:/");
     }
 }

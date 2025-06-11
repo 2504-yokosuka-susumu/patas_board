@@ -10,30 +10,30 @@
     <h2>ユーザ編集画面</h2>
 </div>
 <div class="user-icon">
-    <form th:action="@{/setting}" method="post" th:object="${formModel}">
+    <form th:action="@{/setting}" th:object="${users}" method="post">
 
         <label th:for="id">ID</label>
-        <input th:value="${users.id}" id="id"/><br />
+        <input th:value="${users.id}" id="id" th:field="*{id}"/><br />
 
         <label th:for="account">アカウント名</label>
-        <input th:value="${users.account}" /><br />
+        <input th:value="${users.account}" id="account" th:field="*{account}"/><br />
 
         <label th:for="password">パスワード</label>
-        <input th:type="password" id="password"/> <br />
+        <input th:type="password" id="password" th:field="*{password}"/> <br />
 
         <label th:for="confirmPassword">パスワード確認</label>
-        <input th:type="password" id="confirmPassword"/> <br />
+        <input th:type="password" name="confirmPassword"/> <br />
 
         <label th:for="name">名前</label>
-        <input name="name" th:value="${users.name}" id="userName"/><br />
+        <input th:value="${users.name}" id="name" th:field="*{name}"/><br />
 
-<!--        <label th:for="branchName">支社</label>-->
-<!--        <input th:value="${branch.name}" id="branchName"/><br />-->
+        <label th:for="branchName">支社</label>
+        <input th:value="${users.branchId}" id="branchId" th:field="*{branchId}"/><br />
 
-<!--        <label th:for="departmentName">部署</label>-->
-<!--        <input th:value="${department.name}" id="departmentName"/><br />-->
+        <label th:for="departmentName">部署</label>
+        <input th:value="${users.departmentId}" id="departmentId" th:field="*{departmentId}"/><br />
 
-        <input type="submit" value="登録">
+        <input type="submit" value="登録" />
     </form>
 </div>
 

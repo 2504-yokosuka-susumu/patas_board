@@ -2,7 +2,6 @@ package com.example.patas_board.service;
 
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.repository.UserRepository;
-import com.example.patas_board.repository.entity.Branch;
 import com.example.patas_board.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -132,9 +131,6 @@ public class UserService {
         user.setName(reqUser.getName());
         user.setBranchId(reqUser.getBranchId());
         user.setDepartmentId(reqUser.getDepartmentId());
-        user.setIsStopped(reqUser.getIsStopped());
-        user.setCreatedDate(reqUser.getCreatedDate());
-        user.setUpdatedDate(new Date());
 
         userRepository.save(user);
     }
