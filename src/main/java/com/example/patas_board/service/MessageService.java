@@ -95,13 +95,17 @@ public class MessageService {
         return messages;
     }
 
-    private List<UserMessageForm> setUserMessageForm(List<Message> results) {
+    public void delete(Integer id) {
+        messageRepository.deleteById(id);
+    }
+
+	private List<UserMessageForm> setUserMessageForm(List<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
             UserMessageForm message = new UserMessageForm();
             Message result = results.get(i);
-            if(result.getUser() == null){
+            if (result.getUser() == null) {
                 continue;
             }
             message.setId(result.getId());
