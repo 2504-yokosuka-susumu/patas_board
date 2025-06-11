@@ -31,4 +31,12 @@ public class Message {
 
     @Column(insertable = false, updatable = false, name="updated_date")
     private Date updatedDate;
-}
+
+    @ManyToMany
+    @JoinTable(
+            name = "users",
+            joinColumns = {@JoinColumn(name = "name"),@JoinColumn(name = "account")},
+            inverseJoinColumns = {@JoinColumn(name = "name"),@JoinColumn(name = "account")}
+            )
+    private String name;
+    }
