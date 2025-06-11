@@ -20,9 +20,14 @@
             @<span th:text="${session.loginUser.account}" />
         </div>
     </div>
-    <div class="user-maanage-button">
+    <div class="user-manage-button">
         <a href="/manager/form">
             <button class="manage-button" type="button">ユーザー管理</button>
+        </a>
+    </div>
+    <div class="logout-button">
+        <a href="/logout">
+            <button class="logout-button" type="button">ログアウト</button>
         </a>
     </div>
 </div>
@@ -33,6 +38,7 @@
         </a>
     </div>
 </div>
+
 <div>
     <form action="/" method="get">
         日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}"><input type="submit" value="絞り込み">
