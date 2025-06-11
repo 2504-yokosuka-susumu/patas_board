@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
+  <title>登録画面</title>
+</head>
+<body>
+<div class="header-contents">
+  <h2>ユーザー登録</h2>
+</div>
+<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+  <div th:each="errorMessages:${errorMessages}">
+    <span th:text="${errorMessages}" style="color:red"></span>
+  </div>
+</th:block>
+<div class="main-contents">
+  <form th:method="post" th:action="@{/signup}" th:object="${formModel}">
+    <div class="form-area">
+      <label>アカウント</label>
+      <input type="text" th:field="*{account}">
+    </div>
+
+    <div class="form-area">
+      <label>パスワード</label>
+      <input type="password" th:field="*{password}">
+    </div>
+
+    <div class="form-area">
+      <label>パスワード（確認用）</label>
+      <input type="password" name="checkedPassword">
+    </div>
+
+    <div class="form-area">
+      <label>氏名</label>
+      <input type="text" th:field="*{name}">
+    </div>
+
+    <fieldset>
+      <legend>支社を選択してください:</legend>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="1" checked />
+        <label>本社</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="2" checked />
+        <label>A支社</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="3" checked />
+        <label>B支社</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="4" checked />
+        <label>C支社</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>部署を選択してください:</legend>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="1" checked />
+        <label>総務人事部</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="2" checked />
+        <label>情報管理部</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="3" checked />
+        <label>営業部</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="4" checked />
+        <label>技術部</label>
+      </div>
+    </fieldset>
+
+    <input type="submit" value="登録する">
+
+    <input type="reset" value="リセットする">
+  </form>
+</div>
+<div class="footer-contents">
+  <form action="/">
+    <input type="submit" value="戻る" />
+  </form>
+</div>
+</body>
+</html>
