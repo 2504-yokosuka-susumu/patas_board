@@ -22,8 +22,10 @@ public class UserForm {
 
     private String name;
 
+    @NotNull(message = "支社を選択してください")
     private int branchId;
 
+    @NotNull(message = "部署を選択してください")
     private int departmentId;
 
     private int isStopped;

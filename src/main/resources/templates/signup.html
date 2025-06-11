@@ -10,13 +10,78 @@
   <h2>ユーザー登録</h2>
 </div>
 <div class="main-contents">
-  <form th:method="put" th:action="@{/update/{id}(id=${formModel.id})}" th:object="${formModel}">
+  <form th:method="post" th:action="@{/signup}" th:object="${formModel}">
+    <div class="form-area">
+      <label>アカウント</label>
+      <input type="text" th:field="*{account}">
+    </div>
+
+    <div class="form-area">
+      <label>パスワード</label>
+      <input type="password" th:field="*{password}">
+    </div>
+
     <div class="form-area">
       <label>パスワード（確認用）</label>
-      <input type="text" name="checkedPassword"><br/>
-      <input type="submit" value="編集" />
-      <span th:errors="*{content}" style="color:red"></span>
+      <input type="password" name="checkedPassword">
     </div>
+
+    <div class="form-area">
+      <label>氏名</label>
+      <input type="name" th:field="*{name}">
+    </div>
+
+    <fieldset>
+      <legend>支社を選択してください:</legend>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="1" checked />
+        <label>本社</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="2" checked />
+        <label>A支社</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="3" checked />
+        <label>B支社</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{branchId}" th:value="4" checked />
+        <label>C支社</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>部署を選択してください:</legend>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="1" checked />
+        <label>総務人事部</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="2" checked />
+        <label>情報管理部</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="3" checked />
+        <label>営業部</label>
+      </div>
+
+      <div>
+        <input type="radio" th:field="*{departmentId}" th:value="4" checked />
+        <label>技術部</label>
+      </div>
+    </fieldset>
+
+    <input type="submit" value="登録する">
+
+    <input type="reset" value="リセットする">
   </form>
 </div>
 <div class="footer-contents">
