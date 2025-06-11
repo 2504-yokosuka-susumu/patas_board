@@ -46,7 +46,7 @@ public class MessageService {
      * レコード全件取得処理
      */
     public List<UserMessageForm> findAllMessage() {
-        List<Message> results = userMessageRepository.findAll();
+        List<Message> results = userMessageRepository.findAllByOrderByCreatedDateDesc();
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
@@ -74,9 +74,9 @@ public class MessageService {
 
         List<Message> results;
         if(categoryText == null){
-            results = userMessageRepository.findByCreatedDateBetweenOrderByUpdatedDateDesc(startDate, endDate);
+            results = userMessageRepository.findByCreatedDateBetweenOrderByCreatedDateDesc(startDate, endDate);
         }else {
-            results = userMessageRepository.findByCategoryContainingAndCreatedDateBetweenOrderByUpdatedDateDesc(categoryText, startDate, endDate);
+            results = userMessageRepository.findByCategoryContainingAndCreatedDateBetweenOrderByCreatedDateDesc(categoryText, startDate, endDate);
         }
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
