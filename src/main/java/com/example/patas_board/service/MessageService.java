@@ -25,12 +25,12 @@ public class MessageService {
     /*
      *投稿の登録
      */
-    public void addMessage(MessageForm reqMessage){
+    public void addMessage(MessageForm reqMessage) {
         Message message = setMessageEntity(reqMessage);
         messageRepository.save(message);
     }
 
-    private Message setMessageEntity(MessageForm reqMessage){
+    private Message setMessageEntity(MessageForm reqMessage) {
         Message message = new Message();
         message.setId(reqMessage.getId());
         message.setTitle(reqMessage.getTitle());
@@ -116,6 +116,7 @@ public class MessageService {
             messages.add(message);
         }
         return messages;
+    }
 
     public void delete(Integer id) {
         messageRepository.deleteById(id);

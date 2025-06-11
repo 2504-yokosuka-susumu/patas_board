@@ -16,6 +16,8 @@ public class UserCommentForm {
 
     private int userId;
 
+    private int messageId;
+
     private  String name;
 
     private  String account;

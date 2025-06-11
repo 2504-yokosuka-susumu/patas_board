@@ -2,6 +2,7 @@ package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.CommentForm;
 import com.example.patas_board.controller.form.MessageForm;
+import com.example.patas_board.controller.form.UserCommentForm;
 import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.service.CommentService;
 import com.example.patas_board.service.MessageService;
@@ -38,7 +39,7 @@ public class TopController {
         // 投稿を全件取得
         List<UserMessageForm> messageData = messageService.findAllMessage();
         // 返信を全件取得
-        List<CommentForm> commentData = commentService.findAllComment();
+        List<UserCommentForm> commentData = commentService.findAllComment();
         // 画面遷移先を指定
         mav.setViewName("/top");
 
@@ -60,7 +61,7 @@ public class TopController {
         // 投稿を全件取得 日付検索に変えた
         List<MessageForm> messageData = messageService.findByCreated_dateMessage(start, end);
         // 返信を全件取得
-        List<CommentForm> commentData = commentService.findAllComment();
+        List<UserCommentForm> commentData = commentService.findAllComment();
         //エラーメッセージを取得
         mav.addObject("mavErrorMessages", session.getAttribute("errorMessages"));
         mav.addObject("messageId", session.getAttribute("messageId"));
