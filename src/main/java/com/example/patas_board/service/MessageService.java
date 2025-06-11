@@ -95,11 +95,7 @@ public class MessageService {
         return messages;
     }
 
-    public void delete(Integer id) {
-        messageRepository.deleteById(id);
-    }
-
-	private List<UserMessageForm> setUserMessageForm(List<Message> results) {
+    private List<UserMessageForm> setUserMessageForm(List<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
@@ -120,5 +116,8 @@ public class MessageService {
             messages.add(message);
         }
         return messages;
+
+    public void delete(Integer id) {
+        messageRepository.deleteById(id);
     }
 }
