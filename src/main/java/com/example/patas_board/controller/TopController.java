@@ -2,6 +2,7 @@ package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.CommentForm;
 import com.example.patas_board.controller.form.MessageForm;
+import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.CommentService;
 import com.example.patas_board.service.MessageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,9 +84,6 @@ public class TopController {
      */
     @GetMapping("/logout")
     public ModelAndView logOut() {
-        // session情報取得
-        session = (HttpSession) session.getAttribute("loginUser");
-
         // セッションの無効化
         session.invalidate();
         // rootへリダイレクト
