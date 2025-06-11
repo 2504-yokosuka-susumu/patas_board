@@ -41,13 +41,18 @@
 
 <div>
     <form action="/filter" method="get">
-        日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}"><input type="submit" value="絞り込み">
+        日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
+        カテゴリー<input type="text" name="categoryText" th:object="${categoryText}">
+        <input type="submit" value="絞り込み">
+
     </form>
 </div>
 <div class="main-contents">
-    <a href="/new">
-        <button class="new-button" type="button">新規投稿</button>
-    </a>
+    <div th:if="${session.loginUser != null}">
+        <a href="/new">
+            <button class="new-button" type="button">新規投稿</button>
+        </a>
+    </div>
     <div class="message-icon" th:each="message : ${messages}">
         <div>
             ID : <span th:text="${message.id}"/>

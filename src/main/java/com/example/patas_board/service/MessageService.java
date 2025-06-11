@@ -54,7 +54,7 @@ public class MessageService {
     /*
      * レコード日付範囲取得処理
      */
-    public List<UserMessageForm> findByCreatedDateMessage(String start, String end) throws ParseException {
+    public List<UserMessageForm> findByCreatedDateMessage(String start, String end, String categoryText) throws ParseException {
 
         if (start == null || start.isEmpty()) {
             start = "2022-01-01 00:00:00";
@@ -71,7 +71,13 @@ public class MessageService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Timestamp startDate = Timestamp.valueOf(start);
         Timestamp endDate = Timestamp.valueOf(end);
-        List<Message> results = userMessageRepository.findByCreatedDateBetweenOrderByUpdatedDateDesc(startDate, endDate);
+
+        List<Message> results;
+        if(categoryText == null){
+            results = userMessageRepository.findByCreatedDateBetweenOrderByUpdatedDateDesc(startDate, endDate);
+        }else {
+            results = userMessageRepository.findByCategoryContainingAndCreatedDateBetweenOrderByUpdatedDateDesc(categoryText, startDate, endDate);
+        }
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }

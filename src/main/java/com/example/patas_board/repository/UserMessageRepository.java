@@ -20,4 +20,5 @@ public interface UserMessageRepository extends JpaRepository<Message, Integer> {
     List<Message> findUserMessages();
 
     List<Message> findByCreatedDateBetweenOrderByUpdatedDateDesc(Timestamp startDate, Timestamp endDate);
+    List<Message> findByCategoryContainingAndCreatedDateBetweenOrderByUpdatedDateDesc(String categoryText, Timestamp startDate, Timestamp endDate);
 }
