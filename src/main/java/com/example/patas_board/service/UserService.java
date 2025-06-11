@@ -3,6 +3,7 @@ package com.example.patas_board.service;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.repository.UserRepository;
 import com.example.patas_board.repository.entity.User;
+import com.example.patas_board.utils.CipherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,22 @@ public class UserService {
     UserRepository userRepository;
 
     public UserForm login(String account, String password){
-        //String encPassword = CipherUtil.encrypt(password);
+        String encPassword = CipherUtil.encrypt(password);
 
-        List<User> results = userRepository.findByAccountAndPassword(account, password);
+        List<User> results = userRepository.findByAccountAndPassword(account, encPassword);
 
-        if(results.contains(null)) {
+        if(results.size() == 0) {
+            return null;
+        }else{
+            List<UserForm> users = setUserForm(results);
+            return users.get(0);
+        }
+    }
+
+    public UserForm checkedAccount(String account){
+        List<User> results = userRepository.findByAccount(account);
+
+        if(results.size() == 0) {
             return null;
         }else{
             List<UserForm> users = setUserForm(results);
@@ -90,6 +102,25 @@ public class UserService {
         user.setDepartmentId(results.get(0).getDepartmentId());
         user.setIsStopped(reqUser.getIsStopped());
         user.setCreatedDate(results.get(0).getCreatedDate());
+        user.setUpdatedDate(new Date());
+
+        userRepository.save(user);
+    }
+
+    public void createUser(UserForm reqUser) {
+        String encPassword = CipherUtil.encrypt(reqUser.getPassword());
+        reqUser.setPassword(encPassword);
+
+        User user = new User();
+
+        user.setId(reqUser.getId());
+        user.setAccount(reqUser.getAccount());
+        user.setPassword(reqUser.getPassword());
+        user.setName(reqUser.getName());
+        user.setBranchId(reqUser.getBranchId());
+        user.setDepartmentId(reqUser.getDepartmentId());
+        user.setIsStopped(reqUser.getIsStopped());
+        user.setCreatedDate(reqUser.getCreatedDate());
         user.setUpdatedDate(new Date());
 
         userRepository.save(user);
