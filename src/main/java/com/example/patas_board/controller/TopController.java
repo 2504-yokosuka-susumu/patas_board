@@ -59,7 +59,7 @@ public class TopController {
         // 返信form用の空のentityを準備
         CommentForm commentsForm = new CommentForm();
         // 投稿を全件取得 日付検索に変えた
-        List<MessageForm> messageData = messageService.findByCreated_dateMessage(start, end);
+        List<UserMessageForm> messageData = messageService.findByCreatedDateMessage(start, end);
         // 返信を全件取得
         List<UserCommentForm> commentData = commentService.findAllComment();
         //エラーメッセージを取得
