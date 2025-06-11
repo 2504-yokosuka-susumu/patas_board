@@ -21,6 +21,7 @@
       <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
       <label>カテゴリ</label>
       <textarea class="tweet-box" th:field="*{category}" size="20" maxlength="200" /></textarea><br/>
+      <input type="hidden" name="userId" th:value="${session.loginUser.id}">
       <input type="submit" value="投稿" />
     </div>
   </form>
