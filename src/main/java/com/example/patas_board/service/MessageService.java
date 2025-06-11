@@ -101,7 +101,7 @@ public class MessageService {
         for (int i = 0; i < results.size(); i++) {
             UserMessageForm message = new UserMessageForm();
             Message result = results.get(i);
-            if(result.getUser() == null){
+            if (result.getUser() == null) {
                 continue;
             }
             message.setId(result.getId());
