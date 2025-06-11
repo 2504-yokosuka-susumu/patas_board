@@ -94,4 +94,44 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    /*
+     * 指定のidレコード情報取得
+     */
+    public UserForm selectUser(int id){
+
+        List<User> userResults = new ArrayList<>();
+        userResults.add((User) userRepository.findById(id).orElse(null));
+
+        UserForm user = new UserForm();
+
+        user.setId(userResults.get(0).getId());
+        user.setAccount(userResults.get(0).getAccount());
+        user.setPassword(userResults.get(0).getPassword());
+        user.setName(userResults.get(0).getName());
+        user.setBranchId(userResults.get(0).getBranchId());
+        user.setDepartmentId(userResults.get(0).getDepartmentId());
+        user.setIsStopped(userResults.get(0).getIsStopped());
+        user.setCreatedDate(userResults.get(0).getCreatedDate());
+        user.setUpdatedDate(new Date());
+
+        return user;
+    }
+
+    /*
+     * ユーザ情報編集
+     */
+    public void updateUser(UserForm reqUser) {
+
+        User user = new User();
+
+        user.setId(reqUser.getId());
+        user.setAccount(reqUser.getAccount());
+        user.setPassword(reqUser.getPassword());
+        user.setName(reqUser.getName());
+        user.setBranchId(reqUser.getBranchId());
+        user.setDepartmentId(reqUser.getDepartmentId());
+
+        userRepository.save(user);
+    }
 }
