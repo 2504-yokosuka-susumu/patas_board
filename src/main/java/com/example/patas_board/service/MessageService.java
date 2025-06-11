@@ -116,5 +116,8 @@ public class MessageService {
             messages.add(message);
         }
         return messages;
+
+    public void delete(Integer id) {
+        messageRepository.deleteById(id);
     }
 }

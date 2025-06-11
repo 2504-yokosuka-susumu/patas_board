@@ -84,9 +84,6 @@ public class TopController {
      */
     @GetMapping("/logout")
     public ModelAndView logOut() {
-        // session情報取得
-        session = (HttpSession) session.getAttribute("loginUser");
-
         // セッションの無効化
         session.invalidate();
         // rootへリダイレクト
