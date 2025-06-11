@@ -45,11 +45,12 @@
         </div>
     </div>
 
-    <div class="setting-button">
-        <a href="/setup">
-            <input type="submit" th:value="登録">
-        </a>
-    </div>
+<!--    <a th:href="@{/signup/form}">-->
+<!--        <button class="signup-button" type="button">新規登録</button>-->
+<!--    </a>-->
+    <form th:action="@{/signup/form}" th:method="get">
+        <input type="submit" value="新規登録">
+    </form>
     <div class="footer-contents">
         <a href="/">戻る</a>
     </div>
