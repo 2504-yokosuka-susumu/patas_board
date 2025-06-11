@@ -47,9 +47,9 @@ public class MessageService {
     /*
      * レコード全件取得処理
      */
-    public List<MessageForm> findAllMessage() {
-        List<Message> results = messageRepository.findAll();
-        List<MessageForm> messages = setUserMessageForm(results);
+    public List<UserMessageForm> findAllMessage() {
+        List<Message> results = userMessageRepository.findUserMessages();
+        List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
 
@@ -97,19 +97,20 @@ public class MessageService {
         return messages;
     }
 
-    private List<UserMessageForm> setUserMessageForm(List<UserMessage> results) {
+    private List<UserMessageForm> setUserMessageForm(List<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
             UserMessageForm message = new UserMessageForm();
-            UserMessage result = results.get(i);
+            Message result = results.get(i);
             message.setId(result.getId());
             message.setTitle(result.getTitle());
             message.setText(result.getText());
             message.setUserId(result.getUserId());
             message.setCategory(result.getCategory());
-            message.setName(result.getName());
-            message.setAccount(result.getAccount());
+            message.setName(result.getUser().getName());
+            message.setAccount(result.getUser().getAccount());
+            message.setCreatedDate(result.getCreatedDate());
 
             messages.add(message);
         }
