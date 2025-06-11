@@ -5,8 +5,6 @@ import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.MessageRepository;
 import com.example.patas_board.repository.UserMessageRepository;
 import com.example.patas_board.repository.entity.Message;
-import com.example.patas_board.repository.entity.User;
-import com.example.patas_board.repository.entity.UserMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +46,7 @@ public class MessageService {
      * レコード全件取得処理
      */
     public List<UserMessageForm> findAllMessage() {
-        List<Message> results = userMessageRepository.findUserMessages();
+        List<Message> results = userMessageRepository.findAll();
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
@@ -103,6 +101,9 @@ public class MessageService {
         for (int i = 0; i < results.size(); i++) {
             UserMessageForm message = new UserMessageForm();
             Message result = results.get(i);
+            if(result.getUser() == null){
+                continue;
+            }
             message.setId(result.getId());
             message.setTitle(result.getTitle());
             message.setText(result.getText());
