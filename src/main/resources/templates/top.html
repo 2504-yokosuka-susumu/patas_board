@@ -45,7 +45,7 @@
 </div>
 
 <div>
-    <form action="/" method="get">
+    <form action="/filter" method="get">
         日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}"><input type="submit" value="絞り込み">
     </form>
 </div>
@@ -58,7 +58,7 @@
             ID : <span th:text="${message.id}"/>
         </div>
         <div>
-            投稿者 : <span th:text="${message.userId}"/>
+            投稿者 : <span th:text="${message.name}"/>
         </div>
         <div>
             カテゴリー : <span th:text="${message.category}"/>

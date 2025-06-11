@@ -154,11 +154,18 @@ public class UserService {
      */
     public void updateUser(UserForm reqUser) {
 
+        List<User> userResults = new ArrayList<>();
+        userResults.add((User) userRepository.findById(reqUser.getId()).orElse(null));
+
         User user = new User();
 
         user.setId(reqUser.getId());
         user.setAccount(reqUser.getAccount());
-        user.setPassword(reqUser.getPassword());
+        if(!reqUser.getPassword().isBlank()) {
+            user.setPassword(reqUser.getPassword());
+        } else {
+            user.setPassword(userResults.get(0).getPassword());
+        }
         user.setName(reqUser.getName());
         user.setBranchId(reqUser.getBranchId());
         user.setDepartmentId(reqUser.getDepartmentId());
