@@ -74,6 +74,9 @@ public class LoginController {
             // セッションにログインユーザー情報を格納
             session.setAttribute("loginUser", user);
             // トップ画面にリダイレクト処理
+
+            session.setAttribute("loginId", user.getId());
+
             mav.setViewName("redirect:/");
         }
         // エラーメッセージのリストをViewに渡す

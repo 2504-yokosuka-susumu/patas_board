@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-public class UserMessageController {
+public class UserManageController {
     @Autowired
     UserService userService;
 

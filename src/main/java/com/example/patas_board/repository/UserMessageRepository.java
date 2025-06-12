@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -17,4 +18,7 @@ public interface UserMessageRepository extends JpaRepository<Message, Integer> {
             + "order by messages.created_date ",
             nativeQuery = true)
     List<Message> findUserMessages();
+    List<Message> findAllByOrderByCreatedDateDesc();
+    List<Message> findByCreatedDateBetweenOrderByCreatedDateDesc(Timestamp startDate, Timestamp endDate);
+    List<Message> findByCategoryContainingAndCreatedDateBetweenOrderByCreatedDateDesc(String categoryText, Timestamp startDate, Timestamp endDate);
 }
