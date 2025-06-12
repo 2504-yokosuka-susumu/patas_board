@@ -157,12 +157,14 @@ public class UserService {
         List<User> userResults = new ArrayList<>();
         userResults.add((User) userRepository.findById(reqUser.getId()).orElse(null));
 
+        String encPassword = CipherUtil.encrypt(reqUser.getPassword());
+
         User user = new User();
 
         user.setId(reqUser.getId());
         user.setAccount(reqUser.getAccount());
         if(!reqUser.getPassword().isBlank()) {
-            user.setPassword(reqUser.getPassword());
+            user.setPassword(encPassword);
         } else {
             user.setPassword(userResults.get(0).getPassword());
         }
