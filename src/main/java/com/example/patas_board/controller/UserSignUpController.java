@@ -44,35 +44,37 @@ public class UserSignUpController {
             }
             mav.setViewName("/signup");
         // パスワードにNotBlankバリデーションがかけられないので入力チェック
-        }else if(userForm.getPassword().isBlank()) {
+        }
+        if(userForm.getPassword().isBlank()) {
             errorMessages.add("パスワードを入力してください");
             mav.setViewName("/signup");
+        }
         // パスワードと確認用パスワードの一致チェック
-        } else if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
+        if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
             mav.setViewName("/signup");
+        }
         // 支社と部署の組み合わせチェック（departmentIdが本社であるときとないときでバリデーション）
-        } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
+        if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
             mav.setViewName("/signup");
-        } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && userForm.getDepartmentId() == 1) {
+        } else if ((userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4) && userForm.getBranchId() == 1) {
             errorMessages.add("支社と部署の組み合わせが不正です");
             mav.setViewName("/signup");
-        } else {
-
-            String account = userForm.getAccount();
+        }
+        String account = userForm.getAccount();
             // アカウント情報でアカウントを探しに行く
-            UserForm existAccount = userService.checkedAccount(account);
+        UserForm existAccount = userService.checkedAccount(account);
             // アカウントの存在確認ができたら重複しているのでバリデーション
-            if (existAccount.getId() != userForm.getId()) {
-                errorMessages.add("アカウントが重複しています");
-                mav.setViewName("/signup");
-                mav.addObject("errorMessages", errorMessages);
-                return mav;
-            }
+        if (existAccount != null) {
+            errorMessages.add("アカウントが重複しています");
+            mav.setViewName("/signup");
+        }
+        if (errorMessages.size() == 0){
             // すべてのバリデーションに引っかからなければアカウントを登録
             userService.createUser(userForm);
             mav.setViewName("redirect:/manager/form");
+            return mav;
         }
         mav.addObject("errorMessages", errorMessages);
         return mav;

@@ -28,13 +28,13 @@ public class LoginFilter implements Filter {
         if (httpSession != null && httpSession.getAttribute("loginUser") != null){
             chain.doFilter(httpRequest,httpResponse);
         } else {
-            httpSession = httpRequest.getSession(true);
+            //httpSession = httpRequest.getSession(true);
             //エラーメッセージをセット
             List<String> errorMessages = new ArrayList<>();
             errorMessages.add("ログインしてください");
-            httpSession.setAttribute("errorMessages", errorMessages);
+            httpRequest.getSession().setAttribute("errorMessages", errorMessages);
             //ログインページにリダイレクト
-            httpRequest.getRequestDispatcher("/").forward(request, response);
+            httpRequest.getRequestDispatcher("/login/form").forward(request, response);
         }
 
     }
