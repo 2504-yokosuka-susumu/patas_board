@@ -74,7 +74,7 @@
         <div class="text">
             本文 : <span th:text="${message.text}"/>
         </div>
-        <div th:if="${session.loginUser != null}">
+        <div th:if="${session.loginId == message.userId}">
             <div class="delete-button">
                 <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                     <input type="hidden" name="userId" th:value="${message.userId}">
@@ -88,6 +88,7 @@
         </div>
         <div class="comment-icon" th:each="comment : ${comments}">
             <div th:if="${message.id == comment.messageId}">
+                <br>
                 <div>
                     コメントID: <span th:text="${comment.id}"/>
                 </div>
@@ -97,13 +98,13 @@
                 <div class="text">
                     コメント : <span th:text="${comment.text}"/>
                 </div>
-<!--                <div th:if="${session.loginUser.id == comment.userId}">-->
+                <div th:if="${session.loginId == comment.userId}">
                     <div class="delete-button">
                         <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
                             <input type="submit" value="削除">
                         </form>
                     </div>
-<!--                </div>-->
+                </div>
             </div>
         </div>
         <div th:if="${session.loginUser != null}">
