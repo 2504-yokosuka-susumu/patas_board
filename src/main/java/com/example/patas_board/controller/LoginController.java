@@ -88,6 +88,7 @@ public class LoginController {
         }
         // エラーメッセージのリストをViewに渡す
         mav.addObject("errorMessages", errorMessages);
+        mav.addObject("account", account);
         return mav;
     }
 }
