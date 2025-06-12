@@ -65,8 +65,15 @@ public class UserEditController {
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
-            return view(String.valueOf(userForm.getId()), errorMessages);
-        } else if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
+            mav.setViewName("/setting");
+            return mav;
+        }
+        if(userForm.getPassword() != null &&!userForm.getPassword().matches("^[!-~]{6,20}+$")){
+            errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
+            mav.setViewName("/signup");
+        }
+        // パスワードが一致しているか
+        if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
             return view(String.valueOf(userForm.getId()), errorMessages);
         } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
@@ -85,7 +92,6 @@ public class UserEditController {
                 errorMessages.add("アカウントが重複しています");
                 return view(String.valueOf(userForm.getId()), errorMessages);
             }
-
             // ステータス更新処理
             userService.updateUser(userForm);
             mav.setViewName("redirect:/");

@@ -40,6 +40,7 @@ public class LoginController {
         if(errorMessages != null){
             mav.addObject("errorMessages", errorMessages);
         }
+        session.removeAttribute("errorMessages");
         // 画面遷移先を指定
         mav.setViewName("/login");
         // 準備した空のFormを保管
