@@ -63,7 +63,7 @@ public class UserService {
      */
     public List<UserForm> findAllUser() {
 
-        List<User> results = userRepository.findAll();
+        List<User> results = userRepository.findAllByOrderById();
 
         List<UserForm> users = new ArrayList<>();
         for (int i = 0; i < results.size(); i++) {

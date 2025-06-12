@@ -30,6 +30,21 @@ public class UserEditController {
 
         // "users"オブジェクト "statuses"オブジェクト　格納
         ModelAndView mav = new ModelAndView();
+        // セッションよりデータを取得して設定
+        mav.addObject("users",userData);
+        mav.setViewName("/setting");
+        return mav;
+    }
+
+    public ModelAndView view(@RequestParam("id") String id, @ModelAttribute("errorMessages") List<String> errorMessages) {
+        // ユーザ情報取得
+        int userId = Integer.parseInt(id);
+        UserForm userData = userService.selectUser(userId);
+
+        // "users"オブジェクト "statuses"オブジェクト　格納
+        ModelAndView mav = new ModelAndView();
+        // セッションよりデータを取得して設定
+        mav.addObject("errorMessages", errorMessages);
         mav.addObject("users",userData);
         mav.setViewName("/setting");
         return mav;
@@ -50,16 +65,16 @@ public class UserEditController {
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
-            mav.setViewName("/setting");
+            return view(String.valueOf(userForm.getId()), errorMessages);
         } else if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
-            mav.setViewName("/setting");
+            return view(String.valueOf(userForm.getId()), errorMessages);
         } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
-            mav.setViewName("/setting");
+            return view(String.valueOf(userForm.getId()), errorMessages);
         } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && userForm.getDepartmentId() == 1) {
             errorMessages.add("支社と部署の組み合わせが不正です");
-            mav.setViewName("/setting");
+            return view(String.valueOf(userForm.getId()), errorMessages);
         } else {
 
             String account = userForm.getAccount();
@@ -68,10 +83,7 @@ public class UserEditController {
             // アカウントが重複しているか
             if (existAccount.getId() != userForm.getId()) {
                 errorMessages.add("アカウントが重複しています");
-                String settingUrl = "/setting/form?id=" + String.valueOf(userForm.getId());
-                mav.setViewName("/setting/form");
-                mav.addObject("errorMessages", errorMessages);
-                return mav;
+                return view(String.valueOf(userForm.getId()), errorMessages);
             }
 
             // ステータス更新処理
