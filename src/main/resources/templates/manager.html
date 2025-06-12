@@ -33,14 +33,16 @@
 
         <form th:action="@{/manager}" method="post">
             <input type="hidden" name="id" th:value="${user.id}" />
-            <select name="status">
-                <option th:each="status : ${statuses}"
-                        th:value="${status.ordinal()}"
-                        th:text="${status}"
-                        th:selected="${status.ordinal() == user.isStopped}">
-                </option>
-            </select>
-            <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+            <th:if th:if="${session.loginUser.id != user.id}">
+                <select name="status">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status.ordinal()}"
+                            th:text="${status}"
+                            th:selected="${status.ordinal() == user.isStopped}">
+                    </option>
+                </select>
+                <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+            </th:if>
         </form>
 
         <div class="setting-button">
