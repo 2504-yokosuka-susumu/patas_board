@@ -76,7 +76,7 @@ public class TopController {
         //エラーメッセージを取得
         mav.addObject("mavErrorMessages", session.getAttribute("errorMessages"));
         mav.addObject("messageId", session.getAttribute("messageId"));
-        session.invalidate();
+        session.removeAttribute("errorMessages");
         // 画面遷移先を指定
         mav.setViewName("/top");
         // 投稿データオブジェクトを保管
@@ -85,6 +85,7 @@ public class TopController {
         mav.addObject("comments", commentData);
         mav.addObject("start", start);
         mav.addObject("end", end);
+        mav.addObject("categoryText", categoryText);
 
         return mav;
     }
