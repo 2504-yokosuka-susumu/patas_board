@@ -64,6 +64,7 @@ public class LoginController {
                 return mav;
             }
             session.setAttribute("loginUser", user);
+            session.setAttribute("loginId", user.getId());
             mav.setViewName("redirect:/");
         }
         mav.addObject("errorMessages", errorMessages);
