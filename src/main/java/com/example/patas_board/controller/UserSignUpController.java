@@ -42,22 +42,22 @@ public class UserSignUpController {
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
-            mav.setViewName("/signup/form");
+            mav.setViewName("/signup");
         // パスワードにNotBlankバリデーションがかけられないので入力チェック
         }else if(userForm.getPassword().isBlank()) {
             errorMessages.add("パスワードを入力してください");
-            mav.setViewName("/signup/form");
+            mav.setViewName("/signup");
         // パスワードと確認用パスワードの一致チェック
         } else if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
-            mav.setViewName("/signup/form");
+            mav.setViewName("/signup");
         // 支社と部署の組み合わせチェック（departmentIdが本社であるときとないときでバリデーション）
         } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
-            mav.setViewName("/signup/form");
+            mav.setViewName("/signup");
         } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && userForm.getDepartmentId() == 1) {
             errorMessages.add("支社と部署の組み合わせが不正です");
-            mav.setViewName("/signup/form");
+            mav.setViewName("/signup");
         } else {
 
             String account = userForm.getAccount();
@@ -66,7 +66,7 @@ public class UserSignUpController {
             // アカウントの存在確認ができたら重複しているのでバリデーション
             if (existAccount.getId() != userForm.getId()) {
                 errorMessages.add("アカウントが重複しています");
-                mav.setViewName("/signup/form");
+                mav.setViewName("/signup");
                 mav.addObject("errorMessages", errorMessages);
                 return mav;
             }

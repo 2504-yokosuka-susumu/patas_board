@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,13 +31,13 @@ public class ManagerFilter implements Filter {
         if (user.getDepartmentId() == 1){
             chain.doFilter(httpRequest,httpResponse);
         } else {
-            session = httpRequest.getSession(true);
+            //session = httpRequest.getSession(true);
             //エラーメッセージをセット
             List<String> errorMessages = new ArrayList<>();
             errorMessages.add("無効なアクセスです");
-            session.setAttribute("errorMessages", errorMessages);
+            httpRequest.getSession().setAttribute("errorMessages", errorMessages);
             //ホーム画面にリダイレクト
-            httpResponse.sendRedirect("redirect:/");
+            httpRequest.getRequestDispatcher("/").forward(request, response);
         }
 
     }

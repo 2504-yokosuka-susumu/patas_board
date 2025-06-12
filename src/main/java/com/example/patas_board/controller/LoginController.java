@@ -48,11 +48,11 @@ public class LoginController {
         // パスワードとアカウントの入力チェック
         if(password.isBlank()) {
             errorMessages.add("パスワードを入力してください");
-            mav.setViewName("/login/form");
+            mav.setViewName("/login");
         }
         if(account.isBlank()) {
             errorMessages.add("アカウントを入力してください");
-            mav.setViewName("/login/form");
+            mav.setViewName("/login");
         // 半角英数字かつ文字数チェック
 //        }else if(!account.matches("^[a-zA-Z0-9]{6,20}+$")) {
 //            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
@@ -68,7 +68,7 @@ public class LoginController {
             if(user == null || user.getIsStopped() == 1){
                 errorMessages.add("ログインに失敗しました");
                 mav.addObject("errorMessages", errorMessages);
-                mav.setViewName("/login/form");
+                mav.setViewName("/login");
                 return mav;
             }
             // セッションにログインユーザー情報を格納
