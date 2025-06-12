@@ -31,14 +31,20 @@ public class LoginController {
 
     @GetMapping("/login/form")
     public ModelAndView view(){
-            ModelAndView mav = new ModelAndView();
-            // form用の空のentityを準備
-            UserForm userForm = new UserForm();
-            // 画面遷移先を指定
-            mav.setViewName("/login");
-            // 準備した空のFormを保管
-            mav.addObject("userForm", userForm);
-            return mav;
+        ModelAndView mav = new ModelAndView();
+        // form用の空のentityを準備
+        UserForm userForm = new UserForm();
+        // ログインフィルターのエラーメッセージをセッションから受け取る
+        List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
+        // エラーメッセージがnullじゃなかったらViewに渡す
+        if(errorMessages != null){
+            mav.addObject("errorMessages", errorMessages);
+        }
+        // 画面遷移先を指定
+        mav.setViewName("/login");
+        // 準備した空のFormを保管
+        mav.addObject("userForm", userForm);
+        return mav;
     }
 
     @PostMapping("/login")
