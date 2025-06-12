@@ -21,11 +21,11 @@
 
     <div class="form-area">
       <label>本文</label>
-      <textarea class="tweet-box" th:field="*{text}" size="10" maxlength="200" /></textarea><br/>
+      <textarea class="tweet-box" th:field="*{text}" size="10" maxlength="1500" /></textarea><br/>
     </div>
 
     <div class="form-area">
-      <label>パスワード</label>
+      <label>カテゴリ</label>
       <input type="text" th:field="*{category}">
     </div>
       <input type="hidden" name="userId" th:value="${session.loginUser.id}">
