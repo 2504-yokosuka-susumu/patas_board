@@ -15,7 +15,7 @@ public class UserForm {
     private String account;
 
     //@NotBlank(message = "パスワードを入力してください")
-    @Pattern(regexp = "^[!-~]{6,20}+$", message = "アカウントは半角文字かつ6文字以上20文字以下で入力してください")
+    @Pattern(regexp = "^[!-~]{6,20}+$", message = "パスワードは半角文字かつ6文字以上20文字以下で入力してください")
     private String password;
 
     @NotBlank(message = "氏名を入力してください")

@@ -11,10 +11,8 @@ public class ManagerFilterConfig {
         FilterRegistrationBean<ManagerFilter> bean = new FilterRegistrationBean<>();
 
         bean.setFilter(new ManagerFilter());
-        //ログイン情報が必要なURL
         bean.addUrlPatterns("/manager/*");
         bean.addUrlPatterns("/setting/*");
-        bean.addUrlPatterns("/signup/*");
         bean.setOrder(2);
         return bean;
     }
