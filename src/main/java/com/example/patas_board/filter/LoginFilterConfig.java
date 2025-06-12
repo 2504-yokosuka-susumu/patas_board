@@ -14,7 +14,7 @@ public class LoginFilterConfig {
         //ログイン情報が必要なURL
         bean.addUrlPatterns("/new");
         bean.addUrlPatterns("/add");
-        bean.addUrlPatterns("/signup");
+        bean.addUrlPatterns("/signup/*");
         bean.addUrlPatterns("/delete/*");
         bean.addUrlPatterns("/comment/*");
         bean.addUrlPatterns("/setting/*");

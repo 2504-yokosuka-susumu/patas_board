@@ -16,14 +16,20 @@
     <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" style="color: red">Content Error</div>
     <div class="form-area">
       <label>件名</label>
-      <textarea class="tweet-box" th:field="*{title}" size="20" maxlength="200" /></textarea><br/>
-      <label>本文</label>
-      <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
-      <label>カテゴリ</label>
-      <textarea class="tweet-box" th:field="*{category}" size="20" maxlength="200" /></textarea><br/>
-      <input type="hidden" name="userId" th:value="${session.loginUser.id}">
-      <input type="submit" value="投稿" />
+      <input type="text" th:field="*{title}">
     </div>
+
+    <div class="form-area">
+      <label>本文</label>
+      <textarea class="tweet-box" th:field="*{text}" size="10" maxlength="200" /></textarea><br/>
+    </div>
+
+    <div class="form-area">
+      <label>パスワード</label>
+      <input type="text" th:field="*{category}">
+    </div>
+      <input type="hidden" name="userId" th:value="${session.loginUser.id}">
+      <input type="submit" value="投稿する" />
   </form>
 </div>
 <div class="footer-contents">

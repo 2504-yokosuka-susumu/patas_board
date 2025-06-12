@@ -37,34 +37,44 @@ public class UserSignUpController {
                                    @ModelAttribute("checkedPassword") String checkedPassword) {
         ModelAndView mav = new ModelAndView();
         List<String> errorMessages = new ArrayList<String>();
-
+        // formのバリデーション結果からエラーメッセージを取得
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
             mav.setViewName("/signup");
+        // パスワードにNotBlankバリデーションがかけられないので入力チェック
         }
+        if(userForm.getPassword().isBlank()) {
+            errorMessages.add("パスワードを入力してください");
+            mav.setViewName("/signup");
+        }
+        // パスワードと確認用パスワードの一致チェック
         if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
             mav.setViewName("/signup");
         }
-        if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
+        // 支社と部署の組み合わせチェック（departmentIdが本社であるときとないときでバリデーション）
+        if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
-        } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && userForm.getDepartmentId() == 1) {
+            mav.setViewName("/signup");
+        } else if ((userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4) && userForm.getBranchId() == 1) {
             errorMessages.add("支社と部署の組み合わせが不正です");
-        } else {
-
-            String account = userForm.getAccount();
-            UserForm existAccount = userService.checkedAccount(account);
-
-            if (existAccount != null) {
-                errorMessages.add("アカウントが重複しています");
-                mav.setViewName("/signup");
-                mav.addObject("errorMessages", errorMessages);
-                return mav;
-            }
+            mav.setViewName("/signup");
+        }
+        String account = userForm.getAccount();
+            // アカウント情報でアカウントを探しに行く
+        UserForm existAccount = userService.checkedAccount(account);
+            // アカウントの存在確認ができたら重複しているのでバリデーション
+        if (existAccount != null) {
+            errorMessages.add("アカウントが重複しています");
+            mav.setViewName("/signup");
+        }
+        if (errorMessages.size() == 0){
+            // すべてのバリデーションに引っかからなければアカウントを登録
             userService.createUser(userForm);
             mav.setViewName("redirect:/manager/form");
+            return mav;
         }
         mav.addObject("errorMessages", errorMessages);
         return mav;
