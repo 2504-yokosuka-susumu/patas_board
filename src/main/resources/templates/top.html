@@ -9,13 +9,13 @@
 <div class="header-contents">
     <h1>匿名掲示板</h1>
 </div>
-<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
-    <div th:each="errorMessages:${errorMessages}">
-        <span th:text="${errorMessages}" style="color:red"></span>
-    </div>
-</th:block>
 <div th:if="${session.loginUser != null}">
     <div class="profile">
+        <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+            <div th:each="errorMessages:${errorMessages}">
+                <span th:text="${errorMessages}" style="color:red"></span>
+            </div>
+        </th:block>
         <div class="name">
             <h2>
                 <span th:text="${session.loginUser.name}" />

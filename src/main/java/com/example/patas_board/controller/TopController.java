@@ -39,8 +39,16 @@ public class TopController {
         List<UserMessageForm> messageData = messageService.findAllMessage();
         // 返信を全件取得
         List<CommentForm> commentData = commentService.findAllComment();
+        // セッション情報からエラーメッセージを取得
+        List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
+        // エラーメッセージがnullじゃなかったらViewに渡す
+        if(errorMessages != null){
+            mav.addObject("errorMessages", errorMessages);
+        }
         // 画面遷移先を指定
         mav.setViewName("/top");
+        // 値を渡したらセッションからエラーメッセージを消す
+        session.removeAttribute("errorMessages");
 
         mav.addObject("formModel", commentsForm);
         mav.addObject("messages", messageData);
