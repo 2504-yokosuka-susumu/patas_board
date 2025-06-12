@@ -98,7 +98,7 @@ public class TopController {
         // セッションの無効化
         session.invalidate();
         // rootへリダイレクト
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/login/form");
     }
 
 }
