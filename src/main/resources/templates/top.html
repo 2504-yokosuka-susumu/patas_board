@@ -47,7 +47,7 @@
 <div>
     <form action="/filter" method="get">
         日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
-        カテゴリー<input type="text" name="categoryText" th:object="${categoryText}">
+        カテゴリー<input type="text" name="categoryText" th:value="${categoryText}">
         <input type="submit" value="絞り込み">
 
     </form>
@@ -78,7 +78,7 @@
             <div class="delete-button">
                 <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                     <input type="hidden" name="userId" th:value="${message.userId}">
-                    <input type="submit" value="削除">
+                    <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
                 </form>
             </div>
         </div>
@@ -101,7 +101,7 @@
                 <div th:if="${session.loginId == comment.userId}">
                     <div class="delete-button">
                         <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
-                            <input type="submit" value="削除">
+                            <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
                         </form>
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                 <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
                     <div class="form-area">
                         <label>返信</label>
-                        <textarea class="tweet-box" th:field="*{text}" size="20" maxlength="200" /></textarea><br/>
+                        <textarea class="tweet-box" th:field="*{text}" size="20" /></textarea><br/>
                         <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
                             <div th:each="message : ${mavErrorMessages}">
                                 <span th:text="${message}" class="errorMessages"/>
