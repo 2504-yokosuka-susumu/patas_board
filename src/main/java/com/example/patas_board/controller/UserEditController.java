@@ -43,15 +43,19 @@ public class UserEditController {
                                    RedirectAttributes redirectAttributes) {
 
         ModelAndView mav = new ModelAndView();
+        List<String> errorMessages = new ArrayList<String>();
 
         // Formバリデーションチェック
         if (result.hasErrors()) {
-            List<String> errorMessages = new ArrayList<String>();
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
             mav.setViewName("/setting");
             return mav;
+        }
+        if(userForm.getPassword() != null &&!userForm.getPassword().matches("^[!-~]{6,20}+$")){
+            errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
+            mav.setViewName("/signup");
         }
         // パスワードが一致しているか
         if(userForm.getPassword().equals(confirmPassword)) {
