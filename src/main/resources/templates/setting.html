@@ -9,6 +9,11 @@
 <div class="header-contents">
     <h2>ユーザ編集画面</h2>
 </div>
+<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+    <div th:each="errorMessage:${errorMessages}">
+        <span th:text="${errorMessage}" style="color:red"></span>
+    </div>
+</th:block>
 <div class="user-icon">
     <form th:action="@{/setting}" th:object="${users}" method="post">
 

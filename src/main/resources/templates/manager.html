@@ -9,6 +9,11 @@
     <div class="header-contents">
         <h2>ユーザ管理画面</h2>
     </div>
+    <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+        <div th:each="errorMessages:${errorMessages}">
+            <span th:text="${errorMessages}" style="color:red"></span>
+        </div>
+    </th:block>
     <div class="user-icon" th:each="user : ${users}">
         <div>
             ID : <span th:text="${user.id}"/>
@@ -39,7 +44,8 @@
         </form>
 
         <div class="setting-button">
-            <form th:action="@{/setting/form/{id}(id=${user.id})}" th:method="get">
+            <form th:action="@{/setting/form}" th:method="get">
+                <input type="hidden" name="id" th:value="${user.id}">
                 <input type="submit" value="編集">
             </form>
         </div>
