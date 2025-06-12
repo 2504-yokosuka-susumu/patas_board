@@ -13,6 +13,7 @@ public class ManagerFilterConfig {
         bean.setFilter(new ManagerFilter());
         bean.addUrlPatterns("/manager/*");
         bean.addUrlPatterns("/setting/*");
+        bean.addUrlPatterns("/signup/*");
         bean.setOrder(2);
         return bean;
     }
