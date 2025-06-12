@@ -1,6 +1,8 @@
 package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.UserForm;
+import com.example.patas_board.service.BranchService;
+import com.example.patas_board.service.DepartmentService;
 import com.example.patas_board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +24,10 @@ import java.util.Objects;
 public class UserEditController {
     @Autowired
     UserService userService;
+    @Autowired
+    BranchService branchService;
+    @Autowired
+    DepartmentService departmentService;
 
     @GetMapping("/setting/form")
     public ModelAndView view(@RequestParam("id") String id) {
@@ -30,8 +37,16 @@ public class UserEditController {
 
         // "users"オブジェクト "statuses"オブジェクト　格納
         ModelAndView mav = new ModelAndView();
+
+        HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
+
+        //タスクステータスリスト作成
+        HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
+
         // セッションよりデータを取得して設定
         mav.addObject("users",userData);
+        mav.addObject("branchChoices", branchChoices);
+        mav.addObject("departmentChoices", departmentChoices);
         mav.setViewName("/setting");
         return mav;
     }
@@ -43,10 +58,17 @@ public class UserEditController {
 
         // "users"オブジェクト "statuses"オブジェクト　格納
         ModelAndView mav = new ModelAndView();
-        // セッションよりデータを取得して設定
+
+        HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
+
+        //タスクステータスリスト作成
+        HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
+
         mav.addObject("errorMessages", errorMessages);
         mav.addObject("users",userData);
         mav.setViewName("/setting");
+        mav.addObject("branchChoices", branchChoices);
+        mav.addObject("departmentChoices", departmentChoices);
         return mav;
     }
 
@@ -76,10 +98,10 @@ public class UserEditController {
         if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
             return view(String.valueOf(userForm.getId()), errorMessages);
-        } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && userForm.getDepartmentId() != 1){
+        } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && (userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4)){
             errorMessages.add("支社と部署の組み合わせが不正です");
             return view(String.valueOf(userForm.getId()), errorMessages);
-        } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && userForm.getDepartmentId() == 1) {
+        } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && (userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2)) {
             errorMessages.add("支社と部署の組み合わせが不正です");
             return view(String.valueOf(userForm.getId()), errorMessages);
         } else {
