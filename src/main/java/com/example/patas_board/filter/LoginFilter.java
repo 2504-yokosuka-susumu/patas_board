@@ -34,7 +34,7 @@ public class LoginFilter implements Filter {
             errorMessages.add("ログインしてください");
             httpSession.setAttribute("errorMessages", errorMessages);
             //ログインページにリダイレクト
-            httpResponse.sendRedirect("redirect:/");
+            httpRequest.getRequestDispatcher("/").forward(request, response);
         }
 
     }

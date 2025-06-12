@@ -45,6 +45,7 @@ public class LoginController {
     public ModelAndView login(@ModelAttribute("password") String password, @ModelAttribute("account") String account){
         ModelAndView mav = new ModelAndView();
         List<String> errorMessages = new ArrayList<String>();
+        // パスワードとアカウントの入力チェック
         if(password.isBlank()) {
             errorMessages.add("パスワードを入力してください");
             mav.setViewName("/login");
@@ -52,21 +53,33 @@ public class LoginController {
         if(account.isBlank()) {
             errorMessages.add("アカウントを入力してください");
             mav.setViewName("/login");
-        }else if(!account.matches("^[a-zA-Z0-9]{6,20}+$")) {
-            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
-            mav.setViewName("/login");
+        // 半角英数字かつ文字数チェック
+//        }else if(!account.matches("^[a-zA-Z0-9]{6,20}+$")) {
+//            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
+//            mav.setViewName("/login");
+//        // 半角文字かつ文字数チェック
+//        }else if(!password.matches("^[!-~]{6,20}+$")) {
+//            errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
+//            mav.setViewName("/login");
         }else{
+            // アカウント情報とパスワード情報で指定のアカウントを探しに行く
             UserForm user = userService.login(account, password);
+            // アカウントが存在しない場合と停止状態のときにバリデーション
             if(user == null || user.getIsStopped() == 1){
                 errorMessages.add("ログインに失敗しました");
                 mav.addObject("errorMessages", errorMessages);
                 mav.setViewName("/login");
                 return mav;
             }
+            // セッションにログインユーザー情報を格納
             session.setAttribute("loginUser", user);
+            // トップ画面にリダイレクト処理
+
             session.setAttribute("loginId", user.getId());
+
             mav.setViewName("redirect:/");
         }
+        // エラーメッセージのリストをViewに渡す
         mav.addObject("errorMessages", errorMessages);
         return mav;
     }
