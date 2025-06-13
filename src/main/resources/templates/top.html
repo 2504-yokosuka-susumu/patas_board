@@ -72,7 +72,7 @@
             件名 : <span th:text="${message.title}"/>
         </div>
         <div class="text">
-            本文 : <span th:text="${message.text}"/>
+            <p>本文 : <span th:text="${message.text}"/></p>
         </div>
         <div th:if="${session.loginId == message.userId}">
             <div class="delete-button">

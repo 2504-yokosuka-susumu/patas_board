@@ -12,6 +12,7 @@ public class LoginFilterConfig {
 
         bean.setFilter(new LoginFilter());
         //ログイン情報が必要なURL
+        bean.addUrlPatterns("/patas_board");
         bean.addUrlPatterns("/new");
         bean.addUrlPatterns("/add");
         bean.addUrlPatterns("/signup/*");
