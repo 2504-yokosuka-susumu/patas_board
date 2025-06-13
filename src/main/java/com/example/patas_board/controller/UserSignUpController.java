@@ -1,6 +1,8 @@
 package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.UserForm;
+import com.example.patas_board.service.BranchService;
+import com.example.patas_board.service.DepartmentService;
 import com.example.patas_board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,11 +26,23 @@ public class UserSignUpController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    BranchService branchService;
+
+    @Autowired
+    DepartmentService departmentService;
+
     @GetMapping("/signup/form")
     public ModelAndView view(){
         ModelAndView mav = new ModelAndView();
         UserForm userForm = new UserForm();
+
+        HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
+        HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
+
         mav.addObject("formModel", userForm);
+        mav.addObject("branchChoices", branchChoices);
+        mav.addObject("departmentChoices", departmentChoices);
         mav.setViewName("/signup");
         return mav;
     }
