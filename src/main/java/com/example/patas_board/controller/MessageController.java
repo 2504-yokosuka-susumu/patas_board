@@ -48,7 +48,7 @@ public class MessageController {
             return mav;
         } else {
             messageService.addMessage(messageForm);
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/patas_board");
         }
     }
 

@@ -92,16 +92,16 @@ public class UserEditController {
         }
         if(userForm.getPassword() != null &&!userForm.getPassword().matches("^[!-~]{6,20}+$")){
             errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
-            mav.setViewName("/signup");
+            mav.setViewName("/setting");
         }
         // パスワードが一致しているか
         if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
             return view(String.valueOf(userForm.getId()), errorMessages);
-        } else if ((userForm.getBranchId() == 1 || userForm.getBranchId() == 2) && (userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4)){
+        } else if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
             return view(String.valueOf(userForm.getId()), errorMessages);
-        } else if ((userForm.getBranchId() == 3 || userForm.getBranchId() == 4) && (userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2)) {
+        } else if ((userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4) && userForm.getBranchId() == 1) {
             errorMessages.add("支社と部署の組み合わせが不正です");
             return view(String.valueOf(userForm.getId()), errorMessages);
         } else {
@@ -116,7 +116,7 @@ public class UserEditController {
             }
             // ステータス更新処理
             userService.updateUser(userForm);
-            mav.setViewName("redirect:/");
+            mav.setViewName("redirect:/manager/form");
         }
 
         mav.addObject("errorMessages", errorMessages);

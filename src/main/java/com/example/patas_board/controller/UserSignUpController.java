@@ -52,10 +52,10 @@ public class UserSignUpController {
             errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
             mav.setViewName("/signup");
         }
-        if (!userForm.getAccount().isBlank() && !userForm.getAccount().matches("^[a-zA-Z0-9]{6,20}+$")){
-            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
-        mav.setViewName("/signup");
-        }
+//        if (!userForm.getAccount().isBlank() && !userForm.getAccount().matches("^[a-zA-Z0-9]{6,20}+$")){
+//            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
+//        mav.setViewName("/signup");
+//        }
         // パスワードと確認用パスワードの一致チェック
         if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");

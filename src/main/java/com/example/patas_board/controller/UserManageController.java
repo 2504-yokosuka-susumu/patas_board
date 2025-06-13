@@ -64,6 +64,6 @@ public class UserManageController {
         userService.save(userForm);
 
         // rootへリダイレクト
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/patas_board");
     }
 }

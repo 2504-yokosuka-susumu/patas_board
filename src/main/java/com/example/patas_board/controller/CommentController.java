@@ -40,7 +40,7 @@ public class CommentController {
             }
             session.setAttribute("errorMessages", errorMessages);
             session.setAttribute("messageId", messageId);
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/patas_board");
         }
         // 投稿をテーブルに格納
         commentForm.setMessageId(messageId);
@@ -51,7 +51,7 @@ public class CommentController {
 //        // 投稿のupdated_dateを更新
 //        messageService.saveMessage(messageForm);
         // rootへリダイレクト
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/patas_board");
     }
 
     /*
@@ -62,7 +62,7 @@ public class CommentController {
         // 投稿をテーブルに格納
         commentService.deleteComment(id);
         // rootへリダイレクト
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/patas_board");
     }
 
 }
