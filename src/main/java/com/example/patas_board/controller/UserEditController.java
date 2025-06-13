@@ -110,7 +110,7 @@ public class UserEditController {
             if(errorMessages.size() == 0) {
                 // ステータス更新処理
                 userService.updateUser(userForm);
-                mav.setViewName("redirect:/");
+                mav.setViewName("redirect:/manager/form");
                 return mav;
             }
         }
