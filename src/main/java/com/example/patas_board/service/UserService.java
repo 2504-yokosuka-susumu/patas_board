@@ -134,6 +134,10 @@ public class UserService {
         List<User> userResults = new ArrayList<>();
         userResults.add((User) userRepository.findById(id).orElse(null));
 
+        if(userResults.contains(null)) {
+            return null;
+        }
+
         UserForm user = new UserForm();
 
         user.setId(userResults.get(0).getId());

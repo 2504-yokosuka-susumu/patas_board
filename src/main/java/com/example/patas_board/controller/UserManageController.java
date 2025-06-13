@@ -3,7 +3,6 @@ package com.example.patas_board.controller;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.BranchService;
 import com.example.patas_board.service.DepartmentService;
-import com.example.patas_board.service.MessageService;
 import com.example.patas_board.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,14 @@ public class UserManageController {
     @Autowired
     DepartmentService departmentService;
 
+    @Autowired
+    HttpSession session;
+
     @GetMapping("/manager/form")
     public ModelAndView view() {
         // 管理者権限フィルター
+
+        ModelAndView mav = new ModelAndView();
 
         // ユーザ情報取得
         List<UserForm> userData = userService.findAllUser();
@@ -38,8 +42,13 @@ public class UserManageController {
 
         HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
 
+        List<String> errorMessages = (List<String>)session.getAttribute("errorMessages");
+
+        if(errorMessages != null){
+            mav.addObject("errorMessages", errorMessages);
+        }
+        session.removeAttribute("errorMessages");
         // "users"オブジェクト "statuses"オブジェクト　格納
-        ModelAndView mav = new ModelAndView();
         mav.addObject("users",userData);
         mav.addObject("statuses", UserForm.Status.values());
         mav.addObject("branchChoices", branchChoices);
