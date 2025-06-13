@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/style.css}" rel="styleSheet">
+  <title>登録画面</title>
+</head>
+<body>
+<div class="header-contents">
+  <h2>ユーザー登録</h2>
+</div>
+<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+  <div th:each="errorMessage:${errorMessages}">
+    <span th:text="${errorMessage}" style="color:red"></span>
+  </div>
+</th:block>
+<div class="main-contents">
+  <form th:method="post" th:action="@{/signup}" th:object="${formModel}">
+    <div class="form-area">
+      <label>アカウント</label>
+      <input type="text" th:field="*{account}">
+    </div>
+
+    <div class="form-area">
+      <label>パスワード</label>
+      <input type="password" th:field="*{password}">
+    </div>
+
+    <div class="form-area">
+      <label>パスワード（確認用）</label>
+      <input type="password" name="checkedPassword">
+    </div>
+
+    <div class="form-area">
+      <label>氏名</label>
+      <input type="text" th:field="*{name}">
+    </div>
+
+    <fieldset>
+      <legend>支社を選択してください:</legend>
+
+      <div th:each="branch : ${branchChoices}">
+        <input type="radio" th:field="${formModel.branchId}" th:value="${branch.key}"
+               th:text="${branch.value}" checked />
+      </div>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>部署を選択してください:</legend>
+
+      <div th:each="department : ${departmentChoices}">
+        <input type="radio" th:field="${formModel.departmentId}" th:value="${department.key}"
+               th:text="${department.value}" checked />
+      </div>
+
+    </fieldset>
+
+    <input type="submit" value="登録する">
+
+    <input type="reset" value="リセットする">
+  </form>
+</div>
+<div class="footer-contents">
+  <form action="/manager/form">
+    <input type="submit" value="戻る" />
+  </form>
+</div>
+</body>
+</html>

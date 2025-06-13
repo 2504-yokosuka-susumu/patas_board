@@ -149,3 +149,27 @@ vertical-align: middle;
 .limit-after{
     background-color: #FFFF88;
 }
+
+label {
+    display: inline-block;
+    width: 150px;
+    vertical-align: top;
+}
+
+p {
+	white-space: pre-wrap;
+}
+
+.user-icon{
+    width: 500px;
+}
+
+.manager {
+color: #1e366a;
+  border-bottom: solid #1e366a 2px;/*下のボーダー*/
+  padding: 0.5em 0 0.5em 1.5em;
+}
+
+.setting-button{
+
+}

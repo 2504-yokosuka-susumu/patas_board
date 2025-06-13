@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Integer> {
+public interface UserCommentRepository extends JpaRepository<Comment, Integer> {
     public List<Comment> findAllByOrderByCreatedDateDesc();
 }

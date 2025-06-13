@@ -1,13 +1,129 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/style.css}" rel="styleSheet">
     <title>TOP</title>
 </head>
 <body>
-    <div class="header-contents">
-        <h1>匿名掲示板</h1>
+<div class="header-contents">
+    <h1>匿名掲示板</h1>
+</div>
+<div th:if="${session.loginUser != null}">
+    <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+        <div th:each="errorMessage:${errorMessages}">
+            <span th:text="${errorMessage}" style="color:red"></span>
+        </div>
+    </th:block>
+    <div class="profile">
+        <div class="name">
+            <h2>
+                <span th:text="${session.loginUser.name}" />
+            </h2>
+        </div>
+        <div class="account">
+            @<span th:text="${session.loginUser.account}" />
+        </div>
     </div>
+    <div class="user-manage-button">
+        <a href="/manager/form">
+            <button class="manage-button" type="button">ユーザー管理</button>
+        </a>
+    </div>
+    <div class="logout-button">
+        <a href="/logout">
+            <button class="logout-button" type="button">ログアウト</button>
+        </a>
+    </div>
+</div>
+<div th:if="${session.loginUser == null}">
+    <div class="login-button">
+        <a href="/login/form">
+            <button class="login-button" type="button">ログイン</button>
+        </a>
+    </div>
+</div>
+
+<div>
+    <form action="/filter" method="get">
+        日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
+        カテゴリー<input type="text" name="categoryText" th:value="${categoryText}">
+        <input type="submit" value="絞り込み">
+
+    </form>
+</div>
+<div class="main-contents">
+    <div th:if="${session.loginUser != null}">
+        <a href="/new">
+            <button class="new-button" type="button">新規投稿</button>
+        </a>
+    </div>
+    <div class="message-icon" th:each="message : ${messages}">
+        <div>
+            ID : <span th:text="${message.id}"/>
+        </div>
+        <div>
+            投稿者 : <span th:text="${message.name}"/>
+        </div>
+        <div>
+            カテゴリー : <span th:text="${message.category}"/>
+        </div>
+        <div class="title">
+            件名 : <span th:text="${message.title}"/>
+        </div>
+        <div class="text">
+            <p>本文 : <span th:text="${message.text}"/></p>
+        </div>
+        <div th:if="${session.loginId == message.userId}">
+            <div class="delete-button">
+                <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
+                    <input type="hidden" name="userId" th:value="${message.userId}">
+                    <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
+                </form>
+            </div>
+        </div>
+        <div class="date">
+            <fmt:formatDate value="${message.createdDate}"
+                            pattern="yyyy/MM/dd HH:mm:ss" />
+        </div>
+        <div class="comment-icon" th:each="comment : ${comments}">
+            <div th:if="${message.id == comment.messageId}">
+                <br>
+                <div>
+                    コメントID: <span th:text="${comment.id}"/>
+                </div>
+                <div>
+                    コメント投稿者 : <span th:text="${comment.name}"/>
+                </div>
+                <div class="text">
+                    コメント : <span th:text="${comment.text}"/>
+                </div>
+                <div th:if="${session.loginId == comment.userId}">
+                    <div class="delete-button">
+                        <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
+                            <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${session.loginUser != null}">
+            <div class="comment-area">
+                <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
+                    <div class="form-area">
+                        <label>返信</label>
+                        <textarea class="tweet-box" th:field="*{text}" size="20" /></textarea><br/>
+                        <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
+                            <div th:each="message : ${mavErrorMessages}">
+                                <span th:text="${message}" class="errorMessages"/>
+                            </div>
+                        </div>
+                        <input type="submit" value="返信" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -12,20 +12,24 @@ public class Comment {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column
     private String text;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private int userId;
 
     @Column(name = "message_id")
-    private Integer messageId;
+    private int messageId;
 
     @Column(insertable = false, updatable = false, name="created_date")
     private Date createdDate;
 
     @Column(insertable = false, updatable = false, name="updated_date")
     private Date updatedDate;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable=false, updatable=false)
+    private User user;
 }

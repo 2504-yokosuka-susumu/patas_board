@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <title>ユーザ管理画面</title>
+</head>
+<body>
+    <div class="header-contents">
+        <h2>ユーザ管理画面</h2>
+    </div>
+    <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+        <div th:each="errorMessages:${errorMessages}">
+            <span th:text="${errorMessages}" style="color:red"></span>
+        </div>
+    </th:block>
+    <form th:action="@{/signup/form}" th:method="get">
+        <input type="submit" value="新規登録">
+    </form>
+    <div class="user-icon" th:each="user : ${users}">
+        <div class="manager">
+            <label>ID</label>
+            <span th:text="${user.id}"/>
+        </div>
+        <div class="manager">
+            <label>アカウント</label>
+            <span th:text="${user.account}"/>
+        </div>
+        <div class="manager">
+            <label>氏名</label>
+            <span th:text="${user.name}"/>
+        </div>
+        <div class="manager">
+            <label>支社</label>
+            <span th:text="${branchChoices[user.branchId]}"/>
+        </div>
+        <div class="manager">
+            <label>部署</label>
+            <span th:text="${departmentChoices[user.departmentId]}"/>
+        </div>
+
+        <form th:action="@{/manager}" method="post">
+            <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
+            <th:if th:if="${session.loginUser.id != user.id}">
+                <select name="status">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status.ordinal()}"
+                            th:text="${status}"
+                            th:selected="${status.ordinal() == user.isStopped}">
+                    </option>
+                </select>
+                <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+            </th:if>
+        </form>
+
+        <div class="setting-button">
+            <form th:action="@{/setting/form}" th:method="get">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <input type="submit" value="編集">
+            </form>
+        </div>
+        <br>
+    </div>
+    <div class="footer-contents">
+        <a href="/patas_board">戻る</a>
+    </div>
+</body>
+</html>

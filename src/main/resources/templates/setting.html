@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="styleSheet">
+    <title>ユーザ編集画面</title>
+</head>
+<body>
+<div class="header-contents">
+    <h2>ユーザ編集画面</h2>
+</div>
+<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+    <div th:each="errorMessage:${errorMessages}">
+        <span th:text="${errorMessage}" style="color:red"></span>
+    </div>
+</th:block>
+<div class="user-icon">
+    <form th:action="@{/setting}" th:object="${users}" method="post">
+
+        <label th:for="id">ID</label>
+        <input th:value="${users.id}" id="id" th:field="*{id}"/><br />
+
+        <label th:for="account">アカウント名</label>
+        <input th:value="${users.account}" id="account" th:field="*{account}"/><br />
+
+        <label th:for="password">パスワード</label>
+        <input th:type="password" id="password" th:field="*{password}"/> <br />
+
+        <label th:for="confirmPassword">パスワード確認</label>
+        <input th:type="password" name="confirmPassword"/> <br />
+
+        <label th:for="name">名前</label>
+        <input th:value="${users.name}" id="name" th:field="*{name}"/><br />
+
+        <th:if th:if="${session.loginUser.id != users.id}">
+            <label th:for="branchName">支社</label>
+            <select name="branchId" th:field="*{branchId}">
+                <option th:each="choice : ${branchChoices}" th:value="${choice.key}"
+                        th:text="${choice.value}" th:selected="${choice.key == users.id}"></option>
+            </select><br>
+
+            <label th:for="departmentName">部署</label>
+            <select name="departmentId" th:field="*{departmentId}">
+                <option th:each="choice : ${departmentChoices}" th:value="${choice.key}"
+                        th:text="${choice.value}" th:selected="${choice.key == users.departmentId}"></option>
+            </select><br>
+        </th:if>
+
+        <input type="submit" value="登録" />
+    </form>
+</div>
+<div class="footer-contents">
+    <a href="/manager/form">戻る</a>
+</div>
+
+</body>
+</html>

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -12,7 +13,7 @@ public class Message {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column
     private String title;
@@ -24,11 +25,16 @@ public class Message {
     private String category;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private int userId;
 
     @Column(insertable = false, updatable = false, name="created_date")
     private Date createdDate;
 
     @Column(insertable = false, updatable = false, name="updated_date")
     private Date updatedDate;
-}
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable=false, updatable=false)
+    private User user;
+
+    }
