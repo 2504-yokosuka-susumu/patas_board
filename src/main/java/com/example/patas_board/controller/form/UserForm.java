@@ -8,9 +8,7 @@ import java.util.Date;
 
 @Data
 public class UserForm {
-
-    @NotBlank(message = "不正なパラメータです")
-    @Pattern(regexp = "^[0-9]+$", message = "不正なパラメータです")
+    
     private int id;
 
     @NotBlank(message = "アカウントを入力してください")
