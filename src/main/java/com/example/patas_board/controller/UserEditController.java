@@ -4,10 +4,12 @@ import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.BranchService;
 import com.example.patas_board.service.DepartmentService;
 import com.example.patas_board.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.SmartValidator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,10 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class UserEditController {
@@ -28,28 +27,56 @@ public class UserEditController {
     BranchService branchService;
     @Autowired
     DepartmentService departmentService;
+    @Autowired
+    HttpSession session;
+    @Autowired
+    public SmartValidator validator;
 
     @GetMapping("/setting/form")
     public ModelAndView view(@RequestParam("id") String id) {
-        // ユーザ情報取得
-        int userId = Integer.parseInt(id);
-        UserForm userData = userService.selectUser(userId);
-
-        // "users"オブジェクト "statuses"オブジェクト　格納
+        
+        List<String> errorMessages = new ArrayList<String>();
         ModelAndView mav = new ModelAndView();
 
-        HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
+        if (id.isBlank()) {
+            errorMessages.add("不正なパラメータが入力されました");
+            mav.setViewName("redirect:/manager/form");
 
-        //タスクステータスリスト作成
-        HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
+        } else if (!id.matches("^[0-9]+$")) {
+            errorMessages.add("不正なパラメータが入力されました");
+            mav.setViewName("redirect:/manager/form");
+        } else {
+            // ユーザ情報取得
+            int userId = Integer.parseInt(id);
+            UserForm userData = userService.selectUser(userId);
 
-        // セッションよりデータを取得して設定
-        mav.addObject("users",userData);
-        mav.addObject("branchChoices", branchChoices);
-        mav.addObject("departmentChoices", departmentChoices);
-        mav.setViewName("/setting");
+            if (userData == null) {
+                errorMessages.add("不正なパラメータが入力されました");
+                mav.setViewName("redirect:/manager/form");
+                session.setAttribute("errorMessages", errorMessages);
+                return mav;
+            }
+
+            // "users"オブジェクト "statuses"オブジェクト　格納
+
+            HashMap<Integer, String> branchChoices = branchService.findAllBranchesMap();
+
+            //タスクステータスリスト作成
+            HashMap<Integer, String> departmentChoices = departmentService.findAllDepartmentsMap();
+
+            // セッションよりデータを取得して設
+            mav.addObject("users", userData);
+            mav.addObject("branchChoices", branchChoices);
+            mav.addObject("departmentChoices", departmentChoices);
+            mav.setViewName("/setting");
+
+            return mav;
+        }
+        session.setAttribute("errorMessages", errorMessages);
         return mav;
     }
+
+
 
     public ModelAndView view(@RequestParam("id") String id, @ModelAttribute("errorMessages") List<String> errorMessages) {
         // ユーザ情報取得

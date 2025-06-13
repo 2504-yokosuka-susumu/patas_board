@@ -2,12 +2,15 @@ package com.example.patas_board.controller.form;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
 @Data
 public class UserForm {
 
+    @NotBlank(message = "不正なパラメータです")
+    @Pattern(regexp = "^[0-9]+$", message = "不正なパラメータです")
     private int id;
 
     @NotBlank(message = "アカウントを入力してください")
