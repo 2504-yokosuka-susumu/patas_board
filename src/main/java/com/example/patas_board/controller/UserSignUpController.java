@@ -98,7 +98,11 @@ public class UserSignUpController {
             mav.setViewName("redirect:/manager/form");
             return mav;
         }
+        HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
+        HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
         mav.addObject("errorMessages", errorMessages);
+        mav.addObject("branchChoices", branchChoices);
+        mav.addObject("departmentChoices", departmentChoices);
         return mav;
     }
 }
