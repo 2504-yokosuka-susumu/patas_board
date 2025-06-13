@@ -34,7 +34,7 @@ public class UserEditController {
 
     @GetMapping("/setting/form")
     public ModelAndView view(@RequestParam("id") String id) {
-        
+
         List<String> errorMessages = new ArrayList<String>();
         ModelAndView mav = new ModelAndView();
 
