@@ -169,8 +169,16 @@ public class UserService {
             user.setPassword(userResults.get(0).getPassword());
         }
         user.setName(reqUser.getName());
-        user.setBranchId(reqUser.getBranchId());
-        user.setDepartmentId(reqUser.getDepartmentId());
+        if(reqUser.getBranchId() == 0) {
+            user.setBranchId(userResults.get(0).getBranchId());
+        } else {
+            user.setBranchId(reqUser.getBranchId());
+        }
+        if(reqUser.getDepartmentId() == 0) {
+            user.setDepartmentId(userResults.get(0).getDepartmentId());
+        } else {
+            user.setDepartmentId(reqUser.getDepartmentId());
+        }
 
         userRepository.save(user);
     }
