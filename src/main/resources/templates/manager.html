@@ -32,7 +32,7 @@
         </div>
 
         <form th:action="@{/manager}" method="post">
-            <input type="hidden" name="id" th:value="${user.id}" />
+            <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
             <th:if th:if="${session.loginUser.id != user.id}">
                 <select name="status">
                     <option th:each="status : ${statuses}"
