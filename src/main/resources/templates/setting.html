@@ -33,14 +33,12 @@
         <input th:value="${users.name}" id="name" th:field="*{name}"/><br />
 
         <label th:for="branchName">支社</label>
-<!--        <input th:value="${users.branchId}" id="branchId" th:field="*{branchId}"/><br />-->
         <select name="branchId" th:field="*{branchId}">
             <option th:each="choice : ${branchChoices}" th:value="${choice.key}"
                     th:text="${choice.value}" th:selected="${choice.key == users.id}"></option>
         </select><br>
 
         <label th:for="departmentName">部署</label>
-<!--        <input th:value="${users.departmentId}" id="departmentId" th:field="*{departmentId}"/><br />-->
         <select name="departmentId" th:field="*{departmentId}">
             <option th:each="choice : ${departmentChoices}" th:value="${choice.key}"
                     th:text="${choice.value}" th:selected="${choice.key == users.departmentId}"></option>

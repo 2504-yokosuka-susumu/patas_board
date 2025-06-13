@@ -25,10 +25,10 @@
             name : <span th:text="${user.name}"/>
         </div>
         <div>
-            支社 : <span th:text="${user.branchId}"/>
+            支社 : <span th:text="${branchChoices[user.branchId]}"/>
         </div>
         <div>
-            部署 : <span th:text="${user.departmentId}"/>
+            部署 : <span th:text="${departmentChoices[user.departmentId]}"/>
         </div>
 
         <form th:action="@{/manager}" method="post">
