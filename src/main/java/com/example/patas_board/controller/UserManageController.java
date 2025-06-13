@@ -1,6 +1,8 @@
 package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.UserForm;
+import com.example.patas_board.service.BranchService;
+import com.example.patas_board.service.DepartmentService;
 import com.example.patas_board.service.MessageService;
 import com.example.patas_board.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -19,10 +22,10 @@ public class UserManageController {
     UserService userService;
 
     @Autowired
-    MessageService messageService;
+    BranchService branchService;
 
     @Autowired
-    HttpSession session;
+    DepartmentService departmentService;
 
     @GetMapping("/manager/form")
     public ModelAndView view() {
@@ -31,10 +34,16 @@ public class UserManageController {
         // ユーザ情報取得
         List<UserForm> userData = userService.findAllUser();
 
+        HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
+
+        HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
+
         // "users"オブジェクト "statuses"オブジェクト　格納
         ModelAndView mav = new ModelAndView();
         mav.addObject("users",userData);
         mav.addObject("statuses", UserForm.Status.values());
+        mav.addObject("branchChoices", branchChoices);
+        mav.addObject("departmentChoices", departmentChoices);
         mav.setViewName("/manager");
         return mav;
     }
@@ -55,6 +64,6 @@ public class UserManageController {
         userService.save(userForm);
 
         // rootへリダイレクト
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/patas_board");
     }
 }

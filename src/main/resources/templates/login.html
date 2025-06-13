@@ -18,7 +18,7 @@
     </th:block>
     <div class="form-area">
       <label>アカウント</label>
-      <input type="text" name="account">
+      <input type="text" th:name="account" th:value="${account}">
     </div>
 
     <div class="form-area">
@@ -27,9 +27,6 @@
     </div>
     <input type="submit" value="ログイン" />
   </form>
-</div>
-<div class="footer-contents">
-  <a href="/">戻る</a>
 </div>
 </body>
 </html>

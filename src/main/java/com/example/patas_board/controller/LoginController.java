@@ -84,10 +84,11 @@ public class LoginController {
 
             session.setAttribute("loginId", user.getId());
 
-            mav.setViewName("redirect:/");
+            mav.setViewName("redirect:/patas_board");
         }
         // エラーメッセージのリストをViewに渡す
         mav.addObject("errorMessages", errorMessages);
+        mav.addObject("account", account);
         return mav;
     }
 }

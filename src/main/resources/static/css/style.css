@@ -155,3 +155,7 @@ label {
     width: 150px;
     vertical-align: top;
 }
+
+p {
+	white-space: pre-wrap;
+}

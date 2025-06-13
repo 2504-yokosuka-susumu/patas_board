@@ -30,7 +30,7 @@ public class TopController {
     /*
      * 投稿内容表示処理
      */
-    @GetMapping
+    @GetMapping("/patas_board")
     public ModelAndView view() {
         ModelAndView mav = new ModelAndView();
 

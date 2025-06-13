@@ -25,10 +25,10 @@
             name : <span th:text="${user.name}"/>
         </div>
         <div>
-            支社 : <span th:text="${user.branchId}"/>
+            支社 : <span th:text="${branchChoices[user.branchId]}"/>
         </div>
         <div>
-            部署 : <span th:text="${user.departmentId}"/>
+            部署 : <span th:text="${departmentChoices[user.departmentId]}"/>
         </div>
 
         <form th:action="@{/manager}" method="post">
@@ -60,7 +60,7 @@
         <input type="submit" value="新規登録">
     </form>
     <div class="footer-contents">
-        <a href="/">戻る</a>
+        <a href="/patas_board">戻る</a>
     </div>
 </body>
 </html>
