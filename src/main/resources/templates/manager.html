@@ -14,6 +14,9 @@
             <span th:text="${errorMessages}" style="color:red"></span>
         </div>
     </th:block>
+    <form th:action="@{/signup/form}" th:method="get">
+        <input type="submit" value="新規登録">
+    </form>
     <div class="user-icon" th:each="user : ${users}">
         <div>
             ID : <span th:text="${user.id}"/>
@@ -52,13 +55,6 @@
             </form>
         </div>
     </div>
-
-<!--    <a th:href="@{/signup/form}">-->
-<!--        <button class="signup-button" type="button">新規登録</button>-->
-<!--    </a>-->
-    <form th:action="@{/signup/form}" th:method="get">
-        <input type="submit" value="新規登録">
-    </form>
     <div class="footer-contents">
         <a href="/patas_board">戻る</a>
     </div>
