@@ -59,6 +59,6 @@ public class MessageController {
             return new ModelAndView("redirect:/");
         }
         messageService.delete(id);
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/patas_board");
     }
 }
