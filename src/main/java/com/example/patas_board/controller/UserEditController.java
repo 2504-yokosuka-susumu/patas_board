@@ -1,5 +1,6 @@
 package com.example.patas_board.controller;
 
+import com.example.patas_board.controller.form.MessageForm;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.BranchService;
 import com.example.patas_board.service.DepartmentService;
@@ -103,12 +104,17 @@ public class UserEditController {
      * アカウント復活/停止切り替え
      */
     @PostMapping("/setting")
-    public ModelAndView updateUser(@ModelAttribute("formModel") @Validated UserForm userForm, BindingResult result,
+    public ModelAndView updateUser(@ModelAttribute("formModel") UserForm userForm, BindingResult result,
                                    @RequestParam(name = "confirmPassword", required = false) String confirmPassword) {
 
         ModelAndView mav = new ModelAndView();
         List<String> errorMessages = new ArrayList<String>();
 
+        UserForm replaceUserForm = userForm;
+        String replaceName = replaceUserForm.getName();
+        replaceName = replaceName.replaceFirst("^[\\s　]+", "").replaceFirst("[\\s　]+$", "");
+        replaceUserForm.setName(replaceName);
+        validator.validate(replaceUserForm, result);
         // Formバリデーションチェック
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
@@ -120,6 +126,12 @@ public class UserEditController {
             errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
         } else if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
+        }
+        if(userForm.getBranchId() == 0){
+            errorMessages.add("支社を入力してください");
+        }
+        if(userForm.getDepartmentId() == 0){
+            errorMessages.add("部署を入力してください");
         } else if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
         } else if ((userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4) && userForm.getBranchId() == 1) {
