@@ -117,6 +117,8 @@ public class MessageService {
             message.setCategory(result.getCategory());
             message.setName(result.getUser().getName());
             message.setAccount(result.getUser().getAccount());
+            message.setBranchId(result.getUser().getBranchId());
+            message.setDepartmentId(result.getUser().getDepartmentId());
             message.setCreatedDate(result.getCreatedDate());
 
             messages.add(message);
