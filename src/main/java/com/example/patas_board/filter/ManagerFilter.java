@@ -37,7 +37,7 @@ public class ManagerFilter implements Filter {
             errorMessages.add("無効なアクセスです");
             httpRequest.getSession().setAttribute("errorMessages", errorMessages);
             //ホーム画面にリダイレクト
-            httpRequest.getRequestDispatcher("/").forward(request, response);
+            httpRequest.getRequestDispatcher("/patas_board").forward(request, response);
         }
 
     }

@@ -3,6 +3,7 @@ package com.example.patas_board.controller;
 import com.example.patas_board.controller.form.MessageForm;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.MessageService;
+import com.example.patas_board.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import java.util.List;
 
 @Controller
 public class MessageController {
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     MessageService messageService;
@@ -54,11 +58,28 @@ public class MessageController {
 
     @DeleteMapping("/delete/{id}")
     public ModelAndView delete(@PathVariable("id") Integer id, @ModelAttribute("userId") String userId){
+
+        ModelAndView mav = new ModelAndView();
+        List<String> errorMessages = new ArrayList<>();
+
         UserForm loginUser = (UserForm) session.getAttribute("loginUser");
-        if(loginUser.getId() != Integer.parseInt(userId)){
-            return new ModelAndView("redirect:/");
+        if(loginUser.getId() != Integer.parseInt(userId)) {
+
+            if(loginUser.getDepartmentId() != 2) {
+                UserForm postedUser = userService.selectUser(Integer.parseInt(userId));
+
+                if ((postedUser.getBranchId() == loginUser.getBranchId()) && (postedUser.getDepartmentId() == 4 && loginUser.getDepartmentId() == 3)) {
+                    messageService.delete(id);
+                    mav.setViewName("redirect:/patas_board");
+                } else {
+                    errorMessages.add("削除する権限がありません");
+                    mav.setViewName("redirect:/patas_board");
+                    session.setAttribute("errorMessages", errorMessages);
+                }
+                return mav;
+            }
         }
         messageService.delete(id);
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/patas_board");
     }
 }
