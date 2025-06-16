@@ -4,6 +4,7 @@ import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.BranchService;
 import com.example.patas_board.service.DepartmentService;
 import com.example.patas_board.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,9 @@ public class UserSignUpController {
 
     @Autowired
     DepartmentService departmentService;
+
+    @Autowired
+    HttpSession session;
 
     @GetMapping("/signup/form")
     public ModelAndView view(){
@@ -100,6 +104,7 @@ public class UserSignUpController {
         }
         HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
         HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
+
         mav.addObject("errorMessages", errorMessages);
         mav.addObject("branchChoices", branchChoices);
         mav.addObject("departmentChoices", departmentChoices);

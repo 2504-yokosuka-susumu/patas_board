@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 public class UserForm {
-    
+
     private int id;
 
     @NotBlank(message = "アカウントを入力してください")

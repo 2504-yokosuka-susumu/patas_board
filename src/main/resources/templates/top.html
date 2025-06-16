@@ -74,14 +74,14 @@
         <div class="text">
             <p>本文 : <span th:text="${message.text}"/></p>
         </div>
-        <div th:if="${session.loginId == message.userId}">
+        <div th:if="${session.loginUser.id == message.userId || session.loginUser.departmentId == 2 || (session.loginUser.branchId == message.branchId && (session.loginUser.departmentId == 3 && message.departmentId == 4))}">
             <div class="delete-button">
                 <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                     <input type="hidden" name="userId" th:value="${message.userId}">
                     <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
                 </form>
             </div>
-        </div>
+            </div>
         <div class="date">
             <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
