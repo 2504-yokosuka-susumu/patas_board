@@ -25,10 +25,12 @@
             @<span th:text="${session.loginUser.account}" />
         </div>
     </div>
-    <div class="user-manage-button">
-        <a href="/manager/form">
-            <button class="manage-button" type="button">ユーザー管理</button>
-        </a>
+    <div th:if="${session.loginUser.departmentId == 1}">
+        <div class="user-manage-button">
+            <a href="/manager/form">
+                <button class="manage-button" type="button">ユーザー管理</button>
+            </a>
+        </div>
     </div>
     <div class="logout-button">
         <a href="/logout">
