@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.SmartValidator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,7 +35,7 @@ public class UserSignUpController {
     DepartmentService departmentService;
 
     @Autowired
-    HttpSession session;
+    public SmartValidator validator;
 
     @GetMapping("/signup/form")
     public ModelAndView view(){
@@ -52,10 +53,16 @@ public class UserSignUpController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView createUser(@ModelAttribute("formModel") @Validated UserForm userForm, BindingResult result,
+    public ModelAndView createUser(@ModelAttribute("formModel") UserForm userForm, BindingResult result,
                                    @ModelAttribute("checkedPassword") String checkedPassword) {
         ModelAndView mav = new ModelAndView();
         List<String> errorMessages = new ArrayList<String>();
+
+        UserForm replaceUserForm = userForm;
+        String replaceName = replaceUserForm.getName();
+        replaceName = replaceName.replaceFirst("^[\\s　]+", "").replaceFirst("[\\s　]+$", "");
+        replaceUserForm.setName(replaceName);
+        validator.validate(replaceUserForm, result);
         // formのバリデーション結果からエラーメッセージを取得
         if (result.hasErrors()) {
             for (ObjectError error : result.getAllErrors()) {
@@ -71,17 +78,20 @@ public class UserSignUpController {
             errorMessages.add("パスワードは半角文字かつ6文字以上20文字以下で入力してください");
             mav.setViewName("/signup");
         }
-//        if (!userForm.getAccount().isBlank() && !userForm.getAccount().matches("^[a-zA-Z0-9]{6,20}+$")){
-//            errorMessages.add("アカウントは半角英数字かつ6文字以上20文字以下で入力してください");
-//        mav.setViewName("/signup");
-//        }
         // パスワードと確認用パスワードの一致チェック
         if (!Objects.equals(userForm.getPassword(), checkedPassword)) {
-            errorMessages.add("パスワードと確認用パスワードが一致しません");
+            errorMessages.add("入力したパスワードと確認用パスワードが一致しません");
             mav.setViewName("/signup");
         }
         // 支社と部署の組み合わせチェック（departmentIdが本社であるときとないときでバリデーション）
-        if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
+        if (userForm.getBranchId() == 0) {
+            errorMessages.add("支社を入力してください");
+            mav.setViewName("/signup");
+        }
+        if (userForm.getDepartmentId() == 0){
+            errorMessages.add("部署を入力してください");
+            mav.setViewName("/signup");
+        } else if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
             mav.setViewName("/signup");
         } else if ((userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4) && userForm.getBranchId() == 1) {
