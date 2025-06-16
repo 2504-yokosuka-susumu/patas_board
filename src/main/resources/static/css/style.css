@@ -173,3 +173,7 @@ color: #1e366a;
 .setting-button{
 
 }
+
+.text{
+    overflow-wrap: anywhere;
+}
