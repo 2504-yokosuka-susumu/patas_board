@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.SmartValidator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +29,9 @@ public class MessageController {
     @Autowired
     private HttpSession session;
 
+    @Autowired
+    public SmartValidator validator;
+
     @GetMapping("/new")
     public ModelAndView view(){
         ModelAndView mav = new ModelAndView();
@@ -38,10 +42,23 @@ public class MessageController {
     }
 
     @PostMapping("/add")
-    public ModelAndView addMessage(@ModelAttribute("formModel") @Validated MessageForm messageForm,
+    public ModelAndView addMessage(@ModelAttribute("formModel") MessageForm messageForm,
                                    BindingResult result, @ModelAttribute("userId") String userId) {
 
-        messageForm.setUserId(Integer.parseInt(userId));
+        MessageForm replaceMessageForm = messageForm;
+        String replaceText = replaceMessageForm.getText();
+        String replaceTitle = replaceMessageForm.getTitle();
+        String replaceCategory = replaceMessageForm.getCategory();
+
+        replaceText = replaceText.replaceFirst("^[\\s　]+", "").replaceFirst("[\\s　]+$", "");
+        replaceMessageForm.setText(replaceText);
+        replaceTitle = replaceTitle.replaceFirst("^[\\s　]+", "").replaceFirst("[\\s　]+$", "");
+        replaceMessageForm.setTitle(replaceTitle);
+        replaceCategory = replaceCategory.replaceFirst("^[\\s　]+", "").replaceFirst("[\\s　]+$", "");
+        replaceMessageForm.setCategory(replaceCategory);
+
+        validator.validate(replaceMessageForm, result);
+
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView();
             List<String> errorMessages = new ArrayList<String>();
@@ -51,6 +68,7 @@ public class MessageController {
             mav.setViewName("/new");
             return mav;
         } else {
+            messageForm.setUserId(Integer.parseInt(userId));
             messageService.addMessage(messageForm);
             return new ModelAndView("redirect:/patas_board");
         }
