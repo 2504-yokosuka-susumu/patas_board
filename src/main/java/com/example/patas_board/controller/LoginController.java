@@ -29,6 +29,9 @@ public class LoginController {
     @Autowired
     private HttpSession session;
 
+    /*
+     ログイン画面表示
+     */
     @GetMapping("/login/form")
     public ModelAndView view(){
         ModelAndView mav = new ModelAndView();
@@ -48,6 +51,9 @@ public class LoginController {
         return mav;
     }
 
+    /*
+      ログイン処理
+     */
     @PostMapping("/login")
     public ModelAndView login(@ModelAttribute("password") String password, @ModelAttribute("account") String account){
         ModelAndView mav = new ModelAndView();
@@ -72,7 +78,7 @@ public class LoginController {
             // アカウント情報とパスワード情報で指定のアカウントを探しに行く
             UserForm user = userService.login(account, password);
             // アカウントが存在しない場合と停止状態のときにバリデーション
-            if(user == null || user.getIsStopped() == 1){
+            if(user == null || user.getIsStopped() == 1) {
                 errorMessages.add("ログインに失敗しました");
                 mav.addObject("errorMessages", errorMessages);
                 mav.setViewName("/login");
@@ -80,14 +86,15 @@ public class LoginController {
             }
             // セッションにログインユーザー情報を格納
             session.setAttribute("loginUser", user);
-            // トップ画面にリダイレクト処理
-
             session.setAttribute("loginId", user.getId());
 
+            //userService.saveLoginDate(user.getId());
+            // ホーム画面にリダイレクト処理
             mav.setViewName("redirect:/patas_board");
         }
         // エラーメッセージのリストをViewに渡す
         mav.addObject("errorMessages", errorMessages);
+        // ログインに失敗した場合にアカウント情報が保持されるように
         mav.addObject("account", account);
         return mav;
     }
