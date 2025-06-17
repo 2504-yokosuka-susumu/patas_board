@@ -30,6 +30,7 @@ public class MessageService {
         messageRepository.save(message);
     }
 
+    //MessageForm型をMessage型に変換
     private Message setMessageEntity(MessageForm reqMessage) {
         Message message = new Message();
         message.setId(reqMessage.getId());
@@ -43,7 +44,7 @@ public class MessageService {
 
 
     /*
-     * レコード全件取得処理
+     * Messageを全件取得処理
      */
     public List<UserMessageForm> findAllMessage() {
         List<Message> results = userMessageRepository.findAllByOrderByCreatedDateDesc();
@@ -56,57 +57,43 @@ public class MessageService {
      */
     public List<UserMessageForm> findByCreatedDateMessage(String start, String end, String categoryText) throws ParseException {
 
+        //開始日が設定されていない時はデフォルト値を設定
         if (start == null || start.isEmpty()) {
             start = "2022-01-01 00:00:00";
-        } else {
+        } else {//開始日が設定されているときは時刻の追加
             start += " 00:00:00";
         }
-        if (end == null || end.isEmpty()) {
+        if (end == null || end.isEmpty()) {//終了日が設定されていない時は現在日時を設定
             Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
             end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTimestamp);
-        } else {
+        } else {//終了日が設定されているときは時刻の追加
             end += " 23:59:59";
         }
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        //String型からTimestamp型に変換
         Timestamp startDate = Timestamp.valueOf(start);
         Timestamp endDate = Timestamp.valueOf(end);
 
         List<Message> results;
-        if(categoryText == null){
+        if(categoryText == null){//カテゴリの指定がある時は日付の範囲とカテゴリも含めて検索・取得
             results = userMessageRepository.findByCreatedDateBetweenOrderByCreatedDateDesc(startDate, endDate);
-        }else {
+        }else {//カテゴリの指定がない時は日付の範囲で検索・取得
             results = userMessageRepository.findByCategoryContainingAndCreatedDateBetweenOrderByCreatedDateDesc(categoryText, startDate, endDate);
         }
+        //UserMessageForm型に変換
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
 
-    /*
-     * DBから取得したデータをFormに設定
-     */
-    private List<MessageForm> setMessageForm(List<Message> results) {
-        List<MessageForm> messages = new ArrayList<>();
-
-        for (int i = 0; i < results.size(); i++) {
-            MessageForm message = new MessageForm();
-            Message result = results.get(i);
-            message.setId(result.getId());
-            message.setTitle(result.getTitle());
-            message.setText(result.getText());
-            message.setCategory(result.getCategory());
-            message.setUserId(result.getUserId());
-            messages.add(message);
-        }
-        return messages;
-    }
-
+    //Message型をUserMessage型に変換
     private List<UserMessageForm> setUserMessageForm(List<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
+        //Listのひとつずつ取り出し
         for (int i = 0; i < results.size(); i++) {
             UserMessageForm message = new UserMessageForm();
             Message result = results.get(i);
+            //MessageのuserIdのユーザーが存在しない時スキップ
             if (result.getUser() == null) {
                 continue;
             }
@@ -125,7 +112,8 @@ public class MessageService {
         }
         return messages;
     }
-    
+
+    //投稿の削除
     public void delete(Integer id) {
         messageRepository.deleteById(id);
     }
