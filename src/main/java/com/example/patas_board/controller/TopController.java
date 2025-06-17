@@ -35,7 +35,7 @@ public class TopController {
         ModelAndView mav = new ModelAndView();
 
         String categoryText = new String();
-        // 返信form用の空のentityを準備
+        // 返信form用の空のCommentForm型を準備
         CommentForm commentsForm = new CommentForm();
         // 投稿を全件取得
         List<UserMessageForm> messageData = messageService.findAllMessage();
@@ -67,7 +67,7 @@ public class TopController {
                                    @RequestParam(value="categoryText", required = false)String categoryText,
                                     HttpServletRequest request) throws ParseException {
         ModelAndView mav = new ModelAndView();
-        // 返信form用の空のentityを準備
+        // 返信form用の空のCommentForm型を準備
         CommentForm commentsForm = new CommentForm();
         // 投稿を全件取得 日付検索に変えた
         List<UserMessageForm> messageData = messageService.findByCreatedDateMessage(start, end, categoryText);
@@ -76,6 +76,7 @@ public class TopController {
         //エラーメッセージを取得
         mav.addObject("mavErrorMessages", session.getAttribute("errorMessages"));
         mav.addObject("messageId", session.getAttribute("messageId"));
+        // 値を渡したらセッションからエラーメッセージを消す
         session.removeAttribute("errorMessages");
         // 画面遷移先を指定
         mav.setViewName("/top");

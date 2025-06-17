@@ -17,40 +17,26 @@ public class CommentService {
     @Autowired
     CommentRepository commentRepository;
     /*
-     * レコード全件取得処理
+     * DBからコメントを全件取得処理
      */
     public List<UserCommentForm> findAllComment() {
+        //Comment型でDBから全件取得
         List<Comment> results = commentRepository.findAll();
+        //UserComment型に変換
         List<UserCommentForm> comments = setUserCommentForm(results);
         return comments;
     }
 
-    /*
-     * DBから取得したデータをFormに設定
-     */
-    private List<CommentForm> setCommentForm(List<Comment> results) {
-        List<CommentForm> comments = new ArrayList<>();
-
-        for (int i = 0; i < results.size(); i++) {
-            CommentForm comment = new CommentForm();
-            Comment result = results.get(i);
-            comment.setId(result.getId());
-            comment.setText(result.getText());
-            comment.setUserId(result.getUserId());
-            comment.setMessageId(result.getMessageId());
-            comment.setCreatedDate(result.getCreatedDate());
-            comment.setUpdatedDate(result.getUpdatedDate());
-            comments.add(comment);
-        }
-        return comments;
-    }
-
+    //Comment型をUserComment型に変換
     private List<UserCommentForm> setUserCommentForm(List<Comment> results) {
+        //空のリストを作成
         List<UserCommentForm> comments = new ArrayList<>();
 
+        //Listからひとつずつ取り出す
         for (int i = 0; i < results.size(); i++) {
             UserCommentForm comment = new UserCommentForm();
             Comment result = results.get(i);
+            //MessageのuserIdのユーザーが存在しない時スキップ
             if (result.getUser() == null) {
                 continue;
             }
@@ -68,17 +54,21 @@ public class CommentService {
     }
 
     /*
-     * レコード追加
+     * DBにコメントを登録
      */
     public void saveComment(CommentForm reqComment) {
+        //CommentForm型をComment型に変換
         Comment saveComment = setCommentEntity(reqComment);
+        //Comment型のものをDBに保存・更新
         commentRepository.save(saveComment);
     }
     /*
-     * リクエストから取得した情報をEntityに設定
+     * リクエストから取得した情報をComment型に設定
      */
     private Comment setCommentEntity(CommentForm reqComment) {
+        //空のComment型を定義
         Comment comment = new Comment();
+        //要素を格納していく
         comment.setId(reqComment.getId());
         comment.setText(reqComment.getText());
         comment.setUserId(reqComment.getUserId());
@@ -87,7 +77,7 @@ public class CommentService {
     }
 
     /*
-     * 投稿削除
+     * DBからコメントを削除
      */
     public void deleteComment(int id) {
         commentRepository.deleteById(id);
