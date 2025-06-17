@@ -1,6 +1,5 @@
 package com.example.patas_board.controller;
 
-import com.example.patas_board.controller.form.MessageForm;
 import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.service.BranchService;
 import com.example.patas_board.service.DepartmentService;
@@ -11,14 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.SmartValidator;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class UserEditController {
@@ -33,16 +34,20 @@ public class UserEditController {
     @Autowired
     public SmartValidator validator;
 
+    /*
+     * ユーザ編集画面表示処理
+     */
     @GetMapping("/setting/form")
     public ModelAndView view(@RequestParam("id") String id) {
 
-        List<String> errorMessages = new ArrayList<String>();
+        // エラーメッセージのリスト、mav定義
         ModelAndView mav = new ModelAndView();
+        List<String> errorMessages = new ArrayList<String>();
 
+        // バリデーションチェック (URLチェック)　null/半角数字以外/存在しないID
         if (id.isBlank()) {
             errorMessages.add("不正なパラメータが入力されました");
             mav.setViewName("redirect:/manager/form");
-
         } else if (!id.matches("^[0-9]+$")) {
             errorMessages.add("不正なパラメータが入力されました");
             mav.setViewName("redirect:/manager/form");
@@ -51,6 +56,7 @@ public class UserEditController {
             int userId = Integer.parseInt(id);
             UserForm userData = userService.selectUser(userId);
 
+            // 存在しないidをURLで直打ちされた場合
             if (userData == null) {
                 errorMessages.add("不正なパラメータが入力されました");
                 mav.setViewName("redirect:/manager/form");
@@ -58,14 +64,11 @@ public class UserEditController {
                 return mav;
             }
 
-            // "users"オブジェクト "statuses"オブジェクト　格納
-
+            // Mapで支社名と部署名取得
             HashMap<Integer, String> branchChoices = branchService.findAllBranchesMap();
-
-            //タスクステータスリスト作成
             HashMap<Integer, String> departmentChoices = departmentService.findAllDepartmentsMap();
 
-            // セッションよりデータを取得して設
+            // mavにオブジェクト格納してreturnで返す
             mav.addObject("users", userData);
             mav.addObject("branchChoices", branchChoices);
             mav.addObject("departmentChoices", departmentChoices);
@@ -73,43 +76,50 @@ public class UserEditController {
 
             return mav;
         }
+
+        // エラーメッセージをセッションに格納する
         session.setAttribute("errorMessages", errorMessages);
         return mav;
     }
 
+    /*
+     * ユーザ編集画面表示処理(更新処理でエラーが発生した場合での処理)
+     */
+    public ModelAndView view(@RequestParam("id") String id,
+                             @ModelAttribute("errorMessages") List<String> errorMessages) {
 
-
-    public ModelAndView view(@RequestParam("id") String id, @ModelAttribute("errorMessages") List<String> errorMessages) {
         // ユーザ情報取得
         int userId = Integer.parseInt(id);
         UserForm userData = userService.selectUser(userId);
 
-        // "users"オブジェクト "statuses"オブジェクト　格納
+        // mav定義
         ModelAndView mav = new ModelAndView();
 
+        // Mapで支社名と部署名取得
         HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();
-
-        //タスクステータスリスト作成
         HashMap<Integer,String> departmentChoices= departmentService.findAllDepartmentsMap();
 
+        // mavにオブジェクト格納してreturnで返す
         mav.addObject("errorMessages", errorMessages);
         mav.addObject("users",userData);
-        mav.setViewName("/setting");
         mav.addObject("branchChoices", branchChoices);
         mav.addObject("departmentChoices", departmentChoices);
+        mav.setViewName("/setting");
         return mav;
     }
 
     /*
-     * アカウント復活/停止切り替え
+     * ユーザ編集更新処理
      */
     @PostMapping("/setting")
     public ModelAndView updateUser(@ModelAttribute("formModel") UserForm userForm, BindingResult result,
                                    @RequestParam(name = "confirmPassword", required = false) String confirmPassword) {
 
+        // mav、エラーメッセージリスト定義
         ModelAndView mav = new ModelAndView();
         List<String> errorMessages = new ArrayList<String>();
 
+        // バリデーションチェック　全角スペース
         UserForm replaceUserForm = userForm;
         String replaceName = replaceUserForm.getName();
         replaceName = replaceName.replaceFirst("^[\\s　]+", "").replaceFirst("[\\s　]+$", "");
@@ -138,6 +148,7 @@ public class UserEditController {
             errorMessages.add("支社と部署の組み合わせが不正です");
         } else {
 
+            // アカウント名をもとに情報取得
             String account = userForm.getAccount();
             UserForm existAccount = userService.checkedAccount(account);
 
@@ -146,13 +157,15 @@ public class UserEditController {
                 errorMessages.add("アカウントが重複しています");
             }
 
+            // エラーが一つもなければステータス更新処理
             if(errorMessages.size() == 0) {
-                // ステータス更新処理
                 userService.updateUser(userForm);
                 mav.setViewName("redirect:/manager/form");
                 return mav;
             }
         }
+
+        // ユーザ編集画面のID、エラーメッセージを詰めてviewを呼び出す
         return view(String.valueOf(userForm.getId()), errorMessages);
     }
 }
