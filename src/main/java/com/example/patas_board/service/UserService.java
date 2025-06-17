@@ -4,6 +4,7 @@ import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.repository.UserRepository;
 import com.example.patas_board.repository.entity.User;
 import com.example.patas_board.utils.CipherUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -185,5 +186,12 @@ public class UserService {
         }
 
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void saveLoginDate(int id){
+        //Calender
+
+        userRepository.updateLoginDate(id);
     }
 }

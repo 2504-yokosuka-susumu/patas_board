@@ -11,6 +11,7 @@
 </div>
 <div class="main-contents">
   <form method="post" action="/add" th:object="${formModel}">
+<!--    各プロパティでエラーが発生したら赤色でエラーメッセージを表示する-->
     <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red">Content Error</div>
     <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color: red">Content Error</div>
     <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" style="color: red">Content Error</div>
@@ -28,6 +29,7 @@
       <label>カテゴリ</label>
       <input type="text" th:field="*{category}">
     </div>
+<!--      ユーザーIDがフォームオブジェクトに格納されていないためコントローラー側で格納するために情報を送る-->
       <input type="hidden" name="userId" th:value="${session.loginUser.id}">
       <input type="submit" value="投稿する" />
   </form>

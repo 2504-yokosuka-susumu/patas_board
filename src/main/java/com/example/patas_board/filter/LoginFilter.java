@@ -24,14 +24,15 @@ public class LoginFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse)response;
 
         httpSession = httpRequest.getSession(false);
-
+        // セッション情報が存在するかつログインユーザーが存在している場合、フィルターを外す
         if (httpSession != null && httpSession.getAttribute("loginUser") != null){
             chain.doFilter(httpRequest,httpResponse);
         } else {
             //httpSession = httpRequest.getSession(true);
-            //エラーメッセージをセット
+            //エラーメッセージリストの作成
             List<String> errorMessages = new ArrayList<>();
             errorMessages.add("ログインしてください");
+            // セッションに格納
             httpRequest.getSession().setAttribute("errorMessages", errorMessages);
             //ログインページにリダイレクト
             httpRequest.getRequestDispatcher("/login/form").forward(request, response);
