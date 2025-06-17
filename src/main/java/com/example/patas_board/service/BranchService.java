@@ -13,11 +13,12 @@ public class BranchService {
     @Autowired
     BranchRepository branchRepository;
     /*
-     * レコード全件取得処理
+     * Branch全件取得処理
      */
     public HashMap<Integer,String> findAllBranchesMap() {
         List<Branch> results = branchRepository.findAll();
         HashMap<Integer,String> branchChoices = new HashMap<>();
+        //キー値をid、値をnameのハッシュマップを作製
         for(int i=0;i<results.size();i++){
             Branch result = results.get(i);
             branchChoices.put(result.getId(), result.getName());
