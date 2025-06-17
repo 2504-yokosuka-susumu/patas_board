@@ -14,24 +14,28 @@
         <span th:text="${errorMessage}" style="color:red"></span>
     </div>
 </th:block>
-<div class="user-icon">
+<div class="main-contents">
     <form th:action="@{/setting}" th:object="${users}" method="post">
-
+    <div class="form-area">
         <label th:for="id">ID</label>
         <input th:value="${users.id}" id="id" th:field="*{id}"/><br />
-
+    </div>
+    <div class="form-area">
         <label th:for="account">アカウント名</label>
         <input th:value="${users.account}" id="account" th:field="*{account}"/><br />
-
+    </div>
+    <div class="form-area">
         <label th:for="password">パスワード</label>
         <input th:type="password" id="password" th:field="*{password}"/> <br />
-
+    </div>
+    <div class="form-area">
         <label th:for="confirmPassword">パスワード確認</label>
         <input th:type="password" name="confirmPassword"/> <br />
-
+    </div>
+    <div class="form-area">
         <label th:for="name">名前</label>
         <input th:value="${users.name}" id="name" th:field="*{name}"/><br />
-
+    </div>
         <th:if th:if="${session.loginUser.id != users.id}">
             <label th:for="branchName">支社</label>
             <select name="branchId" th:field="*{branchId}">
