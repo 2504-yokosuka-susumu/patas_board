@@ -108,7 +108,7 @@ a.profile .account {
 	font: small-caption;
 }
 
-.message .date {
+.date {
 	font-weight: lighter;
 	color: gray;
 	font: small-caption;
@@ -172,4 +172,8 @@ color: #1e366a;
 
 .setting-button{
 
+}
+
+.text{
+    overflow-wrap: anywhere;
 }

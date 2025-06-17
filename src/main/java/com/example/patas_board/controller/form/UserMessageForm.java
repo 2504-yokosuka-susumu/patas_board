@@ -22,6 +22,10 @@ public class UserMessageForm {
 
     private String category;
 
+    private int branchId;
+
+    private int departmentId;
+
     private Date createdDate;
 
     private Date updatedDate;

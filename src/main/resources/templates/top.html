@@ -25,10 +25,12 @@
             @<span th:text="${session.loginUser.account}" />
         </div>
     </div>
-    <div class="user-manage-button">
-        <a href="/manager/form">
-            <button class="manage-button" type="button">ユーザー管理</button>
-        </a>
+    <div th:if="${session.loginUser.departmentId == 1}">
+        <div class="user-manage-button">
+            <a href="/manager/form">
+                <button class="manage-button" type="button">ユーザー管理</button>
+            </a>
+        </div>
     </div>
     <div class="logout-button">
         <a href="/logout">
@@ -74,14 +76,17 @@
         <div class="text">
             <p>本文 : <span th:text="${message.text}"/></p>
         </div>
-        <div th:if="${session.loginId == message.userId}">
+        <div class="date">
+            <span th:text="${message.createdDate}"/>
+        </div>
+        <div th:if="${session.loginUser.id == message.userId || session.loginUser.departmentId == 2 || (session.loginUser.branchId == message.branchId && (session.loginUser.departmentId == 3 && message.departmentId == 4))}">
             <div class="delete-button">
                 <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                     <input type="hidden" name="userId" th:value="${message.userId}">
                     <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
                 </form>
             </div>
-        </div>
+            </div>
         <div class="date">
             <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
@@ -96,7 +101,10 @@
                     コメント投稿者 : <span th:text="${comment.name}"/>
                 </div>
                 <div class="text">
-                    コメント : <span th:text="${comment.text}"/>
+                    <p>コメント : <span th:text="${comment.text}"/></p>
+                </div>
+                <div class="date">
+                    <span th:text="${message.createdDate}"/>
                 </div>
                 <div th:if="${session.loginId == comment.userId}">
                     <div class="delete-button">
