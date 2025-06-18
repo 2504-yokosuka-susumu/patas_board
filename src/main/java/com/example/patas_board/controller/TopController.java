@@ -43,18 +43,12 @@ public class TopController {
         // 返信form用の空のCommentForm型を準備
         CommentForm commentsForm = new CommentForm();
 
-        Page<Message> player = messageService.findGoodsPages(pageable);
-        List<UserMessageForm> playerPage = messageService.findGoodsPage(pageable);
-
+        // ページ情報取得
+        Page<Message> page = messageService.findPages(pageable);
+        // ページ型をUserMessageForm型に変換して取得
+        List<UserMessageForm> messageData = messageService.findUserMessagePage(pageable);
         //ページ表示のためのリストを作成
-        List<Integer> pageList = messageService.pageList(pageable.getPageNumber()+1, player.getTotalPages());
-
-        mav.addObject("page", player);
-        //String name = playerPage.getContent().get(0).getUser().getName();
-
-        mav.addObject("players", playerPage);
-
-        mav.addObject("pageList", pageList);
+        List<Integer> pageList = messageService.pageList(pageable.getPageNumber()+1, page.getTotalPages());
 
         // 投稿を全件取得
         //List<UserMessageForm> messageData = messageService.findAllMessage();
@@ -71,16 +65,13 @@ public class TopController {
         // 値を渡したらセッションからエラーメッセージを消す
         session.removeAttribute("errorMessages");
 
+        mav.addObject("page", page);
+        mav.addObject("pageList", pageList);
         mav.addObject("categoryText", categoryText);
         mav.addObject("formModel", commentsForm);
-        //mav.addObject("messages", messageData);
+        mav.addObject("messages", messageData);
         mav.addObject("comments", commentData);
         return mav;
-    }
-
-    private Pageable parsePageable(String str) {
-        int page = parseInt(str); //文字列strを整数に変換する。
-        return PageRequest.of(page,5);
     }
 
     /*
