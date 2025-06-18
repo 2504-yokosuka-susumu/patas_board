@@ -4,6 +4,7 @@ import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.repository.UserRepository;
 import com.example.patas_board.repository.entity.User;
 import com.example.patas_board.utils.CipherUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class UserService {
      */
     public List<UserForm> findAllUser() {
 
-        List<User> results = userRepository.findAll();
+        List<User> results = userRepository.findAllByOrderById();
 
         List<UserForm> users = new ArrayList<>();
         for (int i = 0; i < results.size(); i++) {
@@ -134,6 +135,10 @@ public class UserService {
         List<User> userResults = new ArrayList<>();
         userResults.add((User) userRepository.findById(id).orElse(null));
 
+        if(userResults.contains(null)) {
+            return null;
+        }
+
         UserForm user = new UserForm();
 
         user.setId(userResults.get(0).getId());
@@ -169,9 +174,24 @@ public class UserService {
             user.setPassword(userResults.get(0).getPassword());
         }
         user.setName(reqUser.getName());
-        user.setBranchId(reqUser.getBranchId());
-        user.setDepartmentId(reqUser.getDepartmentId());
+        if(reqUser.getBranchId() == 0) {
+            user.setBranchId(userResults.get(0).getBranchId());
+        } else {
+            user.setBranchId(reqUser.getBranchId());
+        }
+        if(reqUser.getDepartmentId() == 0) {
+            user.setDepartmentId(userResults.get(0).getDepartmentId());
+        } else {
+            user.setDepartmentId(reqUser.getDepartmentId());
+        }
 
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void saveLoginDate(int id){
+        //Calender
+
+        //userRepository.updateLoginDate(id);
     }
 }

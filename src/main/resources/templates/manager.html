@@ -14,33 +14,43 @@
             <span th:text="${errorMessages}" style="color:red"></span>
         </div>
     </th:block>
+    <form th:action="@{/signup/form}" th:method="get">
+        <input type="submit" value="新規登録">
+    </form>
     <div class="user-icon" th:each="user : ${users}">
-        <div>
-            ID : <span th:text="${user.id}"/>
+        <div class="manager">
+            <label>ID</label>
+            <span th:text="${user.id}"/>
         </div>
-        <div>
-            Account : <span th:text="${user.account}"/>
+        <div class="manager">
+            <label>アカウント</label>
+            <span th:text="${user.account}"/>
         </div>
-        <div>
-            name : <span th:text="${user.name}"/>
+        <div class="manager">
+            <label>氏名</label>
+            <span th:text="${user.name}"/>
         </div>
-        <div>
-            支社 : <span th:text="${user.branchId}"/>
+        <div class="manager">
+            <label>支社</label>
+            <span th:text="${branchChoices[user.branchId]}"/>
         </div>
-        <div>
-            部署 : <span th:text="${user.departmentId}"/>
+        <div class="manager">
+            <label>部署</label>
+            <span th:text="${departmentChoices[user.departmentId]}"/>
         </div>
 
         <form th:action="@{/manager}" method="post">
-            <input type="hidden" name="id" th:value="${user.id}" />
-            <select name="status">
-                <option th:each="status : ${statuses}"
-                        th:value="${status.ordinal()}"
-                        th:text="${status}"
-                        th:selected="${status.ordinal() == user.isStopped}">
-                </option>
-            </select>
-            <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+            <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
+            <th:if th:if="${session.loginUser.id != user.id}">
+                <select name="status">
+                    <option th:each="status : ${statuses}"
+                            th:value="${status.ordinal()}"
+                            th:text="${status}"
+                            th:selected="${status.ordinal() == user.isStopped}">
+                    </option>
+                </select>
+                <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+            </th:if>
         </form>
 
         <div class="setting-button">
@@ -49,16 +59,10 @@
                 <input type="submit" value="編集">
             </form>
         </div>
+        <br>
     </div>
-
-<!--    <a th:href="@{/signup/form}">-->
-<!--        <button class="signup-button" type="button">新規登録</button>-->
-<!--    </a>-->
-    <form th:action="@{/signup/form}" th:method="get">
-        <input type="submit" value="新規登録">
-    </form>
     <div class="footer-contents">
-        <a href="/">戻る</a>
+        <a href="/patas_board">戻る</a>
     </div>
 </body>
 </html>

@@ -10,8 +10,8 @@
     <h2>ユーザ編集画面</h2>
 </div>
 <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
-    <div th:each="errorMessages:${errorMessages}">
-        <span th:text="${errorMessages}" style="color:red"></span>
+    <div th:each="errorMessage:${errorMessages}">
+        <span th:text="${errorMessage}" style="color:red"></span>
     </div>
 </th:block>
 <div class="user-icon">
@@ -32,14 +32,25 @@
         <label th:for="name">名前</label>
         <input th:value="${users.name}" id="name" th:field="*{name}"/><br />
 
-        <label th:for="branchName">支社</label>
-        <input th:value="${users.branchId}" id="branchId" th:field="*{branchId}"/><br />
+        <th:if th:if="${session.loginUser.id != users.id}">
+            <label th:for="branchName">支社</label>
+            <select name="branchId" th:field="*{branchId}">
+                <option th:each="choice : ${branchChoices}" th:value="${choice.key}"
+                        th:text="${choice.value}" th:selected="${choice.key == users.id}"></option>
+            </select><br>
 
-        <label th:for="departmentName">部署</label>
-        <input th:value="${users.departmentId}" id="departmentId" th:field="*{departmentId}"/><br />
+            <label th:for="departmentName">部署</label>
+            <select name="departmentId" th:field="*{departmentId}">
+                <option th:each="choice : ${departmentChoices}" th:value="${choice.key}"
+                        th:text="${choice.value}" th:selected="${choice.key == users.departmentId}"></option>
+            </select><br>
+        </th:if>
 
         <input type="submit" value="登録" />
     </form>
+</div>
+<div class="footer-contents">
+    <a href="/manager/form">戻る</a>
 </div>
 
 </body>

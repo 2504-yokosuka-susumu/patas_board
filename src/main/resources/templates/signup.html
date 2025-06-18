@@ -39,49 +39,21 @@
     <fieldset>
       <legend>支社を選択してください:</legend>
 
-      <div>
-        <input type="radio" th:field="*{branchId}" th:value="1" checked />
-        <label>本社</label>
+      <div th:each="branch : ${branchChoices}">
+        <input type="radio" th:field="${formModel.branchId}" th:value="${branch.key}"
+               th:text="${branch.value}" checked />
       </div>
 
-      <div>
-        <input type="radio" th:field="*{branchId}" th:value="2" checked />
-        <label>A支社</label>
-      </div>
-
-      <div>
-        <input type="radio" th:field="*{branchId}" th:value="3" checked />
-        <label>B支社</label>
-      </div>
-
-      <div>
-        <input type="radio" th:field="*{branchId}" th:value="4" checked />
-        <label>C支社</label>
-      </div>
     </fieldset>
 
     <fieldset>
       <legend>部署を選択してください:</legend>
 
-      <div>
-        <input type="radio" th:field="*{departmentId}" th:value="1" checked />
-        <label>総務人事部</label>
+      <div th:each="department : ${departmentChoices}">
+        <input type="radio" th:field="${formModel.departmentId}" th:value="${department.key}"
+               th:text="${department.value}" checked />
       </div>
 
-      <div>
-        <input type="radio" th:field="*{departmentId}" th:value="2" checked />
-        <label>情報管理部</label>
-      </div>
-
-      <div>
-        <input type="radio" th:field="*{departmentId}" th:value="3" checked />
-        <label>営業部</label>
-      </div>
-
-      <div>
-        <input type="radio" th:field="*{departmentId}" th:value="4" checked />
-        <label>技術部</label>
-      </div>
     </fieldset>
 
     <input type="submit" value="登録する">
@@ -90,7 +62,7 @@
   </form>
 </div>
 <div class="footer-contents">
-  <form action="/">
+  <form action="/manager/form">
     <input type="submit" value="戻る" />
   </form>
 </div>
