@@ -137,6 +137,13 @@ public class MessageService {
     public  List<Integer> pageList(int currentPage, int lastPage){
         List<Integer> pageList = new ArrayList<>();
 
+        //総ページ数が7より小さいときは全ページを表示する
+        if(lastPage < 7){
+            for(int i=0;i<lastPage;i++){
+                pageList.add(i+1);
+            }
+            return pageList;
+        }
         //最初の5ページまでの間
         if(currentPage < 5){
             pageList.addAll(Arrays.asList(1,2,3,4,5,0,lastPage));
