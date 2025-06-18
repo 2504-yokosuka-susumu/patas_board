@@ -22,6 +22,8 @@ public class UserCommentForm {
 
     private  String account;
 
+    private  int branchId;
+
     private Date createdDate;
 
     private Date updatedDate;

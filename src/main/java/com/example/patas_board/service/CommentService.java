@@ -4,6 +4,7 @@ import com.example.patas_board.controller.form.CommentForm;
 import com.example.patas_board.controller.form.UserCommentForm;
 import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.CommentRepository;
+import com.example.patas_board.repository.UserCommentRepository;
 import com.example.patas_board.repository.entity.Comment;
 import com.example.patas_board.repository.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.List;
 public class CommentService {
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    UserCommentRepository userCommentRepository;
     /*
      * DBからコメントを全件取得処理
      */
@@ -26,6 +30,18 @@ public class CommentService {
         List<UserCommentForm> comments = setUserCommentForm(results);
         return comments;
     }
+
+    public List<UserCommentForm> findAllUserPost(int id) {
+        List<Comment> results = userCommentRepository.findAllByUserId(id);
+        List<UserCommentForm> comments = setUserCommentForm(results);
+        return comments;
+    }
+
+//    public List<UserCommentForm> findAllBranchComment(int id) {
+//        List<Comment> results = userCommentRepository.findAllByBranchId(id);
+//        List<UserCommentForm> comments = setUserCommentForm(results);
+//        return comments;
+//    }
 
     //Comment型をUserComment型に変換
     private List<UserCommentForm> setUserCommentForm(List<Comment> results) {

@@ -177,3 +177,11 @@ color: #1e366a;
 .text{
     overflow-wrap: anywhere;
 }
+
+.branch-icon{
+	border: solid 2px;
+	display: flex;
+	justify-content: start;
+	vertical-align: middle;
+	width: 20%;
+}

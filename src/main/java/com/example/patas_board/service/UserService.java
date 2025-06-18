@@ -1,7 +1,10 @@
 package com.example.patas_board.service;
 
+import com.example.patas_board.controller.form.UserCommentForm;
 import com.example.patas_board.controller.form.UserForm;
+import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.UserRepository;
+import com.example.patas_board.repository.entity.Message;
 import com.example.patas_board.repository.entity.User;
 import com.example.patas_board.utils.CipherUtil;
 import jakarta.transaction.Transactional;
@@ -18,6 +21,12 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    MessageService messageService;
+
+    @Autowired
+    CommentService commentService;
 
     public UserForm login(String account, String password){
         String encPassword = CipherUtil.encrypt(password);
@@ -43,12 +52,16 @@ public class UserService {
         }
     }
 
+
+
     private List<UserForm> setUserForm(List<User> results){
         List<UserForm> users = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
             UserForm user = new UserForm();
             User result = results.get(i);
+            List<UserMessageForm> messages = messageService.findAllUserPost(result.getId());
+            List<UserCommentForm> comments = commentService.findAllUserPost(result.getId());
             user.setId(result.getId());
             user.setAccount(result.getAccount());
             user.setPassword(result.getPassword());
@@ -56,6 +69,8 @@ public class UserService {
             user.setBranchId(result.getBranchId());
             user.setDepartmentId(result.getDepartmentId());
             user.setIsStopped(result.getIsStopped());
+            user.setTotalPost(messages.size());
+            user.setTotalComment(comments.size());
             users.add(user);
         }
         return users;
@@ -67,24 +82,7 @@ public class UserService {
     public List<UserForm> findAllUser() {
 
         List<User> results = userRepository.findAllByOrderById();
-
-        List<UserForm> users = new ArrayList<>();
-        for (int i = 0; i < results.size(); i++) {
-            UserForm user = new UserForm();
-            User result = results.get(i);
-            user.setId(result.getId());
-            user.setAccount(result.getAccount());
-            user.setPassword(result.getPassword());
-            user.setName(result.getName());
-            user.setBranchId(result.getBranchId());
-            user.setDepartmentId(result.getDepartmentId());
-            user.setIsStopped(result.getIsStopped());
-            user.setCreatedDate(result.getCreatedDate());
-            user.setUpdatedDate(new Date());
-            user.setLoginDate(result.getLoginDate());
-            users.add(user);
-        }
-
+        List<UserForm> users = setUserForm(results);
         return users;
     }
 
