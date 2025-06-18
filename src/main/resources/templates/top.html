@@ -157,16 +157,17 @@
                 </a>
             </li>
             <li
-                    th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:each="i : ${pageList}"
                     style="display:inline; margin-left:10px;"
             >
-                <span th:if="${i} == ${page.number}" th:text="${i + 1}">1</span>
+                <span th:if="${i} == ${page.number}+1" th:text="${i}">1</span>
                 <a
-                        th:if="${i} != ${page.number}"
-                        th:href="@{/patas_board(page = ${i})}"
+                        th:if="${i != page.number+1} and ${i != 0}"
+                        th:href="@{/patas_board(page = ${i-1})}"
                 >
-                    <span th:text="${i+1}">1</span>
+                    <span th:text="${i}">1</span>
                 </a>
+                <span th:if="${i} == 0" >…</span>
             </li>
             <li style="display:inline; margin-left:10px;">
                 <span th:if="${page.last}">次&gt;&gt;</span>

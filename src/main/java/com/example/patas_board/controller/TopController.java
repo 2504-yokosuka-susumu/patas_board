@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -47,10 +46,15 @@ public class TopController {
         Page<Message> player = messageService.findGoodsPages(pageable);
         List<UserMessageForm> playerPage = messageService.findGoodsPage(pageable);
 
+        //ページ表示のためのリストを作成
+        List<Integer> pageList = messageService.pageList(pageable.getPageNumber()+1, player.getTotalPages());
+
         mav.addObject("page", player);
         //String name = playerPage.getContent().get(0).getUser().getName();
 
         mav.addObject("players", playerPage);
+
+        mav.addObject("pageList", pageList);
 
         // 投稿を全件取得
         //List<UserMessageForm> messageData = messageService.findAllMessage();

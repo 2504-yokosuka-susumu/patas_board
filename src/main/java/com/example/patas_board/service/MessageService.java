@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -130,5 +131,24 @@ public class MessageService {
 
     public Page<Message> findGoodsPages(Pageable pageable) {
         return messageRepository.findAllByOrderByIdAsc(pageable);
+    }
+
+    //ページ表示を表すリストを作成するメソッド
+    public  List<Integer> pageList(int currentPage, int lastPage){
+        List<Integer> pageList = new ArrayList<>();
+
+        //最初の5ページまでの間
+        if(currentPage < 5){
+            pageList.addAll(Arrays.asList(1,2,3,4,5,0,lastPage));
+        }
+        //最後の5ページのとき
+        else if (currentPage > lastPage-4){
+            pageList.addAll(Arrays.asList(1,0,lastPage-4,lastPage-3,lastPage-2,lastPage-1,lastPage));
+        }
+        //途中のページの時
+        else {
+            pageList.addAll(Arrays.asList(1,0,currentPage-1,currentPage,currentPage+1,0,lastPage));
+        }
+        return pageList;
     }
 }
