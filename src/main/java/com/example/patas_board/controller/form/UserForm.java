@@ -37,4 +37,6 @@ public class UserForm {
     private Date createdDate;
 
     private Date updatedDate;
+
+    private Date loginDate;
 }

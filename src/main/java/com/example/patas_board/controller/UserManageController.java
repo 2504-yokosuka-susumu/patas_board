@@ -51,9 +51,11 @@ public class UserManageController {
             mav.addObject("errorMessages", errorMessages);
         }
         session.removeAttribute("errorMessages");
-
+        // ログインユーザーの最終ログイン日時は「ログイン中です」と表示
+        String loginText = "ログイン中です";
         // mavにオブジェクト格納してreturnで返す
         mav.addObject("users",userData);
+        mav.addObject("loginText", loginText);
         mav.addObject("statuses", UserForm.Status.values());
         mav.addObject("branchChoices", branchChoices);
         mav.addObject("departmentChoices", departmentChoices);

@@ -38,7 +38,16 @@
             <label>部署</label>
             <span th:text="${departmentChoices[user.departmentId]}"/>
         </div>
-
+        <div class="manager">
+            <label>最終ログイン日時</label>
+            <th:block th:if="${session.loginUser.id == user.id}">
+                <span th:text="${loginText}"/>
+            </th:block>
+            <th:block th:unless="${session.loginUser.id == user.id}">
+                <span th:text="${user.loginDate}"/>
+            </th:block>
+        </div>
+        </th:block>
         <form th:action="@{/manager}" method="post">
             <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
             <th:if th:if="${session.loginUser.id != user.id}">
