@@ -59,30 +59,28 @@ public class MessageService {
      */
     public List<UserMessageForm> findByCreatedDateMessage(String start, String end, String categoryText) throws ParseException {
 
-        //開始日が設定されていない時はデフォルト値を設定
         if (start == null || start.isEmpty()) {
             start = "2022-01-01 00:00:00";
-        } else {//開始日が設定されているときは時刻の追加
+        } else {
             start += " 00:00:00";
         }
-        if (end == null || end.isEmpty()) {//終了日が設定されていない時は現在日時を設定
+        if (end == null || end.isEmpty()) {
             Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
             end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(currentTimestamp);
-        } else {//終了日が設定されているときは時刻の追加
+        } else {
             end += " 23:59:59";
         }
 
-        //String型からTimestamp型に変換
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Timestamp startDate = Timestamp.valueOf(start);
         Timestamp endDate = Timestamp.valueOf(end);
 
         List<Message> results;
-        if(categoryText == null){//カテゴリの指定がある時は日付の範囲とカテゴリも含めて検索・取得
+        if(categoryText == null){
             results = userMessageRepository.findByCreatedDateBetweenOrderByCreatedDateDesc(startDate, endDate);
-        }else {//カテゴリの指定がない時は日付の範囲で検索・取得
+        }else {
             results = userMessageRepository.findByCategoryContainingAndCreatedDateBetweenOrderByCreatedDateDesc(categoryText, startDate, endDate);
         }
-        //UserMessageForm型に変換
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
@@ -114,7 +112,7 @@ public class MessageService {
     }
 
     //Page型をUserMessage型に変換
-    private List<UserMessageForm> setUserMessageForm(Page<Message> results) {
+    public List<UserMessageForm> setUserMessageForm(Page<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
         int q = results.getContent().size();
@@ -148,12 +146,13 @@ public class MessageService {
         messageRepository.deleteById(id);
     }
 
-    public List<UserMessageForm> findUserMessagePage(Pageable pageable) {
-        Page<Message> result = messageRepository.findAllByOrderByIdAsc(pageable);
+    // Page型で取得したMessageをUserMessageForm型に変換してつめてる
+    public List<UserMessageForm> findUserMessagePage(Page<Message> result) {
         List<UserMessageForm> messages = setUserMessageForm(result);
         return messages;
     }
 
+    // Page型のMessageを返す
     public Page<Message> findPages(Pageable pageable) {
         return messageRepository.findAllByOrderByIdAsc(pageable);
     }

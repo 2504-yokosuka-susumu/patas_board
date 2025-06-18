@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         PageableHandlerMethodArgumentResolver resolver = new PageableHandlerMethodArgumentResolver();
         // 1ページに表示する最大件数(5件)を設定する
-        resolver.setMaxPageSize(5);
+        resolver.setMaxPageSize(2);
         argumentResolvers.add(resolver);
     }
 }

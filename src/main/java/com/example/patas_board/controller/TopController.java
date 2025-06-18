@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 @Controller
 public class TopController {
@@ -45,8 +42,8 @@ public class TopController {
 
         // ページ情報取得
         Page<Message> page = messageService.findPages(pageable);
-        // ページ型をUserMessageForm型に変換して取得
-        List<UserMessageForm> messageData = messageService.findUserMessagePage(pageable);
+        // ページ型をUserMessageForm型に変換して表示件数分投稿取得
+        List<UserMessageForm> messageData = messageService.findUserMessagePage(page);
         //ページ表示のためのリストを作成
         List<Integer> pageList = messageService.pageList(pageable.getPageNumber()+1, page.getTotalPages());
 
@@ -79,26 +76,25 @@ public class TopController {
      */
     @GetMapping("/filter")
     public ModelAndView categorize(@RequestParam(value="start", required = false)String start,
-                                    @RequestParam(value = "end", required = false)String end,
+                                   @RequestParam(value = "end", required = false)String end,
                                    @RequestParam(value="categoryText", required = false)String categoryText,
-                                    HttpServletRequest request) throws ParseException {
+                                   HttpServletRequest request) throws ParseException {
         ModelAndView mav = new ModelAndView();
-        // 返信form用の空のCommentForm型を準備
+        // 返信form用の空のentityを準備
         CommentForm commentsForm = new CommentForm();
         // 投稿を全件取得 日付検索に変えた
-        //List<UserMessageForm> messageData = messageService.findByCreatedDateMessage(start, end, categoryText);
+        List<UserMessageForm> messageData = messageService.findByCreatedDateMessage(start, end, categoryText);
         // 返信を全件取得
         List<UserCommentForm> commentData = commentService.findAllComment();
         //エラーメッセージを取得
         mav.addObject("mavErrorMessages", session.getAttribute("errorMessages"));
         mav.addObject("messageId", session.getAttribute("messageId"));
-        // 値を渡したらセッションからエラーメッセージを消す
         session.removeAttribute("errorMessages");
         // 画面遷移先を指定
         mav.setViewName("/top");
         // 投稿データオブジェクトを保管
         mav.addObject("formModel", commentsForm);
-        //mav.addObject("messages", messageData);
+        mav.addObject("messages", messageData);
         mav.addObject("comments", commentData);
         mav.addObject("start", start);
         mav.addObject("end", end);
@@ -106,6 +102,7 @@ public class TopController {
 
         return mav;
     }
+
 
     /*
      * ログアウト処理
