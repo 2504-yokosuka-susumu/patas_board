@@ -8,7 +8,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +81,7 @@ public class UserService {
             user.setIsStopped(result.getIsStopped());
             user.setCreatedDate(result.getCreatedDate());
             user.setUpdatedDate(new Date());
+            user.setLoginDate(result.getLoginDate());
             users.add(user);
         }
 
@@ -190,8 +193,9 @@ public class UserService {
 
     @Transactional
     public void saveLoginDate(int id){
-        //Calender
-
-        userRepository.updateLoginDate(id);
+        Calendar cl = Calendar.getInstance();
+        //現在時刻の情報を取得
+        Date currentTime = cl.getTime();
+        userRepository.updateLoginDate(id, currentTime);
     }
 }

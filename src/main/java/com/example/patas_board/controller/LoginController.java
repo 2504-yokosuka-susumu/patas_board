@@ -88,7 +88,7 @@ public class LoginController {
             session.setAttribute("loginUser", user);
             session.setAttribute("loginId", user.getId());
 
-            //userService.saveLoginDate(user.getId());
+            userService.saveLoginDate(user.getId());
             // ホーム画面にリダイレクト処理
             mav.setViewName("redirect:/patas_board");
         }
