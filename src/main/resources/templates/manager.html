@@ -14,6 +14,9 @@
             <span th:text="${errorMessages}" style="color:red"></span>
         </div>
     </th:block>
+    <div>
+        <a href="/patas_board">ホーム画面</a>
+    </div>
     <form th:action="@{/signup/form}" th:method="get">
         <input type="submit" value="新規登録">
     </form>

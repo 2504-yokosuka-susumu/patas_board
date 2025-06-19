@@ -111,7 +111,7 @@ public class MessageService {
         return messages;
     }
 
-    //Page型をUserMessage型に変換
+    //Page型のコンテンツをUserMessage型に変換
     public List<UserMessageForm> setUserMessageForm(Page<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
@@ -146,12 +146,6 @@ public class MessageService {
         messageRepository.deleteById(id);
     }
 
-    // Page型で取得したMessageをUserMessageForm型に変換してつめてる
-    public List<UserMessageForm> findUserMessagePage(Page<Message> result) {
-        List<UserMessageForm> messages = setUserMessageForm(result);
-        return messages;
-    }
-
     // Page型のMessageを返す
     public Page<Message> findPages(Pageable pageable) {
         return messageRepository.findAllByOrderByIdAsc(pageable);
@@ -181,5 +175,13 @@ public class MessageService {
             pageList.addAll(Arrays.asList(1,0,currentPage-1,currentPage,currentPage+1,0,lastPage));
         }
         return pageList;
+    }
+
+    public List<UserMessageForm> getPageData (List<UserMessageForm> messageAllData, Pageable pegeable){
+        List<UserMessageForm> pageData = messageAllData.stream()
+                .skip(pegeable.getPageNumber()*pegeable.getPageSize())
+                .limit(pegeable.getPageSize()).toList();
+
+        return pageData;
     }
 }
