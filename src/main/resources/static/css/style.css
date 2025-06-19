@@ -186,6 +186,9 @@ color: #1e366a;
 	margin-right: -1px; /* border の太さ分を相殺 */
 	margin-bottom: -1px; /* border の太さ分を相殺 */
 	border-left: -1px;
+	border-top: -1px;
+	width: 20%;
+
 }
 
 .pageButton {
