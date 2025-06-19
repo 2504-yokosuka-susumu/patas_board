@@ -40,7 +40,7 @@ public class TopController {
         // 返信form用の空のCommentForm型を準備
         CommentForm commentsForm = new CommentForm();
 
-        // ページ情報取得
+        // ページを情報取得
         Page<Message> page = messageService.findPages(pageable);
         //存在しないページの場合
         if(pageable.getPageNumber() < 0 || pageable.getPageNumber()+1 > page.getTotalPages()) {

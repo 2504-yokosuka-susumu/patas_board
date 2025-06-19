@@ -18,7 +18,8 @@
     <form th:action="@{/setting}" th:object="${users}" method="post">
         <div class="form-area">
             <label th:for="id">ID</label>
-            <input th:value="${users.id}" id="id" th:field="*{id}"/>
+            <input type="hidden" id="id" th:field="*{id}"/>
+            <span th:text="${users.id}"/>
         </div>
 
         <div class="form-area">
