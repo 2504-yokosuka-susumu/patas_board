@@ -123,6 +123,85 @@
             </form>
         </div>
     </div>
+
+    <!-- ページネーション -->
+<!--    絞込をしない時-->
+    <div th:if="${page != null}" class="page">
+        <ul>
+            <li style="display:inline;">
+                <span th:if="${page.first}">&lt;&lt;</span>
+                <button th:if="${!page.first}"
+                        th:onclick="|location.href='@{/patas_board(page = ${page.number} - 1)}'|"
+                        class="btn pageButton">
+                    &lt;&lt;
+                </button>
+            </li>
+<!--            pageListに基づきページ番号ボタンの表示-->
+            <li     th:each="i : ${pageList}"
+                    style="display:inline; margin-left:10px;">
+                <span th:if="${i} == ${page.number}+1" th:text="${i}">1</span>
+                <button th:if="${i != page.number+1} and ${i != 0}"
+                        th:onclick="|location.href='@{/patas_board(page = ${i-1})}'|"
+                        class="btn pageButton">
+                    <span th:text="${i}">1</span>
+                </button>
+                <span th:if="${i} == 0" >…</span>
+            </li>
+            <li style="display:inline; margin-left:10px;">
+                <span th:if="${page.last}">&gt;&gt;</span>
+                <button th:if="${!page.last}"
+                        th:onclick="|location.href='@{/patas_board(page = (${page.number} + 1))}'|"
+                        class="btn pageButton">
+                    &gt;&gt;
+                </button>
+            </li>
+        </ul>
+    </div>
+<!--    絞込実行時-->
+<!--    絞込内容を保持するためにformで画面遷移-->
+    <div th:if="${page == null}" class="page">
+        <ul>
+            <li style="display:inline;">
+                <span th:if="${pageable.pageNumber == 0}">&lt;&lt;</span>
+                <form   th:if="${pageable.pageNumber != 0}"
+                        th:action="@{/filter}"
+                        style="display:inline-flex; margin-left:10px;">
+                    <input type="hidden" name="start" th:value="${start}">
+                    <input type="hidden" name="end" th:value="${end}">
+                    <input type="hidden" name="categoryText" th:value="${categoryText}">
+                    <input type="hidden" name="page" th:value="${pageable.pageNumber - 1}">
+                    <input type="submit" value="&lt;&lt;" class="btn pageButton">
+                </form>
+            </li>
+<!--            pageListに基づきページ番号ボタンの表示-->
+            <li     th:each="i : ${pageList}"
+                    style="display:inline; margin-left:10px;">
+                <span th:if="${i} == ${pageable.pageNumber}+1" th:text="${i}">1</span>
+                <form   th:if="${i != pageable.pageNumber+1} and ${i != 0}"
+                        th:action="@{/filter}"
+                        style="display:inline-flex;">
+                    <input type="hidden" name="start" th:value="${start}">
+                    <input type="hidden" name="end" th:value="${end}">
+                    <input type="hidden" name="categoryText" th:value="${categoryText}">
+                    <input type="hidden" name="page" th:value="${i - 1}">
+                    <input type="submit" th:value="${i}" class="btn pageButton">
+                </form>
+                <span th:if="${i} == 0" >…</span>
+            </li>
+            <li style="display:inline-flex;">
+                <span th:if="${pageable.pageNumber == lastPage-1}">&gt;&gt;</span>
+                <form   th:if="${pageable.pageNumber != lastPage-1}"
+                        th:action="@{/filter(page = (${pageable.pageNumber} + 1))}"
+                        style="display:inline-flex; margin-left:10px;">
+                    <input type="hidden" name="start" th:value="${start}">
+                    <input type="hidden" name="end" th:value="${end}">
+                    <input type="hidden" name="categoryText" th:value="${categoryText}">
+                    <input type="hidden" name="page" th:value="${pageable.pageNumber + 1}">
+                    <input type="submit" value="&gt;&gt;" class="btn pageButton">
+                </form>
+            </li>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

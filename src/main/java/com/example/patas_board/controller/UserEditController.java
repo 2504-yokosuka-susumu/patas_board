@@ -137,12 +137,7 @@ public class UserEditController {
         } else if (!Objects.equals(userForm.getPassword(), confirmPassword)) {
             errorMessages.add("パスワードと確認用パスワードが一致しません");
         }
-        if(userForm.getBranchId() == 0){
-            errorMessages.add("支社を入力してください");
-        }
-        if(userForm.getDepartmentId() == 0){
-            errorMessages.add("部署を入力してください");
-        } else if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
+        if ((userForm.getDepartmentId() == 1 || userForm.getDepartmentId() == 2) && userForm.getBranchId() != 1){
             errorMessages.add("支社と部署の組み合わせが不正です");
         } else if ((userForm.getDepartmentId() == 3 || userForm.getDepartmentId() == 4) && userForm.getBranchId() == 1) {
             errorMessages.add("支社と部署の組み合わせが不正です");

@@ -2,7 +2,6 @@ package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.BranchForm;
 import com.example.patas_board.controller.form.UserForm;
-import com.example.patas_board.repository.entity.Message;
 import com.example.patas_board.service.BranchService;
 import com.example.patas_board.service.DepartmentService;
 import com.example.patas_board.service.MessageService;

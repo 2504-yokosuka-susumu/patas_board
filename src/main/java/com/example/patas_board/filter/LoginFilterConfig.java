@@ -13,7 +13,7 @@ public class LoginFilterConfig {
         bean.setFilter(new LoginFilter());
         //ログイン情報が必要なURL
         // ホーム画面
-        bean.addUrlPatterns("/patas_board");
+        bean.addUrlPatterns("/patas_board/*");
         // 新規投稿画面
         bean.addUrlPatterns("/new");
         // 投稿登録処理
