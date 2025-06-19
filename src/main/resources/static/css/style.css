@@ -177,3 +177,7 @@ color: #1e366a;
 .text{
     overflow-wrap: anywhere;
 }
+
+.page{
+    float:left
+}

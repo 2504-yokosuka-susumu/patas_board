@@ -126,7 +126,7 @@
 
     <!-- ページネーション -->
 <!--    絞込をしない時-->
-    <div th:if="${page != null}">
+    <div th:if="${page != null}" class="page">
         <ul>
             <li style="display:inline;">
                 <span th:if="${page.first}">&lt;&lt;前</span>
@@ -162,19 +162,20 @@
         </ul>
     </div>
 <!--    絞込実行時-->
-    <div th:if="${page == null}">
+    <div th:if="${page == null}" class="page">
         <ul>
             <li style="display:inline;">
-                <span th:if="${pageable == 0}">&lt;&lt;前</span>
+                <span th:if="${pageable.pageNumber == 0}">&lt;&lt;前</span>
                 <form
-                        th:if="${pageable != 0}"
+                        th:if="${pageable.pageNumber != 0}"
                         th:action="@{/filter}"
+                        style="display:inline-flex; margin-left:10px;"
                 >
                     <input type="hidden" name="start" th:value="${start}">
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${pageable.pageNumber - 1}">
-                    <input type="submit" value="&lt;&lt;前" style="border: 2px solid blue;">
+                    <input type="submit" value="&lt;&lt;前">
                 </form>
             </li>
             <li
@@ -185,6 +186,7 @@
                 <form
                         th:if="${i != pageable.pageNumber+1} and ${i != 0}"
                         th:action="@{/filter}"
+                        style="display:inline-flex; margin-left:10px;"
                 >
                     <input type="hidden" name="start" th:value="${start}">
                     <input type="hidden" name="end" th:value="${end}">
@@ -194,11 +196,12 @@
                 </form>
                 <span th:if="${i} == 0" >…</span>
             </li>
-            <li style="display:inline; margin-left:10px;">
-                <span th:if="${i == lastPage}">次&gt;&gt;</span>
+            <li style="display:inline-flex; margin-left:10px;">
+                <span th:if="${pageable.pageNumber == lastPage-1}">次&gt;&gt;</span>
                 <form
-                        th:if="${i != lastPage}"
+                        th:if="${pageable.pageNumber != lastPage-1}"
                         th:action="@{/filter(page = (${pageable.pageNumber} + 1))}"
+                        style="display:inline-flex; margin-left:10px;"
                 >
                     <input type="hidden" name="start" th:value="${start}">
                     <input type="hidden" name="end" th:value="${end}">

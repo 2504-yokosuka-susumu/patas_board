@@ -6,7 +6,6 @@ import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.entity.Message;
 import com.example.patas_board.service.CommentService;
 import com.example.patas_board.service.MessageService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
