@@ -6,8 +6,6 @@ import com.example.patas_board.controller.form.UserForm;
 import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.BranchRepository;
 import com.example.patas_board.repository.entity.Branch;
-import com.example.patas_board.repository.entity.Message;
-import com.example.patas_board.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +40,9 @@ public class BranchService {
         return branchChoices;
     }
 
+    /*
+     * 支社情報の取得
+     */
     public List<BranchForm> findAllBranch() {
 
         List<Branch> results = branchRepository.findAll();
@@ -49,18 +50,26 @@ public class BranchService {
         return branches;
     }
 
+    /*
+     * Formへの詰め替え（支社ごとの投稿数とコメント数もここでセットする）
+     */
     private List<BranchForm> setBranchForm(List<Branch> results) {
         List<BranchForm> branches = new ArrayList<>();
 
         //Listのひとつずつ取り出し
         for (int i = 0; i < results.size(); i++) {
+            // 支社と投稿・コメントを紐づけるためにユーザー情報取得
             List<UserForm> users = userService.findAllUser();
+            // トータルの数を代入するための変数を定義
             int totalMessage = 0;
             int totalComment = 0;
-            for(int j = 0; j < users.size(); j++){
-                if(users.get(j).getBranchId() == i+1){
+            // ユーザーの分だけユーザーIDを回して投稿とコメントを探しに行く
+            for(int j = 0; j < users.size(); j++) {
+                // iの数+1で支社のIDごとにユーザーを振り分けながら探しに行く
+                if(users.get(j).getBranchId() == i+1) {
                     List<UserMessageForm> messages = messageService.findAllUserPost(users.get(j).getId());
-                    List<UserCommentForm> comments = commentService.findAllUserPost(users.get(j).getId());
+                    List<UserCommentForm> comments = commentService.findAllUserComment(users.get(j).getId());
+                    // 支社ごとに振り分けられたユーザーの投稿数・コメント数の合計を足していく
                     totalMessage += messages.size();
                     totalComment += comments.size();
                 }
@@ -71,6 +80,7 @@ public class BranchService {
 
             branch.setId(result.getId());
             branch.setName(result.getName());
+            // 支社ごとの投稿数・コメント数を順番にセット
             branch.setTotalPost(totalMessage);
             branch.setTotalComment(totalComment);
             branches.add(branch);

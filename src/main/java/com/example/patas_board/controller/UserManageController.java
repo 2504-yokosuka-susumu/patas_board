@@ -46,8 +46,8 @@ public class UserManageController {
 
         // ユーザ情報取得
         List<UserForm> userData = userService.findAllUser();
+        // 支社情報の取得（支社名と投稿数・コメント数を紐づけるため）
         List<BranchForm> branchData = branchService.findAllBranch();
-        //HashMap<Integer,Integer> userPosts = messageService.findAllUserPost();
 
         // Mapで支社名と部署名取得
         HashMap<Integer,String> branchChoices= branchService.findAllBranchesMap();

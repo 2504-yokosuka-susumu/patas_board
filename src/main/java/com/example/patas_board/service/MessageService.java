@@ -4,7 +4,6 @@ import com.example.patas_board.controller.form.MessageForm;
 import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.MessageRepository;
 import com.example.patas_board.repository.UserMessageRepository;
-import com.example.patas_board.repository.entity.Branch;
 import com.example.patas_board.repository.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -44,17 +42,6 @@ public class MessageService {
         return message;
     }
 
-//    public HashMap<Integer,Integer> findAllUserPost() {
-//        List<Message> results = userMessageRepository.findAll();
-//        HashMap<Integer,Integer> userPosts = new HashMap<>();
-//        //キー値をid、値をnameのハッシュマップを作製
-//        for(int i=0;i<results.size();i++){
-//            Message result = results.get(i);
-//            userPosts.put(result.getUserId(), results.size());
-//        }
-//        return userPosts;
-//    }
-
     /*
      * Messageを全件取得処理
      */
@@ -64,17 +51,15 @@ public class MessageService {
         return messages;
     }
 
+    /*
+     * ユーザーごとの投稿を取得
+     */
     public List<UserMessageForm> findAllUserPost(int id) {
         List<Message> results = userMessageRepository.findAllByUserId(id);
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
 
-//    public List<UserMessageForm> findAllBranchPost(int id) {
-//        List<Message> results = userMessageRepository.findAllByBranchId(id);
-//        List<UserMessageForm> messages = setUserMessageForm(results);
-//        return messages;
-//    }
     /*
      * レコード日付範囲取得処理
      */
