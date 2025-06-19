@@ -46,9 +46,6 @@ public class TopController {
         List<UserMessageForm> messageData = messageService.setUserMessageForm(page);
         //ページ表示のためのリストを作成
         List<Integer> pageList = messageService.pageList(pageable.getPageNumber()+1, page.getTotalPages());
-
-        // 投稿を全件取得
-        //List<UserMessageForm> messageData = messageService.findAllMessage();
         // 返信を全件取得
         List<UserCommentForm> commentData = commentService.findAllComment();
         // セッション情報からエラーメッセージを取得
@@ -117,7 +114,6 @@ public class TopController {
 
         return mav;
     }
-
 
     /*
      * ログアウト処理
