@@ -129,35 +129,38 @@
     <div th:if="${page != null}" class="page">
         <ul>
             <li style="display:inline;">
-                <span th:if="${page.first}">&lt;&lt;前</span>
-                <a
+                <span th:if="${page.first}">&lt;&lt;</span>
+                <button
                         th:if="${!page.first}"
-                        th:href="@{/patas_board(page = ${page.number} - 1)}"
+                        th:onclick="|location.href='@{/patas_board(page = ${page.number} - 1)}'|"
+                        class="btn pageButton"
                 >
-                    &lt;&lt;前
-                </a>
+                    &lt;&lt;
+                </button>
             </li>
             <li
                     th:each="i : ${pageList}"
                     style="display:inline; margin-left:10px;"
             >
                 <span th:if="${i} == ${page.number}+1" th:text="${i}">1</span>
-                <a
+                <button
                         th:if="${i != page.number+1} and ${i != 0}"
-                        th:href="@{/patas_board(page = ${i-1})}"
+                        th:onclick="|location.href='@{/patas_board(page = ${i-1})}'|"
+                        class="btn pageButton"
                 >
                     <span th:text="${i}">1</span>
-                </a>
+                </button>
                 <span th:if="${i} == 0" >…</span>
             </li>
             <li style="display:inline; margin-left:10px;">
-                <span th:if="${page.last}">次&gt;&gt;</span>
-                <a
+                <span th:if="${page.last}">&gt;&gt;</span>
+                <button
                         th:if="${!page.last}"
-                        th:href="@{/patas_board(page = (${page.number} + 1))}"
+                        th:onclick="|location.href='@{/patas_board(page = (${page.number} + 1))}'|"
+                        class="btn pageButton"
                 >
-                    次&gt;&gt;
-                </a>
+                    &gt;&gt;
+                </button>
             </li>
         </ul>
     </div>
@@ -165,7 +168,7 @@
     <div th:if="${page == null}" class="page">
         <ul>
             <li style="display:inline;">
-                <span th:if="${pageable.pageNumber == 0}">&lt;&lt;前</span>
+                <span th:if="${pageable.pageNumber == 0}">&lt;&lt;</span>
                 <form
                         th:if="${pageable.pageNumber != 0}"
                         th:action="@{/filter}"
@@ -175,7 +178,7 @@
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${pageable.pageNumber - 1}">
-                    <input type="submit" value="&lt;&lt;前">
+                    <input type="submit" value="&lt;&lt;" class="btn pageButton">
                 </form>
             </li>
             <li
@@ -186,18 +189,18 @@
                 <form
                         th:if="${i != pageable.pageNumber+1} and ${i != 0}"
                         th:action="@{/filter}"
-                        style="display:inline-flex; margin-left:10px;"
+                        style="display:inline-flex;"
                 >
                     <input type="hidden" name="start" th:value="${start}">
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${i - 1}">
-                    <input type="submit" th:value="${i}">
+                    <input type="submit" th:value="${i}" class="btn pageButton">
                 </form>
                 <span th:if="${i} == 0" >…</span>
             </li>
-            <li style="display:inline-flex; margin-left:10px;">
-                <span th:if="${pageable.pageNumber == lastPage-1}">次&gt;&gt;</span>
+            <li style="display:inline-flex;">
+                <span th:if="${pageable.pageNumber == lastPage-1}">&gt;&gt;</span>
                 <form
                         th:if="${pageable.pageNumber != lastPage-1}"
                         th:action="@{/filter(page = (${pageable.pageNumber} + 1))}"
@@ -207,7 +210,7 @@
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${pageable.pageNumber + 1}">
-                    <input type="submit" value="次&gt;&gt;">
+                    <input type="submit" value="&gt;&gt;" class="btn pageButton">
                 </form>
             </li>
         </ul>

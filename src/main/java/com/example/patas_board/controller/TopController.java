@@ -81,7 +81,7 @@ public class TopController {
                                    @RequestParam(value = "page",required = false) String pageNum,
                                    Pageable pageable) throws ParseException {
         if(pageNum != null){
-            pageable = PageRequest.of(Integer.parseInt(pageNum),2);
+            pageable = PageRequest.of(Integer.parseInt(pageNum),pageable.getPageSize());
         }
         ModelAndView mav = new ModelAndView();
         // 返信form用の空のentityを準備

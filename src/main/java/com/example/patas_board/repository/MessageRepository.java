@@ -14,5 +14,5 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     public List<Message> findAllByOrderByUpdatedDateDesc();
     public List<Message> findByCreatedDateBetweenOrderByUpdatedDateDesc(Timestamp start, Timestamp end);
 
-    Page<Message> findAllByOrderByIdAsc(Pageable pageable);
+    Page<Message> findAllByOrderByCreatedDateDesc(Pageable pageable);
 }

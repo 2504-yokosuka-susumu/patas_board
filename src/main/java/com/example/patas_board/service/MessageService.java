@@ -148,7 +148,7 @@ public class MessageService {
 
     // Page型のMessageを返す
     public Page<Message> findPages(Pageable pageable) {
-        return messageRepository.findAllByOrderByIdAsc(pageable);
+        return messageRepository.findAllByOrderByCreatedDateDesc(pageable);
     }
 
     //ページ表示を表すリストを作成するメソッド

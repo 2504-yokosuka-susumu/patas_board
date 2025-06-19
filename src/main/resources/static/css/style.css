@@ -178,6 +178,13 @@ color: #1e366a;
     overflow-wrap: anywhere;
 }
 
-.page{
-    float:left
+.pageButton {
+  border: 2px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.pageButton:hover {
+  color: #fff;
+  background: #000;
 }
