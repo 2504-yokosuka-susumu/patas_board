@@ -54,7 +54,7 @@ public class MessageService {
     /*
      * ユーザーごとの投稿を取得
      */
-    public List<UserMessageForm> findAllUserPost(int id) {
+    public List<UserMessageForm> findAllUserMessage(int id) {
         List<Message> results = userMessageRepository.findAllByUserId(id);
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;

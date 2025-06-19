@@ -59,7 +59,7 @@ public class UserService {
             UserForm user = new UserForm();
             User result = results.get(i);
             // ユーザーごとの投稿・コメントを探しに行く
-            List<UserMessageForm> messages = messageService.findAllUserPost(result.getId());
+            List<UserMessageForm> messages = messageService.findAllUserMessage(result.getId());
             List<UserCommentForm> comments = commentService.findAllUserComment(result.getId());
             user.setId(result.getId());
             user.setAccount(result.getAccount());

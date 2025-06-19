@@ -67,7 +67,7 @@ public class BranchService {
             for(int j = 0; j < users.size(); j++) {
                 // iの数+1で支社のIDごとにユーザーを振り分けながら探しに行く
                 if(users.get(j).getBranchId() == i+1) {
-                    List<UserMessageForm> messages = messageService.findAllUserPost(users.get(j).getId());
+                    List<UserMessageForm> messages = messageService.findAllUserMessage(users.get(j).getId());
                     List<UserCommentForm> comments = commentService.findAllUserComment(users.get(j).getId());
                     // 支社ごとに振り分けられたユーザーの投稿数・コメント数の合計を足していく
                     totalMessage += messages.size();
