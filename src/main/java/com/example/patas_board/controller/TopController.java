@@ -42,6 +42,11 @@ public class TopController {
 
         // ページ情報取得
         Page<Message> page = messageService.findPages(pageable);
+        //存在しないページの場合
+        if(pageable.getPageNumber() < 0 || pageable.getPageNumber()+1 > page.getTotalPages()) {
+            pageable = PageRequest.of(0,pageable.getPageSize());
+            page = messageService.findPages(pageable);
+        }
         // ページ型のコンテンツをUserMessageForm型に変換して表示件数分投稿取得
         List<UserMessageForm> messageData = messageService.setUserMessageForm(page);
         //ページ表示のためのリストを作成
@@ -89,6 +94,10 @@ public class TopController {
         //ページ表示のためのリストを作成
         //lastPageは切り上げの割り算をしている
         int lastPage = (messageAllData.size() + pageable.getPageSize() - 1)/pageable.getPageSize();
+        //存在しないページの場合
+        if(pageable.getPageNumber() < 0 || pageable.getPageNumber()+1 > lastPage) {
+            pageable = PageRequest.of(0,pageable.getPageSize());
+        }
         List<Integer> pageList = messageService.pageList(pageable.getPageNumber()+1, lastPage);
 
         List<UserMessageForm> messagePageData = messageService.getPageData(messageAllData, pageable);
