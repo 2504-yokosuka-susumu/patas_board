@@ -55,6 +55,15 @@ public class MessageService {
     }
 
     /*
+     * ユーザーごとの投稿を取得
+     */
+    public List<UserMessageForm> findAllUserMessage(int id) {
+        List<Message> results = userMessageRepository.findAllByUserId(id);
+        List<UserMessageForm> messages = setUserMessageForm(results);
+        return messages;
+    }
+
+    /*
      * レコード日付範囲取得処理
      */
     public List<UserMessageForm> findByCreatedDateMessage(String start, String end, String categoryText) throws ParseException {

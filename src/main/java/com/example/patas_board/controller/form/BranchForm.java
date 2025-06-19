@@ -11,6 +11,10 @@ public class BranchForm {
 
     private String name;
 
+    private int totalPost;
+
+    private int totalComment;
+
     private Date createdDate;
 
     private Date updatedDate;

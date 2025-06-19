@@ -34,7 +34,13 @@ public class UserForm {
         復活, 停止
     }
 
+    private int totalPost;
+
+    private int totalComment;
+
     private Date createdDate;
 
     private Date updatedDate;
+
+    private Date loginDate;
 }

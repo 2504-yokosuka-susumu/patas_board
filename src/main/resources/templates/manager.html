@@ -20,6 +20,21 @@
     <form th:action="@{/signup/form}" th:method="get">
         <input type="submit" value="新規登録">
     </form>
+    <h4>支社ごとのデータ</h4>
+    <div class="branch-icon" th:each="branch : ${branches}">
+        <table>
+            <tr>
+                <th>支社名</th>
+                <th>投稿数</th>
+                <th>コメント数</th>
+            </tr>
+            <tr>
+                <td><span th:text="${branch.name}"/></td>
+                <td><span th:text="${branch.totalPost}"/></td>
+                <td><span th:text="${branch.totalComment}"/></td>
+            </tr>
+        </table>
+    </div>
     <div class="user-icon" th:each="user : ${users}">
         <div class="manager">
             <label>ID</label>
@@ -41,7 +56,23 @@
             <label>部署</label>
             <span th:text="${departmentChoices[user.departmentId]}"/>
         </div>
-
+        <div class="manager">
+            <label>最終ログイン日時</label>
+            <th:block th:if="${session.loginUser.id == user.id}">
+                <span th:text="${loginText}"/>
+            </th:block>
+            <th:block th:unless="${session.loginUser.id == user.id}">
+                <span th:text="${user.loginDate}"/>
+            </th:block>
+        </div>
+        <div class="manager">
+            <label>投稿数</label>
+            <span th:text="${user.totalPost}"/>
+        </div>
+        <div class="manager">
+            <label>コメント数</label>
+            <span th:text="${user.totalComment}"/>
+        </div>
         <form th:action="@{/manager}" method="post">
             <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
             <th:if th:if="${session.loginUser.id != user.id}">

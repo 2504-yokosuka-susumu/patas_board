@@ -37,4 +37,7 @@ public class User {
 
     @Column(insertable = false, updatable = false, name="updated_date")
     private Date updatedDate;
+
+    @Column(insertable = false, updatable = false, name="login_date")
+    private Date loginDate;
 }

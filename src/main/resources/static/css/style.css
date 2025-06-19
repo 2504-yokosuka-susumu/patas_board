@@ -177,6 +177,16 @@ color: #1e366a;
 .text{
     overflow-wrap: anywhere;
 }
+.branch-icon{
+	flex: 1;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	border-top: 1px solid black;
+	margin-right: -1px; /* border の太さ分を相殺 */
+	margin-bottom: -1px; /* border の太さ分を相殺 */
+	border-left: -1px;
+}
 
 .pageButton {
   border: 2px solid #000;
