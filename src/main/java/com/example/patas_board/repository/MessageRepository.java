@@ -11,5 +11,4 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     public List<Message> findAllByOrderByUpdatedDateDesc();
     public List<Message> findByCreatedDateBetweenOrderByUpdatedDateDesc(Timestamp start, Timestamp end);
-    //public List<Message> findAllById(int id);
 }

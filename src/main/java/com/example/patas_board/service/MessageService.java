@@ -42,12 +42,20 @@ public class MessageService {
         return message;
     }
 
-
     /*
      * Messageを全件取得処理
      */
     public List<UserMessageForm> findAllMessage() {
         List<Message> results = userMessageRepository.findAllByOrderByCreatedDateDesc();
+        List<UserMessageForm> messages = setUserMessageForm(results);
+        return messages;
+    }
+
+    /*
+     * ユーザーごとの投稿を取得
+     */
+    public List<UserMessageForm> findAllUserPost(int id) {
+        List<Message> results = userMessageRepository.findAllByUserId(id);
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }

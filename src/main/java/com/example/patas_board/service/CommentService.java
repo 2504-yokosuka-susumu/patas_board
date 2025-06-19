@@ -2,10 +2,9 @@ package com.example.patas_board.service;
 
 import com.example.patas_board.controller.form.CommentForm;
 import com.example.patas_board.controller.form.UserCommentForm;
-import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.CommentRepository;
+import com.example.patas_board.repository.UserCommentRepository;
 import com.example.patas_board.repository.entity.Comment;
-import com.example.patas_board.repository.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,9 @@ import java.util.List;
 public class CommentService {
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    UserCommentRepository userCommentRepository;
     /*
      * DBからコメントを全件取得処理
      */
@@ -23,6 +25,15 @@ public class CommentService {
         //Comment型でDBから全件取得
         List<Comment> results = commentRepository.findAll();
         //UserComment型に変換
+        List<UserCommentForm> comments = setUserCommentForm(results);
+        return comments;
+    }
+
+    /*
+     * ユーザーごとのコメントを取得
+     */
+    public List<UserCommentForm> findAllUserComment(int id) {
+        List<Comment> results = userCommentRepository.findAllByUserId(id);
         List<UserCommentForm> comments = setUserCommentForm(results);
         return comments;
     }
