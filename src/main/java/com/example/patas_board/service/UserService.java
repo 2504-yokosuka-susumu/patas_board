@@ -71,6 +71,7 @@ public class UserService {
             // 取ってきた投稿とコメントの要素数をセット
             user.setTotalPost(messages.size());
             user.setTotalComment(comments.size());
+            user.setLoginDate(result.getLoginDate());
             users.add(user);
         }
         return users;
