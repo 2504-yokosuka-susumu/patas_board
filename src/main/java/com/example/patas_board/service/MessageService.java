@@ -6,12 +6,15 @@ import com.example.patas_board.repository.MessageRepository;
 import com.example.patas_board.repository.UserMessageRepository;
 import com.example.patas_board.repository.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +33,7 @@ public class MessageService {
         messageRepository.save(message);
     }
 
+    //MessageForm型をMessage型に変換
     private Message setMessageEntity(MessageForm reqMessage) {
         Message message = new Message();
         message.setId(reqMessage.getId());
@@ -41,12 +45,20 @@ public class MessageService {
         return message;
     }
 
-
     /*
-     * レコード全件取得処理
+     * Messageを全件取得処理
      */
     public List<UserMessageForm> findAllMessage() {
         List<Message> results = userMessageRepository.findAllByOrderByCreatedDateDesc();
+        List<UserMessageForm> messages = setUserMessageForm(results);
+        return messages;
+    }
+
+    /*
+     * ユーザーごとの投稿を取得
+     */
+    public List<UserMessageForm> findAllUserMessage(int id) {
+        List<Message> results = userMessageRepository.findAllByUserId(id);
         List<UserMessageForm> messages = setUserMessageForm(results);
         return messages;
     }
@@ -82,25 +94,7 @@ public class MessageService {
         return messages;
     }
 
-    /*
-     * DBから取得したデータをFormに設定
-     */
-    private List<MessageForm> setMessageForm(List<Message> results) {
-        List<MessageForm> messages = new ArrayList<>();
-
-        for (int i = 0; i < results.size(); i++) {
-            MessageForm message = new MessageForm();
-            Message result = results.get(i);
-            message.setId(result.getId());
-            message.setTitle(result.getTitle());
-            message.setText(result.getText());
-            message.setCategory(result.getCategory());
-            message.setUserId(result.getUserId());
-            messages.add(message);
-        }
-        return messages;
-    }
-
+    //Message型をUserMessage型に変換
     private List<UserMessageForm> setUserMessageForm(List<Message> results) {
         List<UserMessageForm> messages = new ArrayList<>();
 
@@ -125,8 +119,78 @@ public class MessageService {
         }
         return messages;
     }
-    
+
+    //Page型のコンテンツをUserMessage型に変換
+    public List<UserMessageForm> setUserMessageForm(Page<Message> results) {
+        List<UserMessageForm> messages = new ArrayList<>();
+
+        int q = results.getContent().size();
+
+        //Listのひとつずつ取り出し
+        for (int i = 0; i < results.getContent().size(); i++) {
+            UserMessageForm message = new UserMessageForm();
+            Message result = results.getContent().get(i);
+            //MessageのuserIdのユーザーが存在しない時スキップ
+            if (result.getUser() == null) {
+                continue;
+            }
+            message.setId(result.getId());
+            message.setTitle(result.getTitle());
+            message.setText(result.getText());
+            message.setUserId(result.getUserId());
+            message.setCategory(result.getCategory());
+            message.setName(result.getUser().getName());
+            message.setAccount(result.getUser().getAccount());
+            message.setBranchId(result.getUser().getBranchId());
+            message.setDepartmentId(result.getUser().getDepartmentId());
+            message.setCreatedDate(result.getCreatedDate());
+
+            messages.add(message);
+        }
+        return messages;
+    }
+
+    //投稿の削除
     public void delete(Integer id) {
         messageRepository.deleteById(id);
+    }
+
+    // Page型のMessageを返す
+    public Page<Message> findPages(Pageable pageable) {
+        return messageRepository.findAllByOrderByCreatedDateDesc(pageable);
+    }
+
+    //ページ表示を表すリストを作成するメソッド
+    public  List<Integer> pageList(int currentPage, int lastPage){
+        List<Integer> pageList = new ArrayList<>();
+
+        //総ページ数が7より小さいときは全ページを表示する
+        if(lastPage < 7){
+            for(int i=0;i<lastPage;i++){
+                pageList.add(i+1);
+            }
+            return pageList;
+        }
+        //最初の5ページまでの間
+        if(currentPage < 5){
+            pageList.addAll(Arrays.asList(1,2,3,4,5,0,lastPage));
+        }
+        //最後の5ページのとき
+        else if (currentPage > lastPage-4){
+            pageList.addAll(Arrays.asList(1,0,lastPage-4,lastPage-3,lastPage-2,lastPage-1,lastPage));
+        }
+        //途中のページの時
+        else {
+            pageList.addAll(Arrays.asList(1,0,currentPage-1,currentPage,currentPage+1,0,lastPage));
+        }
+        return pageList;
+    }
+
+    public List<UserMessageForm> getPageData (List<UserMessageForm> messageAllData, Pageable pegeable){
+        List<UserMessageForm> pageData = messageAllData.stream()
+                .skip(pegeable.getPageNumber()*pegeable.getPageSize())
+                .limit(pegeable.getPageSize()).toList();
+
+        return pageData;
     }
 }

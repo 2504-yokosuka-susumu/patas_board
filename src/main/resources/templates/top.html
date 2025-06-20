@@ -7,62 +7,53 @@
 </head>
 <body>
 <div class="header-contents">
-    <h1>匿名掲示板</h1>
+    <h1>掲示板</h1>
 </div>
-<div th:if="${session.loginUser != null}">
-    <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
-        <div th:each="errorMessage:${errorMessages}">
-            <span th:text="${errorMessage}" style="color:red"></span>
-        </div>
-    </th:block>
-    <div class="profile">
-        <div class="name">
-            <h2>
-                <span th:text="${session.loginUser.name}" />
-            </h2>
-        </div>
-        <div class="account">
-            @<span th:text="${session.loginUser.account}" />
-        </div>
+<!--エラーメッセージの表示-->
+<th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+    <div th:each="errorMessage:${errorMessages}">
+        <span th:text="${errorMessage}" style="color:red"></span>
     </div>
-    <div th:if="${session.loginUser.departmentId == 1}">
-        <div class="user-manage-button">
-            <a href="/manager/form">
-                <button class="manage-button" type="button">ユーザー管理</button>
-            </a>
-        </div>
+</th:block>
+<div class="profile">
+    <div class="name">
+        <h2>
+            <span th:text="${session.loginUser.name}" />
+        </h2>
     </div>
-    <div class="logout-button">
-        <a href="/logout">
-            <button class="logout-button" type="button">ログアウト</button>
+    <div class="account">
+        @<span th:text="${session.loginUser.account}" />
+    </div>
+</div>
+<!--総務人事部のアカウントでログインしているときはユーザー管理画面のボタンを表示-->
+<div class="header">
+<div th:if="${session.loginUser.departmentId == 1}">
+    <div class="user-manage-button">
+        <a href="/manager/form" style="text-decoration: none;">
+            <button class="btn" type="button">ユーザー管理</button>
         </a>
     </div>
 </div>
-<div th:if="${session.loginUser == null}">
-    <div class="login-button">
-        <a href="/login/form">
-            <button class="login-button" type="button">ログイン</button>
-        </a>
-    </div>
+<div class="logout-button">
+    <a href="/logout" style="text-decoration: none;">
+        <button class="btn" type="button" >ログアウト</button>
+    </a>
 </div>
-
+</div>
 <div>
-    <form action="/filter" method="get">
+    <form action="/filter" method="get" style="display:flex;">
         日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
         カテゴリー<input type="text" name="categoryText" th:value="${categoryText}">
-        <input type="submit" value="絞り込み">
-
+        <input class="btn" type="submit" value="絞り込み">
     </form>
 </div>
 <div class="main-contents">
-    <div th:if="${session.loginUser != null}">
-        <a href="/new">
-            <button class="new-button" type="button">新規投稿</button>
-        </a>
-    </div>
+    <a href="/new">
+        <button class="new-btn" type="button">新規投稿</button>
+    </a>
     <div class="message-icon" th:each="message : ${messages}">
         <div>
-            ID : <span th:text="${message.id}"/>
+            投稿ID : <span th:text="${message.id}"/>
         </div>
         <div>
             投稿者 : <span th:text="${message.name}"/>
@@ -79,11 +70,14 @@
         <div class="date">
             <span th:text="${message.createdDate}"/>
         </div>
+<!--        権限を持っている場合
+            （自分の投稿、総務人事部のアカウントでログインしている、同じ支社の営業・技術）
+            削除ボタンを表示-->
         <div th:if="${session.loginUser.id == message.userId || session.loginUser.departmentId == 2 || (session.loginUser.branchId == message.branchId && (session.loginUser.departmentId == 3 && message.departmentId == 4))}">
             <div class="delete-button">
                 <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                     <input type="hidden" name="userId" th:value="${message.userId}">
-                    <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
+                    <input type="submit" class="delete-btn" onclick="return confirm('削除しますか？');" value="削除">
                 </form>
             </div>
             </div>
@@ -91,46 +85,124 @@
             <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
         </div>
-        <div class="comment-icon" th:each="comment : ${comments}">
+        <div th:each="comment : ${comments}">
             <div th:if="${message.id == comment.messageId}">
-                <br>
-                <div>
-                    コメントID: <span th:text="${comment.id}"/>
-                </div>
-                <div>
-                    コメント投稿者 : <span th:text="${comment.name}"/>
-                </div>
-                <div class="text">
-                    <p>コメント : <span th:text="${comment.text}"/></p>
-                </div>
-                <div class="date">
-                    <span th:text="${message.createdDate}"/>
-                </div>
-                <div th:if="${session.loginId == comment.userId}">
-                    <div class="delete-button">
-                        <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
-                            <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
-                        </form>
+                <div class="comment-icon">
+                    <div>
+                        コメントID: <span th:text="${comment.id}"/>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div th:if="${session.loginUser != null}">
-            <div class="comment-area">
-                <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
-                    <div class="form-area">
-                        <label>返信</label>
-                        <textarea class="tweet-box" th:field="*{text}" size="20" /></textarea><br/>
-                        <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
-                            <div th:each="message : ${mavErrorMessages}">
-                                <span th:text="${message}" class="errorMessages"/>
-                            </div>
+                    <div>
+                        コメント投稿者 : <span th:text="${comment.name}"/>
+                    </div>
+                    <div class="text">
+                        <p>コメント : <span th:text="${comment.text}"/></p>
+                    </div>
+                    <div class="date">
+                        <span th:text="${message.createdDate}"/>
+                    </div>
+                    <div th:if="${session.loginId == comment.userId}">
+                        <div class="delete-button">
+                            <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
+                                <input type="submit" class="delete-btn" onclick="return confirm('削除しますか？');" value="削除">
+                            </form>
                         </div>
-                        <input type="submit" value="返信" />
                     </div>
-                </form>
+                </div><br style="height:10px;">
             </div>
         </div>
+        <div class="comment-area">
+            <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
+                <div class="comment-form">
+                    返信
+                    <textarea class="tweet-box" th:field="*{text}" size="20" /></textarea><br/>
+                    <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
+                        <div th:each="message : ${mavErrorMessages}">
+                            <span th:text="${message}" class="errorMessages"/>
+                        </div>
+                    </div>
+                    <input class="btn" type="submit" value="返信" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ページネーション -->
+<!--    絞込をしない時-->
+    <div th:if="${page != null}" class="page">
+        <ul>
+            <li style="display:inline;">
+                <span th:if="${page.first}" style="font-weight: bold;">&lt;&lt;</span>
+                <button th:if="${!page.first}"
+                        th:onclick="|location.href='@{/patas_board(page = ${page.number} - 1)}'|"
+                        class="pageButton">
+                    &lt;&lt;
+                </button>
+            </li>
+<!--            pageListに基づきページ番号ボタンの表示-->
+            <li     th:each="i : ${pageList}"
+                    style="display:inline; margin-left:10px;">
+                <span th:if="${i} == ${page.number}+1" th:text="${i}" style="font-weight: bold;">1</span>
+                <button th:if="${i != page.number+1} and ${i != 0}"
+                        th:onclick="|location.href='@{/patas_board(page = ${i-1})}'|"
+                        class="pageButton">
+                    <span th:text="${i}">1</span>
+                </button>
+                <span th:if="${i} == 0" >…</span>
+            </li>
+            <li style="display:inline; margin-left:10px;">
+                <span th:if="${page.last}">&gt;&gt;</span>
+                <button th:if="${!page.last}"
+                        th:onclick="|location.href='@{/patas_board(page = (${page.number} + 1))}'|"
+                        class="pageButton">
+                    &gt;&gt;
+                </button>
+            </li>
+        </ul>
+    </div>
+<!--    絞込実行時-->
+<!--    絞込内容を保持するためにformで画面遷移-->
+    <div th:if="${page == null}" class="page">
+        <ul>
+            <li style="display:inline;">
+                <span th:if="${pageable.pageNumber == 0}">&lt;&lt;</span>
+                <form   th:if="${pageable.pageNumber != 0}"
+                        th:action="@{/filter}"
+                        style="display:inline-flex; margin-left:10px;">
+                    <input type="hidden" name="start" th:value="${start}">
+                    <input type="hidden" name="end" th:value="${end}">
+                    <input type="hidden" name="categoryText" th:value="${categoryText}">
+                    <input type="hidden" name="page" th:value="${pageable.pageNumber - 1}">
+                    <input type="submit" value="&lt;&lt;" class="pageButton">
+                </form>
+            </li>
+<!--            pageListに基づきページ番号ボタンの表示-->
+            <li     th:each="i : ${pageList}"
+                    style="display:inline; margin-left:10px;">
+                <span th:if="${i} == ${pageable.pageNumber}+1" th:text="${i}">1</span>
+                <form   th:if="${i != pageable.pageNumber+1} and ${i != 0}"
+                        th:action="@{/filter}"
+                        style="display:inline-flex;">
+                    <input type="hidden" name="start" th:value="${start}">
+                    <input type="hidden" name="end" th:value="${end}">
+                    <input type="hidden" name="categoryText" th:value="${categoryText}">
+                    <input type="hidden" name="page" th:value="${i - 1}">
+                    <input type="submit" th:value="${i}" class="pageButton">
+                </form>
+                <span th:if="${i} == 0" >…</span>
+            </li>
+            <li style="display:inline-flex;">
+                <span th:if="${pageable.pageNumber == lastPage-1}">&gt;&gt;</span>
+                <form   th:if="${pageable.pageNumber != lastPage-1}"
+                        th:action="@{/filter(page = (${pageable.pageNumber} + 1))}"
+                        style="display:inline-flex; margin-left:10px;">
+                    <input type="hidden" name="start" th:value="${start}">
+                    <input type="hidden" name="end" th:value="${end}">
+                    <input type="hidden" name="categoryText" th:value="${categoryText}">
+                    <input type="hidden" name="page" th:value="${pageable.pageNumber + 1}">
+                    <input type="submit" value="&gt;&gt;" class="pageButton">
+                </form>
+            </li>
+        </ul>
     </div>
 </div>
 </body>

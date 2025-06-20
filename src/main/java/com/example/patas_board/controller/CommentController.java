@@ -1,7 +1,6 @@
 package com.example.patas_board.controller;
 
 import com.example.patas_board.controller.form.CommentForm;
-import com.example.patas_board.controller.form.MessageForm;
 import com.example.patas_board.service.CommentService;
 import com.example.patas_board.service.MessageService;
 import jakarta.servlet.http.HttpSession;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.SmartValidator;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;

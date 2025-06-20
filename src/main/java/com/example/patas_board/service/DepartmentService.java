@@ -13,11 +13,12 @@ public class DepartmentService {
     @Autowired
     DepartmentRepository departmentRepository;
     /*
-     * レコード全件取得処理
+     * Department全件取得処理
      */
     public HashMap<Integer,String> findAllDepartmentsMap() {
         List<Department> results = departmentRepository.findAll();
         HashMap<Integer,String> departmentChoices = new HashMap<>();
+        //キー値をid、値をnameのハッシュマップを作製
         for(int i=0;i<results.size();i++){
             Department result = results.get(i);
             departmentChoices.put(result.getId(), result.getName());

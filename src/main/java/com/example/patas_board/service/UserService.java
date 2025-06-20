@@ -1,13 +1,17 @@
 package com.example.patas_board.service;
 
+import com.example.patas_board.controller.form.UserCommentForm;
 import com.example.patas_board.controller.form.UserForm;
+import com.example.patas_board.controller.form.UserMessageForm;
 import com.example.patas_board.repository.UserRepository;
 import com.example.patas_board.repository.entity.User;
 import com.example.patas_board.utils.CipherUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +20,13 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public UserForm login(String account, String password){
+    @Autowired
+    MessageService messageService;
+
+    @Autowired
+    CommentService commentService;
+
+    public UserForm login(String account, String password) {
         String encPassword = CipherUtil.encrypt(password);
 
         List<User> results = userRepository.findByAccountAndPassword(account, encPassword);
@@ -29,7 +39,7 @@ public class UserService {
         }
     }
 
-    public UserForm checkedAccount(String account){
+    public UserForm checkedAccount(String account) {
         List<User> results = userRepository.findByAccount(account);
 
         if(results.size() == 0) {
@@ -40,12 +50,17 @@ public class UserService {
         }
     }
 
-    private List<UserForm> setUserForm(List<User> results){
+
+
+    private List<UserForm> setUserForm(List<User> results) {
         List<UserForm> users = new ArrayList<>();
 
         for (int i = 0; i < results.size(); i++) {
             UserForm user = new UserForm();
             User result = results.get(i);
+            // ユーザーごとの投稿・コメントを探しに行く
+            List<UserMessageForm> messages = messageService.findAllUserMessage(result.getId());
+            List<UserCommentForm> comments = commentService.findAllUserComment(result.getId());
             user.setId(result.getId());
             user.setAccount(result.getAccount());
             user.setPassword(result.getPassword());
@@ -53,6 +68,10 @@ public class UserService {
             user.setBranchId(result.getBranchId());
             user.setDepartmentId(result.getDepartmentId());
             user.setIsStopped(result.getIsStopped());
+            // 取ってきた投稿とコメントの要素数をセット
+            user.setTotalPost(messages.size());
+            user.setTotalComment(comments.size());
+            user.setLoginDate(result.getLoginDate());
             users.add(user);
         }
         return users;
@@ -64,23 +83,7 @@ public class UserService {
     public List<UserForm> findAllUser() {
 
         List<User> results = userRepository.findAllByOrderById();
-
-        List<UserForm> users = new ArrayList<>();
-        for (int i = 0; i < results.size(); i++) {
-            UserForm user = new UserForm();
-            User result = results.get(i);
-            user.setId(result.getId());
-            user.setAccount(result.getAccount());
-            user.setPassword(result.getPassword());
-            user.setName(result.getName());
-            user.setBranchId(result.getBranchId());
-            user.setDepartmentId(result.getDepartmentId());
-            user.setIsStopped(result.getIsStopped());
-            user.setCreatedDate(result.getCreatedDate());
-            user.setUpdatedDate(new Date());
-            users.add(user);
-        }
-
+        List<UserForm> users = setUserForm(results);
         return users;
     }
 
@@ -129,7 +132,7 @@ public class UserService {
     /*
      * 指定のidレコード情報取得
      */
-    public UserForm selectUser(int id){
+    public UserForm selectUser(int id) {
 
         List<User> userResults = new ArrayList<>();
         userResults.add((User) userRepository.findById(id).orElse(null));
@@ -185,5 +188,13 @@ public class UserService {
         }
 
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void saveLoginDate(int id) {
+        Calendar cl = Calendar.getInstance();
+        //現在時刻の情報を取得
+        Date currentTime = cl.getTime();
+        userRepository.updateLoginDate(id, currentTime);
     }
 }

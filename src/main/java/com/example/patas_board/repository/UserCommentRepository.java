@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface UserCommentRepository extends JpaRepository<Comment, Integer> {
-    public List<Comment> findAllByOrderByCreatedDateDesc();
+    List<Comment> findAllByUserId(int id);
 }

@@ -14,57 +14,51 @@
     <span th:text="${errorMessage}" style="color:red"></span>
   </div>
 </th:block>
-<div class="main-contents">
+<div class="signup-icon">
   <form th:method="post" th:action="@{/signup}" th:object="${formModel}">
-    <div class="form-area">
-      <label>アカウント</label>
-      <input type="text" th:field="*{account}">
-    </div>
-
-    <div class="form-area">
-      <label>パスワード</label>
-      <input type="password" th:field="*{password}">
-    </div>
-
-    <div class="form-area">
-      <label>パスワード（確認用）</label>
-      <input type="password" name="checkedPassword">
-    </div>
-
-    <div class="form-area">
-      <label>氏名</label>
-      <input type="text" th:field="*{name}">
-    </div>
-
-    <fieldset>
-      <legend>支社を選択してください:</legend>
-
-      <div th:each="branch : ${branchChoices}">
-        <input type="radio" th:field="${formModel.branchId}" th:value="${branch.key}"
-               th:text="${branch.value}" checked />
+    <legend>アカウント<span style="color: red;">*(半角英数字6~20文字)</span></legend>
+      <div class="form-area">
+        <input type="text" th:field="*{account}">
       </div>
 
-    </fieldset>
-
-    <fieldset>
-      <legend>部署を選択してください:</legend>
-
-      <div th:each="department : ${departmentChoices}">
-        <input type="radio" th:field="${formModel.departmentId}" th:value="${department.key}"
-               th:text="${department.value}" checked />
+    <legend>パスワード<span style="color: red;">*(半角文字6~20文字)</span></legend>
+      <div class="form-area">
+        <input type="password" th:field="*{password}"/>
       </div>
 
-    </fieldset>
+    <label>パスワード(確認用)<span style="color: red;">*</span></label>
+      <div class="form-area">
+        <input type="password" name="checkedPassword">
+      </div>
 
-    <input type="submit" value="登録する">
+    <label>氏名<span style="color: red;">*(10文字以下)</span></label>
+      <div class="form-area">
+        <input type="text" th:field="*{name}">
+      </div>
 
-    <input type="reset" value="リセットする">
+    <legend>支社を選択してください<span style="color: red;">*</span></legend>
+    <div class="form-area">
+      <select name="branchId" th:field="${formModel.branchId}">
+        <option th:each="choice : ${branchChoices}" th:value="${choice.key}"
+                th:text="${choice.value}"></option>
+      </select><br>
+    </div>
+
+    <legend>部署を選択してください<span style="color: red;">*</span></legend>
+    <div class="form-area">
+      <select name="departmentId" th:field="*{departmentId}">
+      <option th:each="choice : ${departmentChoices}" th:value="${choice.key}"
+              th:text="${choice.value}"></option>
+      </select><br>
+    </div>
+
+    <input type="submit" value="登録する" class="btn">
+
+    <input type="reset" value="リセットする" class="delete-btn">
   </form>
 </div>
 <div class="footer-contents">
-  <form action="/manager/form">
-    <input type="submit" value="戻る" />
-  </form>
+  <a href="/manager/form">戻る</a>
 </div>
 </body>
 </html>

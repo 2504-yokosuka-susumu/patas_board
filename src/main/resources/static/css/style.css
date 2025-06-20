@@ -1,15 +1,76 @@
 body {
-	background-color: #E0FFFF;
+	background-color: #D2B48C;
 }
 
 .header-contents {
 	margin-left: 20px;
 }
 
+.header{
+
+}
+
+.btn {
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	min-width: 60px;
+	padding: auto;
+	font-size: 14px;
+	font-weight: bold;
+	border: 2px solid #8B4513;
+	color: #8B4513;
+	border-radius: 100vh;
+	transition: 0.5s;
+}
+.btn:hover {
+	color: #fff;
+	background: #8B4513;
+	text-decoration: none;
+}
+
+.delete-btn {
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	min-width: 60px;
+	padding: auto;
+	font-size: 14px;
+	font-weight: bold;
+	border: 2px solid #FA8072;
+	color: #FA8072;
+	border-radius: 100vh;
+	transition: 0.5s;
+}
+.delete-btn:hover {
+	color: #fff;
+	background: #FA8072;
+}
+
+.new-btn {
+    font-size: 16px;
+    min-width: 120px;
+    color: #fff;
+    background-color: #8B4513;
+    border-bottom: 5px solid #b84c00;
+}
+.new-btn:hover {
+    margin-top: 3px;
+    color: #fff;
+    background: #8B4513;
+    border-bottom: 2px solid #b84c00;
+}
+.new-btn {
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+}
+
 .main-contents {
 	margin: 20px;
 	padding: 10px 10px 5px 10px;
-	background-color: #B4CCCC;
+	background-color: oldlace;
 	height: 100%;
 	width: 80%;
 }
@@ -73,6 +134,12 @@ a.profile .account {
 	margin: 10px;
 	padding: 10px;
 	background-color: white;
+	border: 1px solid #333333
+}
+
+.comment-form {
+    margin: 10px;
+    background-color: white;
 }
 
 .message-icon {
@@ -100,6 +167,15 @@ a.profile .account {
 
 .message-icon .account-name .account {
 	font-weight: bold;
+}
+
+.comment-icon {
+    margin-left: 80px;
+    background: #FFFAF0;
+}
+
+.comment-area {
+    margin-left: 80px;
 }
 
 .account-name .name {
@@ -161,19 +237,114 @@ p {
 }
 
 .user-icon{
-    width: 500px;
+    background-color: oldlace;
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 .manager {
-color: #1e366a;
-  border-bottom: solid #1e366a 2px;/*下のボーダー*/
-  padding: 0.5em 0 0.5em 1.5em;
-}
-
-.setting-button{
-
+    color: #660000;
+    border-bottom: solid #660000 2px;/*下のボーダー*/
+    padding: 0.5em 0 0.5em 1.5em;
 }
 
 .text{
     overflow-wrap: anywhere;
+}
+.branch-icon{
+	flex: 1;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	border-top: 1px solid black;
+	margin-right: -1px; /* border の太さ分を相殺 */
+	margin-bottom: -1px; /* border の太さ分を相殺 */
+	border-left: -1px;
+	border-top: -1px;
+	width: 20%;
+
+}
+
+.pageButton {
+  border: 2px solid #000;
+  border-radius: 0;
+  background: #fff;
+}
+
+.pageButton:hover {
+  color: #fff;
+  background: #000;
+}
+
+.login-icon{
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: oldlace;
+	height: 100%;
+	width: 50%;
+}
+
+.signup-icon{
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: oldlace;
+	height: 100%;
+	width: 40%;
+}
+
+.select-form{
+	margin: 5px;
+	padding: 5px;
+}
+
+.setting-icon{
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: oldlace;
+	height: 100%;
+	width: 40%;
+}
+
+::placeholder {
+  color: #c7c7c7;
+}
+
+.nav-bar {
+   display: flex;/* 横並び */
+   justify-content: flex-end; /* ナビメニューを右寄せ */
+   width: 80%;
+   padding: 10px;
+}
+
+.nav-item {
+   margin-left: 20px;
+   text-decoration: none;
+}
+
+.nav-item:hover {
+    color: #fff;
+    background: #000;
+    text-decoration: underline;
+}
+
+.header-manager{
+    background-color: #D2B48C;
+    border-bottom: solid #660000 2px;/*下のボーダー*/
+    width: 100%; /* 幅いっぱいを指定 */
+    padding: 20px 30px; /* ヘッダーに上下左右それぞれ余白を指定 */
+    box-sizing: border-box; /* padding分を含んで幅を100%にするため */
+    position: fixed; /* ウィンドウを基準に画面に固定 */
+    top: 0; /* 上下の固定位置を上から0pxにする */
+    left: 0; /* 左右の固定位置を左から0pxにする */
+    display: flex; /* 中の要素を横並びにする */
+    align-items: center; /* 中の要素を上下中央に並べる */
+}
+
+.main-manager{
+    margin-top: 150px;
+    padding: 5px 15px;
+    height: 150vh;
 }

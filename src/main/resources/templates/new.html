@@ -7,29 +7,31 @@
 </head>
 <body>
 <div class="header-contents">
-  <h2>投稿追加</h2>
+  <h2>投稿</h2>
 </div>
 <div class="main-contents">
   <form method="post" action="/add" th:object="${formModel}">
+<!--    各プロパティでエラーが発生したら赤色でエラーメッセージを表示する-->
     <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red">Content Error</div>
     <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}" style="color: red">Content Error</div>
     <div th:if="${#fields.hasErrors('category')}" th:errors="*{category}" style="color: red">Content Error</div>
     <div class="form-area">
       <label>件名</label>
-      <input type="text" th:field="*{title}">
+      <input type="text" th:field="*{title}" size="30" placeholder="30文字以内で入力してください">
     </div>
 
     <div class="form-area">
       <label>本文</label>
-      <textarea class="tweet-box" th:field="*{text}" size="10" maxlength="1500" /></textarea><br/>
+      <textarea class="tweet-box" th:field="*{text}" size="10" maxlength="1500" placeholder="1000文字以内で入力してください"/></textarea><br/>
     </div>
 
     <div class="form-area">
       <label>カテゴリ</label>
-      <input type="text" th:field="*{category}">
+      <input type="text" th:field="*{category}" size="30" placeholder="10文字以内で入力してください">
     </div>
+<!--      ユーザーIDがフォームオブジェクトに格納されていないためコントローラー側で格納するために情報を送る-->
       <input type="hidden" name="userId" th:value="${session.loginUser.id}">
-      <input type="submit" value="投稿する" />
+      <input type="submit" value="投稿する" class="btn"/>
   </form>
 </div>
 <div class="footer-contents">
