@@ -6,97 +6,96 @@
     <title>ユーザ管理画面</title>
 </head>
 <body>
-    <div class="header-contents">
+    <div class="header-manager">
         <h2>ユーザ管理画面</h2>
-    </div>
-    <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
-        <div th:each="errorMessages:${errorMessages}">
-            <span th:text="${errorMessages}" style="color:red"></span>
-        </div>
-    </th:block>
-    <div>
-        <a href="/patas_board">ホーム画面</a>
-    </div>
-    <form th:action="@{/signup/form}" th:method="get">
-        <input type="submit" value="新規登録">
-    </form>
-    <h4>支社ごとのデータ</h4>
-    <div class="branch-icon" th:each="branch : ${branches}">
-        <table>
-            <tr>
-                <th>支社名</th>
-                <th>投稿数</th>
-                <th>コメント数</th>
-            </tr>
-            <tr>
-                <td><span th:text="${branch.name}"/></td>
-                <td><span th:text="${branch.totalPost}"/></td>
-                <td><span th:text="${branch.totalComment}"/></td>
-            </tr>
-        </table>
-    </div>
-    <div class="user-icon" th:each="user : ${users}">
-        <div class="manager">
-            <label>ID</label>
-            <span th:text="${user.id}"/>
-        </div>
-        <div class="manager">
-            <label>アカウント</label>
-            <span th:text="${user.account}"/>
-        </div>
-        <div class="manager">
-            <label>氏名</label>
-            <span th:text="${user.name}"/>
-        </div>
-        <div class="manager">
-            <label>支社</label>
-            <span th:text="${branchChoices[user.branchId]}"/>
-        </div>
-        <div class="manager">
-            <label>部署</label>
-            <span th:text="${departmentChoices[user.departmentId]}"/>
-        </div>
-        <div class="manager">
-            <label>最終ログイン日時</label>
-            <th:block th:if="${session.loginUser.id == user.id}">
-                <span th:text="${loginText}"/>
-            </th:block>
-            <th:block th:unless="${session.loginUser.id == user.id}">
-                <span th:text="${user.loginDate}"/>
-            </th:block>
-        </div>
-        <div class="manager">
-            <label>投稿数</label>
-            <span th:text="${user.totalPost}"/>
-        </div>
-        <div class="manager">
-            <label>コメント数</label>
-            <span th:text="${user.totalComment}"/>
-        </div>
-        <form th:action="@{/manager}" method="post">
-            <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
-            <th:if th:if="${session.loginUser.id != user.id}">
-                <select name="status">
-                    <option th:each="status : ${statuses}"
-                            th:value="${status.ordinal()}"
-                            th:text="${status}"
-                            th:selected="${status.ordinal() == user.isStopped}">
-                    </option>
-                </select>
-                <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
-            </th:if>
-        </form>
-
-        <div class="setting-button">
-            <form th:action="@{/setting/form}" th:method="get">
-                <input type="hidden" name="id" th:value="${user.id}">
-                <input type="submit" value="編集">
+        <nav class="nav-bar">
+            <button th:onclick="|location.href='@{/patas_board}'|" class="nav-item">ホーム画面</button>
+            <form th:action="@{/signup/form}" th:method="get">
+                <input type="submit" value="新規登録" class="nav-item">
             </form>
-        </div>
-        <br>
+        </nav>
     </div>
-    <div class="footer-contents">
-        <a href="/patas_board">戻る</a>
+    <div class="main-manager">
+        <th:block th:if="${errorMessages != null && !errorMessages.isEmpty()}">
+            <div th:each="errorMessages:${errorMessages}">
+                <span th:text="${errorMessages}" style="color:red"></span>
+            </div>
+        </th:block>
+        <h4>支社ごとのデータ</h4>
+        <div class="branch-icon" th:each="branch : ${branches}">
+            <table>
+                <tr>
+                    <th>支社名</th>
+                    <th>投稿数</th>
+                    <th>コメント数</th>
+                </tr>
+                <tr>
+                    <td><span th:text="${branch.name}"/></td>
+                    <td><span th:text="${branch.totalPost}"/></td>
+                    <td><span th:text="${branch.totalComment}"/></td>
+                </tr>
+            </table>
+        </div><br>
+        <div class="user-icon" th:each="user : ${users}">
+            ID
+            <div class="manager">
+                <span th:text="${user.id}" style="display: inline-block;"/>
+            </div>
+            アカウント
+            <div class="manager">
+                <span th:text="${user.account}" style="display: inline-block;"/>
+            </div>
+            氏名
+            <div class="manager">
+                <span th:text="${user.name}" style="display: inline-block;"/>
+            </div>
+            支社
+            <div class="manager">
+                <span th:text="${branchChoices[user.branchId]}" style="display: inline-block;"/>
+            </div>
+            部署
+            <div class="manager">
+                <span th:text="${departmentChoices[user.departmentId]}" style="display: inline-block;"/>
+            </div>
+            最終ログイン日時
+            <div class="manager">
+                <th:block th:if="${session.loginUser.id == user.id}">
+                    <span th:text="${loginText}"/>
+                </th:block>
+                <th:block th:unless="${session.loginUser.id == user.id}">
+                    <span th:text="${user.loginDate}" style="display: inline-block;"/>
+                </th:block>
+            </div>
+            投稿数
+            <div class="manager">
+                <span th:text="${user.totalPost}" style="text-align: left;"/>
+            </div>
+            コメント数
+            <div class="manager">
+                <span th:text="${user.totalComment}"/>
+            </div>
+            <form th:action="@{/manager}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
+                <th:if th:if="${session.loginUser.id != user.id}">
+                    <select name="status">
+                        <option th:each="status : ${statuses}"
+                                th:value="${status.ordinal()}"
+                                th:text="${status}"
+                                th:selected="${status.ordinal() == user.isStopped}">
+                        </option>
+                    </select>
+                    <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+                </th:if>
+            </form>
+
+            <div class="setting-button">
+                <form th:action="@{/setting/form}" th:method="get">
+                    <input type="hidden" name="id" th:value="${user.id}">
+                    <input type="submit" value="編集">
+                </form>
+            </div>
+            <br>
+        </div>
     </div>
 </body>
 </html>
