@@ -29,14 +29,14 @@
 <div class="header">
 <div th:if="${session.loginUser.departmentId == 1}">
     <div class="user-manage-button">
-        <a href="/manager/form">
+        <a href="/manager/form" style="text-decoration: none;">
             <button class="btn" type="button">ユーザー管理</button>
         </a>
     </div>
 </div>
 <div class="logout-button">
-    <a href="/logout">
-        <button class="btn" type="button">ログアウト</button>
+    <a href="/logout" style="text-decoration: none;">
+        <button class="btn" type="button" >ログアウト</button>
     </a>
 </div>
 </div>
