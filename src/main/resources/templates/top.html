@@ -112,7 +112,7 @@
         </div>
         <div class="comment-area">
             <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
-                <div class="form-area">
+                <div class="comment-form">
                     返信
                     <textarea class="tweet-box" th:field="*{text}" size="20" /></textarea><br/>
                     <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
