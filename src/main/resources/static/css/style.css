@@ -1,5 +1,5 @@
 body {
-	background-color: #E0FFFF;
+	background-color: #D2B48C;
 }
 
 .header-contents {
@@ -69,7 +69,7 @@ body {
 .main-contents {
 	margin: 20px;
 	padding: 10px 10px 5px 10px;
-	background-color: #B4CCCC;
+	background-color: oldlace;
 	height: 100%;
 	width: 80%;
 }
@@ -231,6 +231,7 @@ p {
 }
 
 .user-icon{
+    background-color: oldlace;
     display: inline-block;
     vertical-align: top;
     width: 30%;
@@ -238,7 +239,6 @@ p {
 }
 
 .manager {
-    background: #fff;
     color: #1e366a;
     border-bottom: solid #1e366a 2px;/*下のボーダー*/
     padding: 0.5em 0 0.5em 1.5em;
@@ -324,8 +324,9 @@ p {
 }
 
 .header-manager{
+    background-color: #D2B48C;
+    border-bottom: solid #1e366a 2px;/*下のボーダー*/
     width: 100%; /* 幅いっぱいを指定 */
-    background: #CCC; /* 背景色にグレーを指定 */
     padding: 20px 30px; /* ヘッダーに上下左右それぞれ余白を指定 */
     box-sizing: border-box; /* padding分を含んで幅を100%にするため */
     position: fixed; /* ウィンドウを基準に画面に固定 */
