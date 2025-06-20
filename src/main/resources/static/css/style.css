@@ -1,15 +1,75 @@
 body {
-	background-color: #E0FFFF;
+	background-color: #D2B48C;
 }
 
 .header-contents {
 	margin-left: 20px;
 }
 
+.header{
+
+}
+
+.btn {
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	min-width: 60px;
+	padding: auto;
+	font-size: 14px;
+	font-weight: bold;
+	border: 2px solid #8B4513;
+	color: #8B4513;
+	border-radius: 100vh;
+	transition: 0.5s;
+}
+.btn:hover {
+	color: #fff;
+	background: #8B4513;
+}
+
+.delete-btn {
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	text-decoration: none;
+	min-width: 60px;
+	padding: auto;
+	font-size: 14px;
+	font-weight: bold;
+	border: 2px solid #FA8072;
+	color: #FA8072;
+	border-radius: 100vh;
+	transition: 0.5s;
+}
+.delete-btn:hover {
+	color: #fff;
+	background: #FA8072;
+}
+
+.new-btn {
+    font-size: 16px;
+    width: 120px;
+    color: #fff;
+    background-color: #8B4513;
+    border-bottom: 5px solid #b84c00;
+}
+.new-btn:hover {
+    margin-top: 3px;
+    color: #fff;
+    background: #8B4513;
+    border-bottom: 2px solid #b84c00;
+}
+.new-btn {
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+}
+
 .main-contents {
 	margin: 20px;
 	padding: 10px 10px 5px 10px;
-	background-color: #B4CCCC;
+	background-color: #A9A9A9;
 	height: 100%;
 	width: 80%;
 }
@@ -100,6 +160,15 @@ a.profile .account {
 
 .message-icon .account-name .account {
 	font-weight: bold;
+}
+
+.comment-icon {
+    margin-left: 80px;
+    background: #FFFAF0;
+}
+
+.comment-area {
+    margin-left: 80px;
 }
 
 .account-name .name {
