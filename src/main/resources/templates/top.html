@@ -26,33 +26,34 @@
     </div>
 </div>
 <!--総務人事部のアカウントでログインしているときはユーザー管理画面のボタンを表示-->
+<div class="header">
 <div th:if="${session.loginUser.departmentId == 1}">
     <div class="user-manage-button">
         <a href="/manager/form">
-            <button class="manage-button" type="button">ユーザー管理</button>
+            <button class="btn" type="button">ユーザー管理</button>
         </a>
     </div>
 </div>
 <div class="logout-button">
     <a href="/logout">
-        <button class="logout-button" type="button">ログアウト</button>
+        <button class="btn" type="button">ログアウト</button>
     </a>
 </div>
-
+</div>
 <div>
-    <form action="/filter" method="get">
+    <form action="/filter" method="get" style="display:flex;">
         日付<input type="date" name="start" th:value="${start}">～<input type="date" name="end" th:value="${end}">
         カテゴリー<input type="text" name="categoryText" th:value="${categoryText}">
-        <input type="submit" value="絞り込み">
+        <input class="btn" type="submit" value="絞り込み">
     </form>
 </div>
 <div class="main-contents">
     <a href="/new">
-        <button class="new-button" type="button">新規投稿</button>
+        <button class="new-btn" type="button">新規投稿</button>
     </a>
     <div class="message-icon" th:each="message : ${messages}">
         <div>
-            ID : <span th:text="${message.id}"/>
+            投稿ID : <span th:text="${message.id}"/>
         </div>
         <div>
             投稿者 : <span th:text="${message.name}"/>
@@ -76,7 +77,7 @@
             <div class="delete-button">
                 <form th:action="@{/delete/{id}(id=${message.id})}" th:method="delete">
                     <input type="hidden" name="userId" th:value="${message.userId}">
-                    <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
+                    <input type="submit" class="delete-btn" onclick="return confirm('削除しますか？');" value="削除">
                 </form>
             </div>
             </div>
@@ -84,41 +85,42 @@
             <fmt:formatDate value="${message.createdDate}"
                             pattern="yyyy/MM/dd HH:mm:ss" />
         </div>
-        <div class="comment-icon" th:each="comment : ${comments}">
+        <div th:each="comment : ${comments}">
             <div th:if="${message.id == comment.messageId}">
-                <br>
-                <div>
-                    コメントID: <span th:text="${comment.id}"/>
-                </div>
-                <div>
-                    コメント投稿者 : <span th:text="${comment.name}"/>
-                </div>
-                <div class="text">
-                    <p>コメント : <span th:text="${comment.text}"/></p>
-                </div>
-                <div class="date">
-                    <span th:text="${message.createdDate}"/>
-                </div>
-                <div th:if="${session.loginId == comment.userId}">
-                    <div class="delete-button">
-                        <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
-                            <input type="submit" onclick="return confirm('削除しますか？');" value="削除">
-                        </form>
+                <div class="comment-icon">
+                    <div>
+                        コメントID: <span th:text="${comment.id}"/>
                     </div>
-                </div>
+                    <div>
+                        コメント投稿者 : <span th:text="${comment.name}"/>
+                    </div>
+                    <div class="text">
+                        <p>コメント : <span th:text="${comment.text}"/></p>
+                    </div>
+                    <div class="date">
+                        <span th:text="${message.createdDate}"/>
+                    </div>
+                    <div th:if="${session.loginId == comment.userId}">
+                        <div class="delete-button">
+                            <form th:action="@{/comment/delete/{id}(id=${comment.id})}" th:method="delete">
+                                <input type="submit" class="delete-btn" onclick="return confirm('削除しますか？');" value="削除">
+                            </form>
+                        </div>
+                    </div>
+                </div><br style="height:10px;">
             </div>
         </div>
         <div class="comment-area">
             <form method="post" th:action="@{/comment/{messageId}/{userId}(messageId=${message.id},userId=${session.loginUser.id})}" th:object="${formModel}">
                 <div class="form-area">
-                    <label>返信</label>
+                    返信
                     <textarea class="tweet-box" th:field="*{text}" size="20" /></textarea><br/>
                     <div th:if="${mavErrorMessages != null} and ${messageId} == ${message.id}">
                         <div th:each="message : ${mavErrorMessages}">
                             <span th:text="${message}" class="errorMessages"/>
                         </div>
                     </div>
-                    <input type="submit" value="返信" />
+                    <input class="btn" type="submit" value="返信" />
                 </div>
             </form>
         </div>
@@ -129,20 +131,20 @@
     <div th:if="${page != null}" class="page">
         <ul>
             <li style="display:inline;">
-                <span th:if="${page.first}">&lt;&lt;</span>
+                <span th:if="${page.first}" style="font-weight: bold;">&lt;&lt;</span>
                 <button th:if="${!page.first}"
                         th:onclick="|location.href='@{/patas_board(page = ${page.number} - 1)}'|"
-                        class="btn pageButton">
+                        class="pageButton">
                     &lt;&lt;
                 </button>
             </li>
 <!--            pageListに基づきページ番号ボタンの表示-->
             <li     th:each="i : ${pageList}"
                     style="display:inline; margin-left:10px;">
-                <span th:if="${i} == ${page.number}+1" th:text="${i}">1</span>
+                <span th:if="${i} == ${page.number}+1" th:text="${i}" style="font-weight: bold;">1</span>
                 <button th:if="${i != page.number+1} and ${i != 0}"
                         th:onclick="|location.href='@{/patas_board(page = ${i-1})}'|"
-                        class="btn pageButton">
+                        class="pageButton">
                     <span th:text="${i}">1</span>
                 </button>
                 <span th:if="${i} == 0" >…</span>
@@ -151,7 +153,7 @@
                 <span th:if="${page.last}">&gt;&gt;</span>
                 <button th:if="${!page.last}"
                         th:onclick="|location.href='@{/patas_board(page = (${page.number} + 1))}'|"
-                        class="btn pageButton">
+                        class="pageButton">
                     &gt;&gt;
                 </button>
             </li>
@@ -170,7 +172,7 @@
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${pageable.pageNumber - 1}">
-                    <input type="submit" value="&lt;&lt;" class="btn pageButton">
+                    <input type="submit" value="&lt;&lt;" class="pageButton">
                 </form>
             </li>
 <!--            pageListに基づきページ番号ボタンの表示-->
@@ -184,7 +186,7 @@
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${i - 1}">
-                    <input type="submit" th:value="${i}" class="btn pageButton">
+                    <input type="submit" th:value="${i}" class="pageButton">
                 </form>
                 <span th:if="${i} == 0" >…</span>
             </li>
@@ -197,7 +199,7 @@
                     <input type="hidden" name="end" th:value="${end}">
                     <input type="hidden" name="categoryText" th:value="${categoryText}">
                     <input type="hidden" name="page" th:value="${pageable.pageNumber + 1}">
-                    <input type="submit" value="&gt;&gt;" class="btn pageButton">
+                    <input type="submit" value="&gt;&gt;" class="pageButton">
                 </form>
             </li>
         </ul>
