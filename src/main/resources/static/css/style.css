@@ -73,6 +73,7 @@ a.profile .account {
 	margin: 10px;
 	padding: 10px;
 	background-color: white;
+	border: 1px solid #333333
 }
 
 .message-icon {
@@ -200,4 +201,33 @@ color: #1e366a;
 .pageButton:hover {
   color: #fff;
   background: #000;
+}
+
+.login-icon{
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: oldlace;
+	height: 100%;
+	width: 50%;
+}
+
+.signup-icon{
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: oldlace;
+	height: 100%;
+	width: 40%;
+}
+
+.select-form{
+	margin: 5px;
+	padding: 5px;
+}
+
+.setting-icon{
+	margin: 20px;
+	padding: 10px 10px 5px 10px;
+	background-color: oldlace;
+	height: 100%;
+	width: 40%;
 }
