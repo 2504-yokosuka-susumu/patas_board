@@ -9,9 +9,9 @@
     <div class="header-manager">
         <h2>ユーザ管理画面</h2>
         <nav class="nav-bar">
-            <button th:onclick="|location.href='@{/patas_board}'|" class="nav-item">ホーム画面</button>
+            <button th:onclick="|location.href='@{/patas_board}'|" class="nav-item btn">ホーム画面</button>
             <form th:action="@{/signup/form}" th:method="get">
-                <input type="submit" value="新規登録" class="nav-item">
+                <input type="submit" value="新規登録" class="nav-item new-btn">
             </form>
         </nav>
     </div>
@@ -76,7 +76,7 @@
             </div>
             <form th:action="@{/manager}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}" th:object="${IdForm}" />
-                <th:if th:if="${session.loginUser.id != user.id}">
+                <th:if th:if="${session.loginUser.id != user.id}" style="display:flex;">
                     <select name="status">
                         <option th:each="status : ${statuses}"
                                 th:value="${status.ordinal()}"
@@ -84,14 +84,14 @@
                                 th:selected="${status.ordinal() == user.isStopped}">
                         </option>
                     </select>
-                    <button type="submit" onclick="return confirm('変更しますか？');">変更</button>
+                    <button type="submit" onclick="return confirm('変更しますか？');" class="btn">変更</button>
                 </th:if>
             </form>
 
             <div class="setting-button">
                 <form th:action="@{/setting/form}" th:method="get">
                     <input type="hidden" name="id" th:value="${user.id}">
-                    <input type="submit" value="編集">
+                    <input type="submit" value="編集" class="btn">
                 </form>
             </div>
             <br>
