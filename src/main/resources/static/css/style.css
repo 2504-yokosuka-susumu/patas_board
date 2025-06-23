@@ -256,16 +256,25 @@ p {
 }
 .branch-icon{
 	flex: 1;
-	border-bottom: 1px solid black;
-	border-right: 1px solid black;
-	border-left: 1px solid black;
-	border-top: 1px solid black;
-	margin-right: -1px; /* border の太さ分を相殺 */
-	margin-bottom: -1px; /* border の太さ分を相殺 */
-	border-left: -1px;
-	border-top: -1px;
-	width: 20%;
+	margin: 20px;
+	background-color: oldlace;
+	width: 30%;
+	text-align: center;
+	border-collapse: collapse;
+	border: solid 2px #660000
+}
 
+table th, table td {
+	border: dashed 1px orange;
+	/*実線 1px 黒*/
+  }
+
+table td {/*table内のtdに対して*/
+	padding: 3px 10px;/*上下3pxで左右10px*/
+}
+
+table th {/*table内のthに対して*/
+	padding: 10px;/*上下左右10pxずつ*/
 }
 
 .pageButton {
@@ -347,4 +356,8 @@ p {
     margin-top: 150px;
     padding: 5px 15px;
     height: 150vh;
+}
+
+h4{
+	margin: 20px;
 }

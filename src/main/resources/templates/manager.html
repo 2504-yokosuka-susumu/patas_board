@@ -22,20 +22,20 @@
             </div>
         </th:block>
         <h4>支社ごとのデータ</h4>
-        <div class="branch-icon" th:each="branch : ${branches}">
-            <table>
-                <tr>
-                    <th>支社名</th>
-                    <th>投稿数</th>
-                    <th>コメント数</th>
-                </tr>
+        <table class="branch-icon">
+            <tr>
+                <th>支社名</th>
+                <th>投稿数</th>
+                <th>コメント数</th>
+            </tr>
+            <div th:each="branch : ${branches}">
                 <tr>
                     <td><span th:text="${branch.name}"/></td>
                     <td><span th:text="${branch.totalPost}"/></td>
                     <td><span th:text="${branch.totalComment}"/></td>
                 </tr>
-            </table>
-        </div><br>
+            </div>
+        </table>
         <div class="user-icon" th:each="user : ${users}">
             <b>ID</b>
             <div class="manager">
